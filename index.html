@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Quản lý Thuê bao 15C3D – CAJ</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light;
+      --primary: #0f4c81;
+      --primary-light: #1e6eb5;
+      --accent: #e85d04;
+      --success: #16a34a;
+      --warning: #d97706;
+      --danger: #dc2626;
+      --danger-dark: #1e1b4b;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --muted: #64748b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(135deg, #0c3b6e 0%, #1a5fa8 100%);
+      color: #fff;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 3px solid #e85d04;
+    }
+    .header-icon { font-size: 28px; }
+    .header-title { font-size: 15px; font-weight: 700; letter-spacing: 0.3px; }
+    .header-sub { font-size: 11px; opacity: 0.75; margin-top: 2px; }
+    .header-badge {
+      margin-left: auto;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    /* ── LAYOUT ── */
+    .container { padding: 16px; max-width: 1280px; margin: 0 auto; }
+
+    /* ── KPI CARDS ── */
+    .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+    .kpi-card {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .kpi-card.warn { border-top-color: var(--warning); }
+    .kpi-card.danger { border-top-color: var(--danger); }
+    .kpi-card.ok { border-top-color: var(--success); }
+    .kpi-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: var(--muted); }
+    .kpi-value { font-size: 26px; font-weight: 800; margin: 4px 0 2px; line-height: 1; color: var(--primary); }
+    .kpi-card.warn .kpi-value { color: var(--warning); }
+    .kpi-card.danger .kpi-value { color: var(--danger); }
+    .kpi-card.ok .kpi-value { color: var(--success); }
+    .kpi-sub { font-size: 11px; color: var(--muted); }
+    .kpi-pct { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 10px; font-weight: 700; background: #fef3c7; color: #92400e; }
+    .kpi-pct.ok { background: #dcfce7; color: #166534; }
+
+    /* ── SECTION ── */
+    .section {
+      background: var(--card);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .section-head {
+      background: var(--primary);
+      color: white;
+      padding: 10px 18px;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: .3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-body { padding: 16px; }
+
+    /* ── CHART AREA ── */
+    .chart-wrap { display: grid; grid-template-columns: 1fr 280px; gap: 20px; align-items: start; }
+    .chart-box { position: relative; height: 280px; }
+    .info-panel { display: flex; flex-direction: column; gap: 6px; }
+    .info-row {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg); border-radius: 6px; padding: 8px 12px;
+      font-size: 12px; border: 1px solid var(--border);
+    }
+    .info-lbl { color: var(--muted); }
+    .info-val { font-weight: 700; }
+    .pill { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .pill-warn { background: #fef3c7; color: #92400e; }
+    .pill-ok   { background: #dcfce7; color: #166534; }
+    .pill-info { background: #eff6ff; color: #1d4ed8; }
+
+    /* ── TABS ── */
+    .tabs { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 14px; gap: 2px; }
+    .tab {
+      padding: 8px 18px; font-size: 12px; font-weight: 600;
+      color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent;
+      margin-bottom: -2px; border-radius: 4px 4px 0 0; transition: .15s;
+    }
+    .tab.active { color: var(--primary); border-bottom-color: var(--primary); background: #eff6ff; }
+    .tab:hover:not(.active) { background: #f8fafc; color: var(--text); }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* ── DATA TABLE ── */
+    .tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .tbl th {
+      background: #f8fafc; padding: 8px 10px; text-align: left;
+      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+      color: var(--muted); border-bottom: 2px solid var(--border); white-space: nowrap;
+    }
+    .tbl td { padding: 7px 10px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+    .tbl tr:last-child td { border-bottom: none; }
+    .tbl tr:hover td { background: #fafbfc; }
+    .tbl td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .red  { color: var(--danger); }
+    .org  { color: var(--warning); }
+    .grn  { color: var(--success); }
+    .dim  { color: var(--muted); }
+    .site { font-weight: 700; font-family: monospace; font-size: 12px; }
+
+    /* ── SEVERITY BADGES ── */
+    .sev { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; white-space: nowrap; gap: 4px; }
+    .sev-xe  { background: #1e1b4b; color: #fff; }
+    .sev-c   { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+    .sev-h   { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+    .sev-a   { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+    .sev-ok  { background: #f0fdf4; color: #166534; border: 1px solid #86efac; }
+    .status-cont { background: #fef2f2; color: var(--danger); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
+    .status-new  { background: #fff7ed; color: var(--warning); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
+
+    /* ── TIMELINE ── */
+    .timeline-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .timeline-tbl th {
+      background: #f8fafc; padding: 8px 14px; text-align: center;
+      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+      color: var(--muted); border-bottom: 2px solid var(--border);
+    }
+    .timeline-tbl th:first-child { text-align: left; }
+    .timeline-tbl td { padding: 7px 14px; border-bottom: 1px solid #f1f5f9; text-align: center; }
+    .timeline-tbl td:first-child { text-align: left; font-family: monospace; font-weight: 700; font-size: 12px; }
+    .timeline-tbl tr.persist { background: #fffbeb; }
+    .timeline-tbl tr:last-child td { border-bottom: none; }
+    .dot { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; font-size: 12px; font-weight: 700; }
+    .dot-red  { background: #fee2e2; color: var(--danger); border: 2px solid #fca5a5; }
+    .dot-grn  { background: #dcfce7; color: var(--success); border: 2px solid #86efac; }
+    .dot-org  { background: #fff7ed; color: var(--warning); border: 2px solid #fdba74; }
+    .dot-dim  { background: #f1f5f9; color: var(--muted); border: 2px solid #e2e8f0; }
+    .badge-weeks { display: inline-block; padding: 2px 9px; border-radius: 10px; font-size: 10px; font-weight: 700; }
+    .bw3 { background: #dc2626; color: #fff; }
+    .bw2 { background: #f59e0b; color: #fff; }
+    .bw1 { background: #9ca3af; color: #fff; }
+
+    /* ── NOTE BOX ── */
+    .note { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px 16px; font-size: 11.5px; color: #1e40af; margin-top: 14px; line-height: 1.6; }
+    .note b { color: #1e3a8a; }
+    .tbl-footer { margin-top: 8px; font-size: 11px; color: var(--muted); }
+    .legend { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 12px; }
+    .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .caption { font-size: 10.5px; color: var(--muted); margin-top: 6px; font-style: italic; }
+
+    /* ── PAGE-LEVEL TABS ── */
+    .page-tabs { background: #0b3461; display: flex; border-bottom: 1px solid rgba(255,255,255,.12); }
+    .page-tab {
+      padding: 9px 22px; font-size: 12px; font-weight: 700; color: rgba(255,255,255,.55);
+      cursor: pointer; border-bottom: 3px solid transparent; transition: .15s; letter-spacing: .3px;
+    }
+    .page-tab.active { color: #fff; border-bottom-color: #e85d04; background: rgba(255,255,255,.07); }
+    .page-tab:hover:not(.active) { color: rgba(255,255,255,.85); background: rgba(255,255,255,.04); }
+    .page-pane { display: none; }
+    .page-pane.active { display: block; }
+
+    /* ── MAP PAGE ── */
+    #page-map { height: calc(100vh - 93px); }
+    #page-map.active { display: flex; }
+    .map-sidebar {
+      width: 272px; flex-shrink: 0; background: #1e293b; color: #e2e8f0;
+      border-right: 1px solid #334155; display: flex; flex-direction: column; overflow: hidden;
+    }
+    .map-sidebar h2 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: #64748b; margin-bottom: 8px; }
+    .msec { padding: 11px 13px; border-bottom: 1px solid #334155; }
+    .mkpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .mkpi { background: #0f172a; border-radius: 7px; padding: 7px 9px; border: 1px solid #334155; }
+    .mkpi-val { font-size: 20px; font-weight: 800; line-height: 1; }
+    .mkpi-lbl { font-size: 10px; color: #64748b; margin-top: 1px; }
+    .mfbtn {
+      background: #0f172a; border: 1px solid #334155; color: #94a3b8;
+      border-radius: 5px; padding: 5px 9px; font-size: 11px; cursor: pointer;
+      text-align: left; width: 100%; margin-bottom: 5px; display: flex; align-items: center; gap: 6px;
+    }
+    .mfbtn.active { background: #1e3a5f; border-color: #3b82f6; color: #60a5fa; }
+    .mfdot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .mfcnt { margin-left: auto; background: #334155; border-radius: 9px; padding: 1px 6px; font-size: 10px; font-weight: 700; }
+    .mlist { flex: 1; overflow-y: auto; }
+    .mitem { padding: 8px 13px; border-bottom: 1px solid #1e293b; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+    .mitem:hover { background: #273549; }
+    .midot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .micode { font-size: 11px; font-weight: 700; font-family: monospace; color: #e2e8f0; }
+    .misub { font-size: 10px; color: #64748b; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .midelta { font-size: 11px; font-weight: 700; color: #f87171; flex-shrink: 0; }
+    .mb5g { background: #1e3a5f; color: #60a5fa; border: 1px solid #3b82f6; border-radius: 3px; padding: 1px 4px; font-size: 9px; font-weight: 900; }
+    #leaflet-map { flex: 1; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
+    .leaflet-popup-content-wrapper { background: #1e293b !important; color: #e2e8f0 !important; border: 1px solid #334155 !important; border-radius: 10px !important; box-shadow: 0 8px 32px rgba(0,0,0,.5) !important; }
+    .leaflet-popup-tip { background: #1e293b !important; }
+    .leaflet-popup-content { margin: 0 !important; }
+    .lpu { padding: 11px 13px; min-width: 205px; }
+    .lpu-code { font-size: 13px; font-weight: 800; font-family: monospace; display: flex; align-items: center; gap: 7px; }
+    .lpu-addr { font-size: 10px; color: #64748b; margin: 3px 0 8px; }
+    .lpu-row { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px; }
+    .lpu-lbl { color: #64748b; }
+    .lpu-val { font-weight: 700; }
+    .lpu-neg { color: #f87171; font-weight: 700; }
+    .lpu-weeks { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 7px; }
+    .lwb { padding: 2px 7px; border-radius: 7px; font-size: 10px; font-weight: 700; }
+    .lwb-W21 { background: #713f12; color: #fde68a; }
+    .lwb-W22 { background: #7c2d12; color: #fed7aa; }
+    .lwb-W23 { background: #450a0a; color: #fca5a5; border: 1px solid #ef4444; }
+    .lsb { display: inline-block; padding: 2px 9px; border-radius: 9px; font-size: 10px; font-weight: 700; margin-top: 7px; }
+    .lsb-active  { background: #450a0a; color: #fca5a5; border: 1px solid #ef4444; }
+    .lsb-ongoing { background: #431407; color: #fdba74; border: 1px solid #f97316; }
+    .lsb-improved{ background: #052e16; color: #86efac; border: 1px solid #22c55e; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-icon">📊</div>
+  <div>
+    <div class="header-title">QUẢN LÝ THUÊ BAO 15C3D — CHI NHÁNH CAJAMARCA (CAJ)</div>
+    <div class="header-sub">Báo cáo kinh doanh hàng tuần • Nguồn: Báo cáo tuần & Cảnh báo thuê bao giảm</div>
+  </div>
+  <div class="header-badge">📅 Dữ liệu đến W23 — 08/06/2026</div>
+</div>
+
+<div class="page-tabs">
+  <div class="page-tab active" onclick="switchPage('dashboard',this)">📊 Dashboard KPI</div>
+  <div class="page-tab" onclick="switchPage('map',this)">🗺️ Bản đồ Trạm Cảnh báo</div>
+</div>
+
+<div id="page-dashboard" class="page-pane active">
+<div class="container">
+
+  <!-- ── KPI CARDS ── -->
+  <div class="kpi-row">
+    <div class="kpi-card ok">
+      <div class="kpi-label">15C3D Lũy kế YTD — T1 đến T5</div>
+      <div class="kpi-value">19,704</div>
+      <div class="kpi-sub">KH YTD T5: 18,310 &nbsp; <span class="kpi-pct ok">107.6%</span></div>
+    </div>
+    <div class="kpi-card warn">
+      <div class="kpi-label">vs KH Năm (39,904 TB)</div>
+      <div class="kpi-value">49.4%</div>
+      <div class="kpi-sub">T6 (W1): +1,483 &nbsp;|&nbsp; Lũy kế: 21,187 TB</div>
+    </div>
+    <div class="kpi-card danger">
+      <div class="kpi-label">Trạm cảnh báo — W23</div>
+      <div class="kpi-value">12</div>
+      <div class="kpi-sub">W22: 20 trạm &nbsp;|&nbsp; W21: 13 trạm</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Doanh thu YTD — T1 đến T5</div>
+      <div class="kpi-value" style="font-size:20px;color:var(--success)">32,147 tr.</div>
+      <div class="kpi-sub">KH YTD: 31,542 tr. &nbsp; <span class="kpi-pct ok">101.9%</span></div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 1: MONTHLY 15C3D CHART ── -->
+  <div class="section">
+    <div class="section-head">📈 1. BIỂU ĐỒ THUÊ BAO 15C3D HÀNG THÁNG — SO VỚI KẾ HOẠCH & LŨY KẾ NĂM</div>
+    <div class="section-body">
+      <div class="chart-wrap">
+        <div>
+          <div class="chart-box" style="height:310px">
+            <canvas id="monthlyChart"></canvas>
+          </div>
+          <p class="caption">* Tháng 6 chỉ có dữ liệu W1 (01–08/06/2026). Đường lũy kế (phảk) bao gồm KH tháng âm đã dự kiến giảm thệ trường). Nguồn: file 15c3d 5 thang dau nam.xlsx + Báo cáo tuần W23.</p>
+        </div>
+
+        <div class="info-panel">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:6px">CHI TIẾT TỪNG THÁNG</div>
+          <table style="width:100%;font-size:11px;border-collapse:collapse">
+            <thead>
+              <tr style="border-bottom:2px solid var(--border)">
+                <th style="text-align:left;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">Tháng</th>
+                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">TH</th>
+                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">KH</th>
+                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">Lũy kế</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid #f1f5f9">
+                <td style="padding:5px 6px;font-weight:700">T1</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">3,820</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--muted)">3,259</td>
+                <td style="text-align:right;padding:5px 6px;font-variant-numeric:tabular-nums">3,820</td>
+              </tr>
+              <tr style="border-bottom:1px solid #f1f5f9">
+                <td style="padding:5px 6px;font-weight:700">T2</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">1,422</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--muted)">-2,385</td>
+                <td style="text-align:right;padding:5px 6px;font-variant-numeric:tabular-nums">5,242</td>
+              </tr>
+              <tr style="border-bottom:1px solid #f1f5f9">
+                <td style="padding:5px 6px;font-weight:700">T3</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">10,584</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--muted)">9,275</td>
+                <td style="text-align:right;padding:5px 6px;font-variant-numeric:tabular-nums">15,826</td>
+              </tr>
+              <tr style="border-bottom:1px solid #f1f5f9">
+                <td style="padding:5px 6px;font-weight:700">T4</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--danger);font-weight:700">-689</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--muted)">1,172</td>
+                <td style="text-align:right;padding:5px 6px;font-variant-numeric:tabular-nums">15,137</td>
+              </tr>
+              <tr style="border-bottom:1px solid #f1f5f9">
+                <td style="padding:5px 6px;font-weight:700">T5</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--warning);font-weight:700">4,567</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--muted)">6,988</td>
+                <td style="text-align:right;padding:5px 6px;font-weight:700">19,704</td>
+              </tr>
+              <tr style="background:#f0fdf4">
+                <td style="padding:5px 6px;font-weight:700">T6*</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">1,483</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--muted)">1,731</td>
+                <td style="text-align:right;padding:5px 6px;font-weight:700">21,187</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="note" style="font-size:11px;margin-top:8px">
+            📊 <b>KH Năm: 39,904 TB</b><br>
+            Đạt YTD T5: <b class="grn">107.6%</b> KH lũy kế<br>
+            vs KH Năm (T5): <b>49.4%</b><br><br>
+            ℹ️ T2 có KH âm (-2,385) do kế hoạch thị trường dự kiến giảm theo mùa.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 2: REVENUE CHART ── -->
+  <div class="section">
+    <div class="section-head">💰 2. DOANH THU HÀNG THÁNG — SO VỚI KẾ HOẠCH</div>
+    <div class="section-body">
+      <div class="chart-wrap">
+        <div>
+          <div class="chart-box" style="height:260px">
+            <canvas id="revenueChart"></canvas>
+          </div>
+          <p class="caption">* Đơn vị: triệu PEN. T6 chỉ có dữ liệu W1 (01–08/06/2026), nên thực hiện T6 thấp h�n là do chưa đủ tháng. % cột phải không hiển thệ cho T6 do dữ liệu chưa đầy đủ.</p>
+        </div>
+
+        <div class="info-panel">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:6px">DOANH THU TỪNG THÁNG (triệu PEN)</div>
+          <table style="width:100%;font-size:11px;border-collapse:collapse">
+            <thead>
+              <tr style="border-bottom:2px solid var(--border)">
+                <th style="text-align:left;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">Tháng</th>
+                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">TH</th>
+                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">KH</th>
+                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">%</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T1</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">6,274</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">6,195</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">101.3%</span></td></tr>
+              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T2</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">6,217</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">6,178</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">100.6%</span></td></tr>
+              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T3</font-weight:700">T3</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">6,547</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">6,282</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">104.2%</span></td></tr>
+              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T4</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">6,497</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">6,398</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">101.5%</span></td></tr>
+              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T5</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">6,611</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">6,489</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">101.9%</span></td></tr>
+              <tr style="background:#f0fdf4"><td style="padding:5px 6px;font-weight:700">T6*</td><td style="text-align:right;padding:5px 6px;color:var(--warning);font-weight:700">1,728</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">6,587</td><td style="text-align:right;padding:5px 6px;color:var(--muted);font-size:10px">W1 only</td></tr>
+            </tbody>
+          </table>
+          <div class="note" style="font-size:11px;margin-top:8px">
+            📊 <b>YTD T1–T5: 32,147 tr. PEN</b><br>
+            KH YTD: 31,542 tr. &nbsp; <b class="grn">101.9%</b><br><br>
+            ✅ Doanh thu 5 tháng đầu năm đều vượt kế hoạch tháng.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 2: WEEKLY STATION ALERTS ── -->
+  <div class="section">
+    <div class="section-head">⚠️ 3. DANH SÁCH TRẠM GIẢM THUÊ BAO 15C3D THEO TỪNG TUẦN</div>
+    <div class="section-body">
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#1e1b4b"></div> Cực kỳ nghiêm trọng (Cell*h ≥ 500h)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div> Nghiêm trọng (≥ 200h)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div> Cảnh báo cao (≥ 50h)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div> Cảnh báo (&gt; 0h)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div> Không cell down</div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab('w21', this)">W21 (18–24/05) — 13 trạm</div>
+        <div class="tab" onclick="switchTab('w22', this)">W22 (24–30/05) — 20 trạm</div>
+        <div class="tab" onclick="switchTab('w23', this)">W23 (01–08/06) — 12 trạm</div>
+      </div>
+
+      <!-- W21 -->
+      <div id="pane-w21" class="tab-pane active">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>#</th><th>Trạm</th><th>Zona</th>
+              <th>Giảm 15C3D</th><th>Giảm REG</th>
+              <th>Cell*h Down</th><th>Mức độ</th><th>Loại sự cố</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td class="site">CAJ0299</td><td>CUTERVO</td><td class="num red">-319</td><td class="num red">-388</td><td class="num">749.88h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td><td>Station down</td></tr>
+            <tr><td>2</td><td class="site">CAJ0094</td><td>BAMBAMARCA</td><td class="num org">-144</td><td class="num org">-168</td><td class="num">441.66h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td><td>Station down</td></tr>
+            <tr><td>3</td><td class="site">CAJ0014</td><td>CAJ BC01</td><td class="num red">-320</td><td class="num red">-400</td><td class="num">417.05h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td><td>Station down + LTE</td></tr>
+            <tr><td>4</td><td class="site">CAJ0010</td><td>CAJ BC14</td><td class="num org">-166</td><td class="num org">-219</td><td class="num">241.63h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td><td>Station down + LTE</td></tr>
+            <tr><td>5</td><td class="site">CAJ0282</td><td>CHOTA</td><td class="num org">-103</td><td class="num org">-127</td><td class="num">112.47h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td><td>Station down</td></tr>
+            <tr><td>6</td><td class="site">CAJ0088</td><td>CELENDIN</td><td class="num red">-291</td><td class="num red">-396</td><td class="num">60.30h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td><td>LTE outage + 3G</td></tr>
+            <tr><td>7</td><td class="site">CAJ0314</td><td>CUTERVO</td><td class="num org">-183</td><td class="num org">-219</td><td class="num">58.60h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td><td>LTE outage + 3G</td></tr>
+            <tr><td>8</td><td class="site">CAJ0023</td><td>CAJ BC14</td><td class="num org">-141</td><td class="num org">-156</td><td class="num">24.48h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td>Celda individual</td></tr>
+            <tr><td>9</td><td class="site">CAJ0181</td><td>CHOTA</td><td class="num red">-347</td><td class="num red">-485</td><td class="num">7.15h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td>Celda individual</td></tr>
+            <tr><td>10</td><td class="site">CAJ0021</td><td>CAJ BC14</td><td class="num org">-129</td><td class="num org">-158</td><td class="num">2.47h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td>Celda individual</td></tr>
+            <tr><td>11</td><td class="site">CAJ0574</td><td>CAJ BC14</td><td class="num org">-121</td><td class="num org">-139</td><td class="num">0.00h</td><td><span class="sev sev-ok">✅ Không cell down</span></td><td>Không ghi nhận</td></tr>
+            <tr><td>12</td><td class="site">CAJ0110</td><td>CUTERVO</td><td class="num org">-174</td><td class="num org">-110</td><td class="num">0.00h</td><td><span class="sev sev-ok">✅ Không cell down</span></td><td>Không ghi nhận</td></tr>
+            <tr><td>13</td><td class="site">CAJ0203</td><td>CAJ BC14</td><td class="num red">-439</td><td class="num red">-588</td><td class="num">0.00h</td><td><span class="sev sev-ok">✅ Không cell down</span></td><td>Không ghi nhận</td></tr>
+          </tbody>
+        </table>
+        <p class="tbl-footer">Tổng: <b>13 trạm</b> &nbsp;|&nbsp; Tổng giảm 15C3D: <b class="red">-2,877 TB</b> &nbsp;|&nbsp; 4 trạm Nghiêm trọng &nbsp;|&nbsp; 3 trạm Cảnh báo cao</p>
+      </div>
+
+      <!-- W22 -->
+      <div id="pane-w22" class="tab-pane">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>#</th><th>Trạm</th><th>Zona</th>
+              <th>Giảm 15C3D</th><th>Giảm REG</th>
+              <th>Cell*h Down</th><th>Mức độ</th><th>Trạng thái</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td class="site">CAJ0370</td><td>BC14</td><td class="num red">-202</td><td class="num red">-228</td><td class="num red">1,870.43h</td><td><span class="sev sev-xe">⚫ Cực kỳ N.trọng</span></td><td><span class="status-new">🆕 Mới W22</span></td></tr>
+            <tr><td>2</td><td class="site">CAJ0094</td><td>BAMBAMARCA</td><td class="num org">-140</td><td class="num org">-146</td><td class="num red">1,402.06h</td><td><span class="sev sev-xe">⚫ Cực kỳ N.trọng</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>3</td><td class="site">CAJ0010</td><td>CAJ BC14</td><td class="num red">-193</td><td class="num red">-224</td><td class="num red">954.06h</td><td><span class="sev sev-xe">⚫ Cực kỳ N.trọng</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>4</td><td class="site">CAJ0299</td><td>CUTERVO</td><td class="num red">-301</td><td class="num red">-326</td><td class="num red">750.27h</td><td><span class="sev sev-xe">⚫ Cực kỳ N.trọng</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>5</td><td class="site">CAJ0008</td><td>CAJ BC01</td><td class="num org">-156</td><td class="num org">-205</td><td class="num red">565.97h</td><td><span class="sev sev-xe">⚫ Cực kỳ N.trọng</span></td><td><span class="status-new">🆕 Mới W22</span></td></tr>
+            <tr><td>6</td><td class="site">CAJ0014</td><td>CAJ BC01</td><td class="num red">-261</td><td class="num red">-247</td><td class="num org">417.05h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>7</td><td class="site">CAJ0012</td><td>CAJ BC14</td><td class="num org">-134</td><td class="num org">-160</td><td class="num org">157.33h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td><td><span class="status-new">🆕 Mới W22</span></td></tr>
+            <tr><td>8</td><td class="site">CAJ0282</td><td>CHOTA</td><td class="num org">-114</td><td class="num org">-151</td><td class="num org">113.25h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>9</td><td class="site">CAJ0088</td><td>CELENDIN</td><td class="num red">-434</td><td class="num red">-512</td><td class="num org">62.34h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>10</td><td class="site">CAJ0314</td><td>CUTERVO</td><td class="num org">-139</td><td class="num org">-157</td><td class="num org">59.41h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>11</td><td class="site">CAJ0019</td><td>CAJ BC14</td><td class="num org">-162</td><td class="num org">-190</td><td class="num">32.69h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td><span class="status-new">🆕 Mới W22</span></td></tr>
+            <tr><td>12</td><td class="site">CAJ0023</td><td>CAJ BC14</td><td class="num red">-184</td><td class="num org">-182</td><td class="num">24.50h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>13</td><td class="site">CAJ0172</td><td>CAJ BC01</td><td class="num org">-101</td><td class="num org">-167</td><td class="num">15.95h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td><span class="status-new">🆕 Mới W22</span></td></tr>
+            <tr><td>14</td><td class="site">CAJ0588</td><td>BC05</td><td class="num red">-214</td><td class="num red">-257</td><td class="num">8.86h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td><span class="status-new">🆕 Mới W22</span></td></tr>
+            <tr><td>15</td><td class="site">CAJ0181</td><td>CHOTA</td><td class="num red">-466</td><td class="num red">-554</td><td class="num">8.57h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>16</td><td class="site">CAJ0203</td><td>CAJ BC14</td><td class="num red">-488</td><td class="num red">-490</td><td class="num">8.12h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>17</td><td class="site">CAJ0112</td><td>BC01</td><td class="num org">-107</td><td class="num org">-109</td><td class="num">3.85h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td><span class="status-new">🆕 Mới W22</span></td></tr>
+            <tr><td>18</td><td class="site">CAJ0574</td><td>CAJ BC14</td><td class="num org">-112</td><td class="num dim">—</td><td class="num">0.01h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>19</td><td class="site">CAJ0110</td><td>CUTERVO</td><td class="num red">-217</td><td class="num org">-189</td><td class="num">0.00h</td><td><span class="sev sev-ok">✅ Không cell down</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>20</td><td class="site">CAJ0002B3U1</td><td>BC01</td><td class="num org">-114</td><td class="num org">-160</td><td class="num">0.00h</td><td><span class="sev sev-ok">✅ Không cell down</span></td><td><span class="status-new">🆕 Mới W22</span></td></tr>
+          </tbody>
+        </table>
+        <p class="tbl-footer">Tổng: <b>20 trạm</b> &nbsp;|&nbsp; Tổng giảm 15C3D: <b class="red">-4,239 TB</b> &nbsp;|&nbsp; 5 trạm Cực kỳ N.trọng &nbsp;|&nbsp; 12 trạm tiếp tục từ W21 &nbsp;|&nbsp; 8 trạm mới</p>
+      </div>
+
+      <!-- W23 -->
+      <div id="pane-w23" class="tab-pane">
+        <div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:6px;padding:8px 14px;margin-bottom:12px;font-size:12px;font-weight:600;color:#991b1b">
+          ↗ NHÓM 1: Tiếp tục giảm từ W22 → W23 (2 trạm)
+        </div>
+        <table class="tbl" style="margin-bottom:16px">
+          <thead>
+            <tr>
+              <th>#</th><th>Trạm</th><th>Zona</th>
+              <th>Δ15C3D W22</th><th>Δ15C3D W23</th>
+              <th>Δ REG W23</th><th>Cell*h W23</th><th>Mức độ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:#fff8f8"><td>1</td><td class="site">CAJ0112</td><td>BC01</td><td class="num org">-107</td><td class="num red">-159</td><td class="num red">-360</td><td class="num">40.70h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
+            <tr style="background:#fff8f8"><td>2</td><td class="site">CAJ0588</td><td>BC05</td><td class="num red">-214</td><td class="num org">-151</td><td class="num red">-325</td><td class="num">44.58h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
+          </tbody>
+        </table>
+
+        <div style="background:#fff7ed;border:1px solid #fcd34d;border-radius:6px;padding:8px 14px;margin-bottom:12px;font-size:12px;font-weight:600;color:#92400e">
+          🆕 NHÓM 2: Mới xuất hiện trong W23 (10 trạm)
+        </div>
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>#</th><th>Trạm</th><th>Zona</th>
+              <th>Δ15C3D W23</th><th>Δ REG W23</th>
+              <th>Cell*h W23</th><th>Mức độ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td class="site">CAJ0193</td><td>BC07</td><td class="num red">-354</td><td class="num red">-1,115</td><td class="num">26.75h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
+            <tr><td>2</td><td class="site">CAJ0368</td><td>BC08</td><td class="num org">-132</td><td class="num org">-158</td><td class="num red">260.19h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td></tr>
+            <tr><td>3</td><td class="site">CAJ0388</td><td>BC08</td><td class="num org">-118</td><td class="num org">-117</td><td class="num org">123.43h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td></tr>
+            <tr><td>4</td><td class="site">CAJ0435</td><td>BC01</td><td class="num org">-140</td><td class="num red">-267</td><td class="num org">91.17h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td></tr>
+            <tr><td>5</td><td class="site">CAJ0205</td><td>BC10</td><td class="num org">-169</td><td class="num red">-500</td><td class="num org">61.83h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td></tr>
+            <tr><td>6</td><td class="site">CAJ0263</td><td>BC07</td><td class="num org">-182</td><td class="num org">-168</td><td class="num">1.15h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
+            <tr><td>7</td><td class="site">CAJ0020B3U1</td><td>BC14</td><td class="num org">-175</td><td class="num red">-492</td><td class="num">0.00h</td><td><span class="sev sev-ok">✅ Không cell down</span></td></tr>
+            <tr><td>8</td><td class="site">CAJ0023B3U2</td><td>BC14</td><td class="num org">-151</td><td class="num red">-401</td><td class="num">0.00h</td><td><span class="sev sev-ok">✅ Không cell down</span></td></tr>
+            <tr><td>9</td><td class="site">CAJ0207</td><td>BC07</td><td class="num org">-139</td><td class="num red">-410</td><td class="num">0.00h</td><td><span class="sev sev-ok">✅ Không cell down</span></td></tr>
+            <tr><td>10</td><td class="site">CAJ0116</td><td>BC05</td><td class="num org">-116</td><td class="num org">-191</td><td class="num">4.58h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
+          </tbody>
+        </table>
+        <p class="tbl-footer">Tổng W23: <b>12 trạm</b> (2 tiếp tục + 10 mới) &nbsp;|&nbsp; Tổng giảm 15C3D: <b class="red">-1,986 TB</b> &nbsp;|&nbsp; <b class="grn">18/20 trạm W22 đã cải thiện & thoát danh sách (90%)</b></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── SECTION 3: TIMELINE ── -->
+  <div class="section">
+    <div class="section-head">📉 4. TRẠM GIẢM LIÊN TỤC — THEO DÕI THEO THỜI GIAN (W21 → W22 → W23)</div>
+    <div class="section-body">
+      <table class="timeline-tbl">
+        <thead>
+          <tr>
+            <th style="min-width:140px">Trạm / Site</th>
+            <th>W21<br><span style="font-weight:400;text-transform:none">18–24/05</span></th>
+            <th>W22<br><span style="font-weight:400;text-transform:none">24–30/05</span></th>
+            <th>W23<br><span style="font-weight:400;text-transform:none">01–08/06</span></th>
+            <th>Số tuần giảm</th>
+            <th style="text-align:left">Trạng thái hiện tại</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Persistent W21+W22, improved W23 -->
+          <tr><td>CAJ0203</td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw2">2 tuần</span></td><td class="grn">✅ Cải thiện trong W23</td></tr>
+          <tr><td>CAJ0181</td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw2">2 tuần</span></td><td class="grn">✅ Cải thiện trong W23</td></tr>
+          <tr><td>CAJ0088</td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw2">2 tuần</span></td><td class="grn">✅ Cải thiện trong W23</td></tr>
+          <tr><td>CAJ0299</td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw2">2 tuần</span></td><td class="grn">✅ Cải thiện trong W23</td></tr>
+          <tr><td>CAJ0014</td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw2">2 tuần</span></td><td class="grn">✅ Cải thiện trong W23</td></tr>
+          <tr><td>CAJ0110</td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw2">2 tuần</span></td><td class="grn">✅ Cải thiện trong W23</td></tr>
+          <tr><td>CAJ0010</td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw2">2 tuần</span></td><td class="grn">✅ Cải thiện trong W23</td></tr>
+          <tr><td>CAJ0023</td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw2">2 tuần</span></td><td class="grn">✅ Cải thiện trong W23</td></tr>
+          <tr><td>CAJ0094</td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw2">2 tuần</span></td><td class="grn">✅ Cải thiện trong W23</td></tr>
+          <tr><td>CAJ0314</td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw2">2 tuần</span></td><td class="grn">✅ Cải thiện trong W23</td></tr>
+          <tr><td>CAJ0282</td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw2">2 tuần</span></td><td class="grn">✅ Cải thiện trong W23</td></tr>
+          <tr><td>CAJ0574</td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw2">2 tuần</span></td><td class="grn">✅ Cải thiện trong W23</td></tr>
+          <!-- Still decreasing W22→W23 -->
+          <tr class="persist">
+            <td>⚠ CAJ0112</td>
+            <td><div class="dot dot-dim">—</div></td>
+            <td><div class="dot dot-org">🆕</div></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><span class="badge-weeks bw2">2 tuần</span></td>
+            <td class="org"><b>⚠ Đang tiếp tục giảm (W22→W23)</b></td>
+          </tr>
+          <tr class="persist">
+            <td>⚠ CAJ0588</td>
+            <td><div class="dot dot-dim">—</div></td>
+            <td><div class="dot dot-org">🆕</div></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><span class="badge-weeks bw2">2 tuần</span></td>
+            <td class="org"><b>⚠ Đang tiếp tục giảm (W22→W23)</b></td>
+          </tr>
+          <!-- W21 only, improved -->
+          <tr>
+            <td>CAJ0021</td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><div class="dot dot-grn">✓</div></td>
+            <td><div class="dot dot-dim">—</div></td>
+            <td><span class="badge-weeks bw1">1 tuần</span></td>
+            <td class="grn">✅ Đã thoát từ W22</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="legend" style="margin-top:14px">
+        <div class="legend-item"><div class="dot dot-red" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">✗</div>&nbsp;Đang giảm 15C3D</div>
+        <div class="legend-item"><div class="dot dot-grn" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">✓</div>&nbsp;Đã cải thiện / thoát danh sách</div>
+        <div class="legend-item"><div class="dot dot-org" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">🆕</div>&nbsp;Xuất hiện lần đầu tuần này</div>
+        <div class="legend-item"><div class="dot dot-dim" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">—</div>&nbsp;Không trong danh sách tuần đó</div>
+      </div>
+
+      <div class="note">
+        ✅ <b>Tín hiệu tích cực:</b> 18/20 trạm từ danh sách W22 đã thoát cảnh báo trong W23 — tỷ lệ cải thiện <b>90%</b>. Không có trạm nào giảm liên tục cả 3 tuần W21+W22+W23.<br><br>
+        ⚠️ <b>Cần theo dõi:</b> <b>CAJ0112</b> và <b>CAJ0588</b> giảm 2 tuần liên tiếp (W22→W23). Cần kiểm tra tiến độ xử lý trước W24.<br><br>
+        🆕 <b>Trạm lần đủu tiên W23 đáng chú ý:</b> <b>CAJ0193</b> giảm mạnh nhất (-354 TB, REG -1,115) do sử cố cháy lan từ plan upgrade. <b>CAJ0368</b> có Cell*h 260h cần ưu tiên xử lý ngay.
+      </div>
+    </div>
+  </div>
+
+  <div id="page-map" class="page-pane">
+    <div class="map-sidebar">
+      <div class="msec">
+        <h2>Tổng quan</h2>
+        <div class="mkpi-grid">
+          <div class="mkpi"><div class="mkpi-val" style="color:#f87171" id="mc-active">8</div><div class="mkpi-lbl">🔴 Mới W23</div></div>
+          <div class="mkpi"><div class="mkpi-val" style="color:#fb923c" id="mc-ongoing">2</div><div class="mkpi-lbl">🟠 Tiếp tục W23</div></div>
+          <div class="mkpi"><div class="mkpi-val" style="color:#4ade80" id="mc-improved">19</div><div class="mkpi-lbl">✅ Đã cải thiện</div></div>
+          <div class="mkpi"><div class="mkpi-val" style="color:#60a5fa" id="mc-5g">13</div><div class="mkpi-lbl">📡 Có5G</div></div>
+        </div>
+      </div>
+      <div class="msec">
+        <h2>Chú thích</h2>
+        <div style="font-size:11px;display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:#ef4444;flex-shrink:0"></div> >
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:#f97316;flex-shrink:0"></div>Tiếp tục giảm W22→W23</div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:#22c55e;flex-shrink:0"></div>Đã cải thiện / thoát danh sách</div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="widthradius:50%;background:#f97316;flex-shrink:0"></div>Tiếp tục giảm W22→W23</div>
+        <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:#22c55e;flex-shrink:0"></div>Đã cải thiện / thoát danh sách</div>
+        <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;border:2.5px dashed #60a5fa;flex-shrink:0"></div>Vòng ngoài = có 5G</div>
+        <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:#64748b;flex-shrink:0;opacity:.5"></div>Kích thước ∝ mức giảm 15C3D</div>
+      </div>
+    </div>
+    <div class="msec">
+      <h2>Bộ lọc</h2>
+      <button class="mfbtn active" onclick="mapFilter('all',this)"><span class="mfdot" style="background:#60a5fa"></span>Tất cả<span class="mfcnt">29</span></button>
+      <button class="mfbtn" onclick="mapFilter('active',this)"><span class="mfdot" style="background:#ef4444"></span>🔴 Mới W23<span class="mfcnt">8</span></button>
+      <button class="mfbtn" onclick="mapFilter('ongoing',this)"><span class="mfdot" style="background:#f97316"></span>🟠 Tiếp tục<span class="mfcnt">2</span></button>
+      <button class="mfbtn" onclick="mapFilter('improved',this)"><span class="mfdot" style="background:#22c55e"></span>✅ Đã cải thiện<span class="mfcnt">19</span></button>
+      <button class="mfbtn" onclick="mapFilter('5g',this)"><span class="mfdot" style="background:#60a5fa"></span>📡 5G<span class="mfcnt">13</span></button>
+    </div>
+    <div class="msec" style="padding-bottom:6px;border-bottom:none"><h2>Danh sách trạm</h2></div>
+    <div class="mlist" id="mlist"></div>
+  </div>
+  <div id="leaflet-map"></div>
+</div>
+
+<script>
+  // ── Page-level tab switching ──
+  let leafletMap = null;
+  function switchPage(id, el) {
+    document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.page-pane').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('page-' + id).classList.add('active');
+    if (id === 'map') {
+      if (!leafletMap) initLeafletMap();
+      else setTimeout(() => leafletMap.invalidateSize(), 50);
+    }
+  }
+
+  // ── Station tab switching (W21/W22/W23) ──
+  function switchTab(id, el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('pane-' + id).classList.add('active');
+  }
+
+  const MONTHS = ['T1/26', 'T2/26', 'T3/26', 'T4/26', 'T5/26', 'T6(W1)*'];
+
+  // ── 15C3D data ──
+  const actual15 = [3820, 1422, 10584, -689, 4567, 1483];
+  const kh15     = [3259, -2385, 9275, 1172, 6988, 1731];
+  const ytdActual15 = [3820, 5242, 15826, 15137, 19704, 21187];
+  const ytdKH15     = [3259, 875, 10150, 11322, 18310, 20041];
+  const annualKH15  = 39904;
+
+  const barColors15 = actual15.map((v, i) => {
+    if (v < 0) return 'rgba(220,38,38,0.75)';
+    if (kh15[i] > 0 && v < kh15[i] * 0.9) return 'rgba(217,119,6,0.75)';
+    return 'rgba(22,163,74,0.75)';
+  });
+  const borderColors15 = actual15.map((v, i) => {
+    if (v < 0) return '#dc2626';
+    if (kh15[i] > 0 && v < kh15[i] * 0.9) return '#d97706';
+    return '#16a34a';
+  });
+
+  const ctx15 = document.getElementById('monthlyChart').getContext('2d');
+  new Chart(ctx15, {
+    type: 'bar',
+    data: {
+      labels: MONTHS,
+      datasets: [
+        {
+          label: 'KH tháng',
+          data: kh15,
+          backgroundColor: 'rgba(15,76,129,0.10)',
+          borderColor: '#0f4c81',
+          borderWidth: 2,
+          borderRadius: 4,
+          yAxisID: 'y',
+          order: 3,
+        },
+        {
+          label: 'Thực hiện tháng',
+          data: actual15,
+          backgroundColor: barColors15,
+          borderColor: borderColors15,
+          borderWidth: 1,
+          borderRadius: 4,
+          yAxisID: 'y',
+          order: 2,
+        },
+        {
+          label: 'Lũy kế TH',
+          data: ytdActual15,
+          type: 'line',
+          yAxisID: 'yYTD',
+          borderColor: '#e85d04',
+          backgroundColor: 'rgba(232,93,4,0.08)',
+          pointBackgroundColor: '#e85d04',
+          pointRadius: 5,
+          pointHoverRadius: 7,
+          borderWidth: 2.5,
+          tension: 0.3,
+          fill: false,
+          order: 0,
+        },
+        {
+          label: 'Lũy kế KH',
+          data: ytdKH15,
+          type: 'line',
+          yAxisID: 'yYTD',
+          borderColor: '#0f4c81',
+          borderDash: [5, 4],
+          pointBackgroundColor: '#0f4c81',
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          borderWidth: 2,
+          tension: 0.3,
+          fill: false,
+          order: 1,
+        },
+        {
+          label: 'KH Năm (39,904)',
+          data: MONTHS.map(() => annualKH15),
+          type: 'line',
+          yAxisID: 'yYTD',
+          borderColor: '#dc2626',
+          borderDash: [8, 4],
+          pointRadius: 0,
+          borderWidth: 1.5,
+          fill: false,
+          order: 1,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 11 }, padding: 10, boxWidth: 13 } },
+        tooltip: {
+          callbacks: {
+            label(c) {
+              const v = c.raw;
+              if (c.dataset.yAxisID === 'yYTD' || c.dataset.label.includes('KH Năm')) {
+                return ' ' + c.dataset.label + ': ' + Number(v).toLocaleString('vi-VN') + ' TB';
+              }
+              return ' ' + c.dataset.label + ': ' + Number(v).toLocaleString('vi-VN') + ' TB';
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          title: { display: true, text: 'TB/tháng', font: { size: 11 }, color: '#64748b' },
+          ticks: { callback: v => v.toLocaleString('vi-VN'), font: { size: 11 } },
+          grid: { color: '#f1f5f9' },
+          suggestedMin: -3000,
+          suggestedMax: 12000,
+        },
+        yYTD: {
+          position: 'right',
+          title: { display: true, text: 'Lũy kế (TB)', font: { size: 11 }, color: '#e85d04' },
+          ticks: { callback: v => (v/1000).toFixed(0)+'k', font: { size: 11 }, color: '#e85d04' },
+          grid: { display: false },
+          suggestedMin: 0,
+          suggestedMax: 45000,
+        },
+        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+
+  // ── Revenue Chart ──
+  const actualRev = [6274.2, 6217.2, 6546.8, 6497.1, 6611.5, 1727.6];
+  const khRev     = [6194.8, 6177.9, 6281.5, 6398.2, 6489.3, 6586.7];
+  const pctRev    = [101.3, 100.6, 104.2, 101.5, 101.9, null];
+
+  const ctxRev = document.getElementById('revenueChart').getContext('2d');
+  new Chart(ctxRev, {
+    type: 'bar',
+    data: {
+      labels: MONTHS,
+      datasets: [
+        {
+          label: 'KH Doanh thu (tr. PEN)',
+          data: khRev,
+          backgroundColor: 'rgba(15,76,129,0.10)',
+          borderColor: '#0f4c81',
+          borderWidth: 2,
+          borderRadius: 4,
+          yAxisID: 'y',
+          order: 2,
+        },
+        {
+          label: 'Thực hiện (tr. PEN)',
+          data: actualRev,
+          backgroundColor: actualRev.map((v, i) => khRev[i] && v >= khRev[i] * 0.99
+            ? 'rgba(22,163,74,0.75)' : 'rgba(217,119,6,0.75)'),
+          borderColor: actualRev.map((v, i) => khRev[i] && v >= khRev[i] * 0.99
+            ? '#16a34a' : '#d97706'),
+          borderWidth: 1,
+          borderRadius: 4,
+          yAxisID: 'y',
+          order: 1,
+        },
+        {
+          label: '% Đạt KH',
+          data: pctRev,
+          type: 'line',
+          yAxisID: 'yPct',
+          borderColor: '#e85d04',
+          backgroundColor: 'rgba(232,93,4,0.08)',
+          pointBackgroundColor: '#e85d04',
+          pointRadius: 5,
+          pointHoverRadius: 7,
+          borderWidth: 2.5,
+          tension: 0.3,
+          fill: false,
+          order: 0,
+          spanGaps: false,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 11 }, padding: 10, boxWidth: 13 } },
+        tooltip: {
+          callbacks: {
+            label(c) {
+              if (c.dataset.label === '% Đạt KH') {
+                return c.raw == null ? '' : ' % Đạt: ' + c.raw + '%';
+              }
+              return ' ' + c.dataset.label + ': ' + Number(c.raw).toLocaleString('vi-VN') + ' tr.';
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          title: { display: true, text: 'Triệu PEN', font: { size: 11 }, color: '#64748b' },
+          ticks: { callback: v => v.toLocaleString('vi-VN'), font: { size: 11 } },
+          grid: { color: '#f1f5f9' },
+          suggestedMin: 0,
+          suggestedMax: 7500,
+        },
+        yPct: {
+          position: 'right',
+          title: { display: true, text: '% Đạt', font: { size: 11 }, color: '#e85d04' },
+          ticks: { callback: v => v + '%', font: { size: 11 }, color: '#e85d04' },
+          grid: { display: false },
+          min: 95,
+          max: 110,
+        },
+        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+
+  // LEAFLET MAP
+  const MAP_STATIONS = [{"code":"CAJ0299","base":"CAJ0299","lat":-6.249032,"lon":-78.95742,"zone":"CUTERVO","prov":"Cutervo","addr":"Querocotillo, Cutervo, Cajamarca, Perú","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-301,"deltaReg":-326,"status":"improved"},{"code":"CAJ0094","base":"CAJ0094","lat":-6.76938,"lon":-78.47781,"zone":"BAMBAMARCA","prov":"Hualgayoc","addr":"Bambamarca, Hualgayoc, Cajamarca, Perú","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-140,"deltaReg":-146,"status":"improved"},{"code":"CAJ0014","base":"CAJ0014","lat":-7.14245,"lon":-78.49913,"zone":"CAJAMARCA","prov":"Los Baños del Inca","addr":"Mbamarca, Hualgayoc, Cajamarca, Perú","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-140,"deltaReg":-146,"status":"improved"},{"code":"CAJ0014","base":"CAJ0014","lat":-7.14245,"lon":-78.49913,"zone":"CAJAMARCA","prov":"Los Baños del Inca","addr":"Los Baños del Inca, Cajamarca, Perú","is5g":true,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-261,"deltaReg":-247,"status":"improved"},{"code":"CAJ0010","base":"CAJ0010","lat":-7.16727,"lon":-78.50778,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-193,"deltaReg":-224,"status":"improved"},{"code":"CAJ0282","base":"CAJ0282","lat":-6.5721,"lon":-78.61675,"zone":"BAMBAMARCA","prov":"Chota","addr":"Chota, Cajamarca, Perú","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-114,"deltaReg":-151,"status":"improved"},{"code":"CAJ0088","base":"CAJ0088","lat":-6.86629,"lon":-78.14502,"zone":"CAJABAMBA","prov":"Celendín","addr":"Celendín, Cajamarca, Perú","is5g":true,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-434,"deltaReg":-512,"status":"improved"},{"code":"CAJ0314","base":"CAJ0314","lat":-6.17855,"lon":-78.999947,"zone":"CUTERVO","prov":"Cutervo","addr":"Querocotillo, Cutervo, Cajamarca, Perú","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-139,"deltaReg":-157,"status":"improved"},{"code":"CAJ0023","base":"CAJ0023","lat":-7.15737,"lon":-78.46372,"zone":"CAJAMARCA","prov":"Los Baños del Inca","addr":"Los Baños del Inca, Cajamarca, Perú","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-184,"deltaReg":-182,"status":"improved"},{"code":"CAJ0181","base":"CAJ0181","lat":-6.560257,"lon":-78.64663,"zone":"BAMBAMARCA","prov":"Chota","addr":"Chota, Cajamarca, Perú","is5g":true,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-466,"deltaReg":-554,"status":"improved"},{"code":"CAJ0021","base":"CAJ0021","lat":-7.12542,"lon":-78.47259,"zone":"CAJAMARCA","prov":"Los Baños del Inca","addr":"Los Baños del Inca, Cajamarca, Perú","is5g":true,"weeks":["W21"],"lastWeek":"W21","delta15":-129,"deltaReg":-158,"status":"improved"},{"code":"CAJ0574","base":"CAJ0574","lat":-7.165282,"lon":-78.503745,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":true,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-112,"deltaReg":null,"status":"improved"},{"code":"CAJ0110","base":"CAJ0110","lat":-6.384542,"lon":-78.817008,"zone":"CUTERVO","prov":"Cutervo","addr":"Cutervo, Cajamarca, Perú","is5g":true,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-217,"deltaReg":-189,"status":"improved"},{"code":"CAJ0203","base":"CAJ0203","lat":-7.205765,"lon":-78.518085,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-488,"deltaReg":-490,"status":"improved"},{"code":"CAJ0370","base":"CAJ0370","lat":-7.087521,"lon":-78.421629,"zone":"CAJAMARCA","prov":"Los Baños del Inca","addr":"Los Baños del Inca, Cajamarca, Perú","is5g":false,"weeks":["W22"],"lastWeek":"W22","delta15":-202,"deltaReg":-228,"status":"improved"},{"code":"CAJ0008","base":"CAJ0008","lat":-7.15986,"lon":-78.50867,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":true,"weeks":["W22"],"lastWeek":"W22","delta15":-156,"deltaReg":-205,"status":"improved"},{"code":"CAJ0012","base":"CAJ0012","lat":-7.1249,"lon":-78.51068,"zone":"CAJAMARCA","prov":"Los Baños del Inca","addr":"Los Baños del Inca, Cajamarca, Perú","is5g":true,"weeks":["W22"],"lastWeek":"W22","delta15":-134,"deltaReg":-160,"status":"improved"},{"code":"CAJ0019","base":"CAJ0019","lat":-7.18096,"lon":-78.50496,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":true,"weeks":["W22"],"lastWeek":"W22","delta15":-162,"deltaReg":-190,"status":"improved"},{"code":"CAJ0172","base":"CAJ0172","lat":-7.22121,"lon":-78.48073,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":false,"weeks":["W22"],"lastWeek":"W22","delta15":-101,"deltaReg":-167,"status":"improved"},{"code":"CAJ0002B3U1","base":"CAJ0002","lat":-7.14376,"lon":-78.52407,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":false,"weeks":["W22"],"lastWeek":"W22","delta15":-114,"deltaReg":-160,"status":"improved"},{"code":"CAJ0588","base":"CAJ0588","lat":-6.379588,"lon":-78.814186,"zone":"CUTERVO","prov":"Cutervo","addr":"Cutervo, Cajamarca, Perú","is5g":true,"weeks":["W22","W23"],"lastWeek":"W23","delta15":-151,"deltaReg":-325,"status":"ongoing"},{"code":"CAJ0112","base":"CAJ0112","lat":-7.15315,"lon":-78.51386,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":true,"weeks":["W22","W23"],"lastWeek":"W23","delta15":-159,"deltaReg":-360,"status":"ongoing"},{"code":"CAJ0193","base":"CAJ0193","lat":-6.688911,"lon":-78.52917,"zone":"BAMBAMARCA","prov":"Hualgayoc","addr":"Bambamarca, Hualgayoc, Cajamarca, Perú","is5g":true,"weeks":["W23"],"lastWeek":"W23","delta15":-354,"deltaReg":-1115,"status":"active"},{"code":"CAJ0368","base":"CAJ0368","lat":-7.378458,"lon":-78.07954,"zone":"CELEDIN","prov":"San Marcos","addr":"Ichocán, San Marcos, Cajamarca, Perú","is5g":false,"weeks":["W23"],"lastWeek":"W23","delta15":-132,"deltaReg":-158,"status":"active"},{"code":"CAJ0388","base":"CAJ0388","lat":-7.656689,"lon":-78.059454,"zone":"CELEDIN","prov":"Cajabamba","addr":"Cajabamba, Cajamarca, Perú","is5g":false,"weeks":["W23"],"lastWeek":"W23","delta15":-118,"deltaReg":-117,"status":"active"},{"code":"CAJ0205","base":"CAJ0205","lat":-6.856259,"lon":-78.14541,"zone":"CAJABAMBA","prov":"Celendín","addr":"Celendín, Cajamarca, Perú","is5g":false,"weeks":["W23"],"lastWeek":"W23","delta15":-169,"deltaReg":-500,"status":"active"},{"code":"CAJ0263","base":"CAJ0263","lat":-6.723993,"lon":-78.461057,"zone":"BAMBAMARCA","prov":"Hualgayoc","addr":"Bambamarca, Hualgayoc, Cajamarca, Perú","is5g":false,"weeks":["W23"],"lastWeek":"W23","delta15":-182,"deltaReg":-168,"status":"active"},{"code":"CAJ0020B3U1","base":"CAJ0020","lat":-7.193428,"lon":-78.499877,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":true,"weeks":["W23"],"lastWeek":"W23","delta15":-175,"deltaReg":-492,"status":"active"},{"code":"CAJ0023B3U2","base":"CAJ0023","lat":-7.172624,"lon":-78.43213,"zone":"CAJAMARCA","prov":"Los Baños del Inca","addr":"Los Baños del Inca, Cajamarca, Perú","is5g":false,"weeks":["W23"],"lastWeek":"W23","delta15":-151,"deltaReg":-401,"status":"active"},{"code":"CAJ0116","base":"CAJ0116","lat":-6.624082,"lon":-78.94206,"zone":"CUTERVO","prov":"Santa Cruz","addr":"Santa Cruz, Cajamarca, Perú","is5g":false,"weeks":["W23"],"lastWeek":"W23","delta15":-116,"deltaReg":-191,"status":"active"}];
+
+  const SC = { active:'#ef4444', ongoing:'#f97316', improved:'#22c55e' };
+  const SL = { active:'🔴 Mới W23', ongoing:'🟠 Tiếp tục W22→W23', improved:'✅ Đã cải thiện' };
+  let mapMarkers = [], mapFilter_cur = 'all';
+
+  function initLeafletMap() {
+    leafletMap = L.map('leaflet-map', { center: [-6.9, -78.55], zoom: 8 });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '© OpenStreetMap © CARTO', maxZoom: 19
+    }).addTo(leafletMap);
+
+    MAP_STATIONS.forEach(s => {
+      const r = Math.max(8, Math.min(26, Math.abs(s.delta15) / 20));
+      let ring = null;
+      if (s.is5g) {
+        ring = L.circleMarker([s.lat, s.lon], { radius: r+5, color:'#60a5fa', weight:2, dashArray:'4 3', fillOpacity:0 }).addTo(leafletMap);
+      }
+      const m = L.circleMarker([s.lat, s.lon], {
+        radius: r, color: SC[s.status], weight: 2,
+        fillColor: SC[s.status], fillOpacity: s.status==='improved' ? 0.4 : 0.8
+      }).addTo(leafletMap);
+
+      const wbadges = s.weeks.map(w => `<span class="lwb lwb-${w}">${w}</span>`).join('');
+      const reg = s.deltaReg != null ? s.deltaReg+' TB' : '—';
+      m.bindPopup(`<div class="lpu">
+        <div class="lpu-code">${s.code}${s.is5g?' <span class="mb5g">5G</span>':''}</div>
+        <div class="lpu-addr">📍 ${s.addr}</div>
+        <div class="lpu-row"><span class="lpu-lbl">Zona</span><span class="lpu-val">${s.zone}</span></div>
+        <div class="lpu-row"><span class="lpu-lbl">Giảm 15C3D</span><span class="lpu-neg">${s.delta15} TB</span></div>
+        <div class="lpu-row"><span class="lpu-lbl">Giảm REG</span><span class="lpu-neg">${reg}</span></div>
+        <div class="lpu-weeks">${wbadges}</div>
+        <div><span class="lsb lsb-${s.status}">${SL[s.status]}</span></div>
+      </div>`, { maxWidth:260 });
+      m.on('click', () => m.openPopup());
+      mapMarkers.push({ m, ring, s });
+    });
+
+    buildMlist('all');
+    setTimeout(() => leafletMap.invalidateSize(), 100);
+  }
+
+  function mapFilter(f, el) {
+    mapFilter_cur = f;
+    document.querySelectorAll('.mfbtn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    mapMarkers.forEach(({ m, ring, s }) => {
+      const show = f==='all' || f===s.status || (f==='5g' && s.is5g);
+      if (show) { if(!leafletMap.hasLayer(m)) m.addTo(leafletMap); if(ring&&!leafletMap.hasLayer(ring)) ring.addTo(leafletMap); }
+      else { if(leafletMap.hasLayer(m)) leafletMap.removeLayer(m); if(ring&&leafletMap.hasLayer(ring)) leafletMap.removeLayer(ring); }
+    });
+    buildMlist(f);
+  }
+
+  function buildMlist(f) {
+    const el = document.getElementById('mlist');
+    el.innerHTML = '';
+    const sorted = [...MAP_STATIONS].sort((a,b) => {
+      const o = {active:0,ongoing:1,improved:2};
+      return o[a.status]!==o[b.status] ? o[a.status]-o[b.status] : a.delta15-b.delta15;
+    });
+    sorted.forEach(s => {
+      if (f==='active'&&s.status!=='active') return;
+      if (f==='ongoing'&&s.status!=='ongoing') return;
+      if (f==='improved'&&s.status!=='improved') return;
+      if (f==='5g'&&!s.is5g) return;
+      const div = document.createElement('div');
+      div.className = 'mitem';
+      div.innerHTML = `<div class="midot" style="background:${SC[s.status]}"></div>
+        <div style="flex:1;min-width:0">
+          <div class="micode">${s.code}${s.is5g?' <span class="mb5g">5G</span>':''}</div>
+          <div class="misub">${s.zone} · ${s.prov}</div>
+        </div>
+        <div class="midelta">${s.delta15}</div>`;
+      div.onclick = () => {
+        leafletMap.setView([s.lat,s.lon],13);
+        mapMarkers.find(x=>x.s.code===s.code)?.m.openPopup();
+      };
+      el.appendChild(div);
+    });
+  }
+</script>
+
+</body>
+</html>
