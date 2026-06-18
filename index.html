@@ -7,6 +7,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css">
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
+  <script src="data.js"></script>
   <style>
     :root {
       color-scheme: light;
@@ -308,10 +309,10 @@
           <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:6px">CHI TIẾT TỪNG THÁNG</div>
           <table style="width:100%;font-size:11px;border-collapse:collapse">
             <thead>
-              <tr style="border-bottom:1px solid var(--border)">
+              <tr style="border-bottom:2px solid var(--border)">
                 <th style="text-align:left;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">Tháng</th>
                 <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">TH</th>
-                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">KH (+3,500)</th>
+                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">KH</th>
                 <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">Lũy kế</th>
               </tr>
             </thead>
@@ -368,41 +369,41 @@
 
   <!-- ── SECTION 2: MONTHLY REG vs PLAN CHART ── -->
   <div class="section">
-    <div class="section-head">📋 2. QUẢN LÝ THUÊ BAO REG HÀNG THÁNG — SO VỚI KẾ HOẠCH (KH: +3,500 TB/tháng)</div>
+    <div class="section-head">📋 2. LŨY KẾ THUÊ BAO REG YTD — SO VỚI KẾ HOẠCH LŨY KẾ (KH: N × 3,500 TB)</div>
     <div class="section-body">
       <div class="chart-wrap">
         <div>
           <div class="chart-box" style="height:280px">
             <canvas id="regChart"></canvas>
           </div>
-          <p class="caption">* KH REG tháng là mức tăng ròng phẳng 3,500 TB/tháng theo kế hoạch nội bộ. T6 có dữ liệu W1+W2 (01–15/06/2026): lũy kế -1,665 TB. Đường lũy kế (phải) cho thấy khoảng cách với KH tích lũy.</p>
+          <p class="caption">* Nguồn: file Reg 1506 site.xlsx — dòng 4 (Totals), tăng trưởng tháng = REG_N − REG_N₋₁. Lũy kế TH = tổng tích lũy qua các tháng. Lũy kế KH = N × 3,500 TB. T6 có dữ liệu đến 14/06/2026: tăng trưởng tháng +3,573 TB, lũy kế YTD: 27,300 TB. Cột mờ phía sau hiển thị tăng trưởng từng tháng (thang đo phải).</p>
         </div>
         <div class="info-panel">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:6px">CHI TIẾT REG TỪNG THÁNG</div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:6px">LŨY KẾ REG TỪNG THÁNG (TB)</div>
           <table style="width:100%;font-size:11px;border-collapse:collapse">
             <thead>
               <tr style="border-bottom:2px solid var(--border)">
                 <th style="text-align:left;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">Tháng</th>
-                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">TH</th>
-                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">KH</th>
+                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">Lũy kế TH</th>
+                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">Lũy kế KH</th>
                 <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">%</th>
               </tr>
             </thead>
             <tbody>
-              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T1</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">3,820</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">3,500</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">109.1%</span></td></tr>
-              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T2</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">1,422</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">3,500</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-warn">40.6%</span></td></tr>
-              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T3</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">10,584</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">3,500</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">302.4%</span></td></tr>
-              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T4</td><td style="text-align:right;padding:5px 6px;color:var(--danger);font-weight:700">-689</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">3,500</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-danger">—</span></td></tr>
-              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T5</td><td style="text-align:right;padding:5px 6px;color:var(--warning);font-weight:700">4,567</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">3,500</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">130.5%</span></td></tr>
-              <tr style="background:#fff8f8"><td style="padding:5px 6px;font-weight:700">T6*</td><td style="text-align:right;padding:5px 6px;color:var(--danger);font-weight:700">-1,665</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">3,500</td><td style="text-align:right;padding:5px 6px;color:var(--muted);font-size:10px">W1+W2</td></tr>
+              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T1</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">6,103</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">3,500</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">174.4%</span></td></tr>
+              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T2</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">10,004</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">7,000</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">143.0%</span></td></tr>
+              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T3</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">17,162</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">10,500</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">163.4%</span></td></tr>
+              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T4</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">21,053</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">14,000</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">150.4%</span></td></tr>
+              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T5</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">23,727</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">17,500</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">135.6%</span></td></tr>
+              <tr style="background:#f0fdf4"><td style="padding:5px 6px;font-weight:700">T6*</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">27,300</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">21,000</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">130.0%</span></td></tr>
             </tbody>
           </table>
           <div class="note" style="font-size:11px;margin-top:8px">
-            📊 <b>KH tháng: +3,500 TB</b><br>
-            Lũy kế TH (T6): <b style="color:var(--warning)">18,039 TB</b><br>
+            📊 <b>KH tăng trưởng râng: +3,500 TB/tháng</b><br>
+            Lũy kế TH (đến 14/06): <b style="color:var(--success)">27,300 TB</b><br>
             Lũy kế KH (T6): <b>21,000 TB</b><br>
-            vs KH lũy kế: <b style="color:var(--danger)">85.9%</b><br><br>
-            ⚠️ T4 và T6 thấp hern KH tháng. T3 bù đắp tốt (+7,084 so với KH).
+            vs KH lũy kế: <b style="color:var(--success)">130.0%</b> ✅<br><br>
+            Lũy kế YTD vượt KH cộng dồn 30.0% — tất cả các tháng đều đạt và vượt lũy kế kế hoạch.
           </div>
         </div>
       </div>
@@ -418,7 +419,7 @@
           <div class="chart-box" style="height:260px">
             <canvas id="revenueChart"></canvas>
           </div>
-          <p class="caption">* Đơn vị: triệu PEN. T6 chỉ có dữ liệu W1 (01–08/06/2026), nên thực hiện T6 thấp hơn là do chưa đủ tháng. % cột phải không hiển thị cho T6 do dữ liệu chưa đầy đủ.</p>
+          <p class="caption">* Đơn vị: triệu PEN. T6 chỉ có dữ liệu W1 (01–08/06/2026), nên thực hiện T6 thấp h�n là do chưa đủ tháng. % cột phải không hiển thị cho T6 do dữ liệu chưa đầy đủ.</p>
         </div>
 
         <div class="info-panel">
@@ -444,7 +445,7 @@
           <div class="note" style="font-size:11px;margin-top:8px">
             📊 <b>YTD T1–T5: 32,147 tr. PEN</b><br>
             KH YTD: 31,542 tr. &nbsp; <b class="grn">101.9%</b><br><br>
-            ✅ Doanh thu 5 tháng đầu năm đềit vượt kế hoạch tháng.
+            ✅ Doanh thu 5 tháng đầu năm đều vượt kế hoạch tháng.
           </div>
         </div>
       </div>
@@ -456,15 +457,15 @@
     <div class="section-head">⚠️ 4. DANH SÁCH TRẠM GIẢM THUÊ BAO 15C3D THEO TỪNG TUẦN</div>
     <div class="section-body">
       <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#1e1b4b"></div> Cỵc kỻ nghiêm trọng (Cell*h ≥ 500h)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div> Nghiêm trọng (≅ 200h)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div> Cảnh báo cao (≅ 50h)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#1e1b4b"></div> Cực kỳ nghiêm trọng (Cell*h ≥ 500h)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div> Nghiêm trọng (≥ 200h)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div> Cảnh báo cao (≥ 50h)</div>
         <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div> Cảnh báo (&gt; 0h)</div>
         <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div> Không cell down</div>
       </div>
 
       <div class="tabs">
-        <div class="tab active" onclick="switchTab('w', this)">W21 (18-24/05) — 13 trạm</div>
+        <div class="tab active" onclick="switchTab('w21', this)">W21 (18–24/05) — 13 trạm</div>
         <div class="tab" onclick="switchTab('w22', this)">W22 (24–30/05) — 20 trạm</div>
         <div class="tab" onclick="switchTab('w23', this)">W23 (01–08/06) — 12 trạm</div>
         <div class="tab" onclick="switchTab('w24', this)" style="background:#dc2626;color:#fff;border-color:#dc2626">🆕 W24 (08–15/06) — 14 trạm</div>
@@ -555,13 +556,13 @@
         </table>
 
         <div style="background:#fff7ed;border:1px solid #fcd34d;border-radius:6px;padding:8px 14px;margin-bottom:12px;font-size:12px;font-weight:600;color:#92400e">
-          🆕 NHÓM 2: Mới xuất hiện trong W23 (10 trạm)
+           🆕 NHÓM 2: Mới xuất hiện trong W23 (10 trạm)
         </div>
         <table class="tbl">
           <thead>
             <tr>
               <th>#</th><th>Trạm</th><th>Zona</th>
-              <th>Δ15C3D W23</th><th>Δ REG W23</th>
+              <th>Δ15C3D W23</th><th>Δ REGW23</th>
               <th>Cell*h W23</th><th>Mức độ</th>
             </tr>
           </thead>
@@ -734,7 +735,7 @@
       <div class="legend" style="margin-top:14px">
         <div class="legend-item"><div class="dot dot-red" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">✗</div>&nbsp;Đang giảm 15C3D</div>
         <div class="legend-item"><div class="dot dot-grn" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">✓</div>&nbsp;Đã cải thiện / thoát danh sách</div>
-        <div class="legend-item"><div class="dot dot-org" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">🆕</div>&nbsp;Xuất hiện lần đầt tuần này</div>
+        <div class="legend-item"><div class="dot dot-org" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">🆕</div>&nbsp;Xuất hiện lần đầu tuần này</div>
         <div class="legend-item"><div class="dot dot-dim" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">—</div>&nbsp;Không trong danh sách tuần đó</div>
       </div>
 
@@ -809,14 +810,14 @@
     document.getElementById('pane-' + id).classList.add('active');
   }
 
-  const MONTHS = ['T1/26', 'T2/26', 'T3/26', 'T4/26', 'T5/26', 'T6(W1+W2)*'];
+  const MONTHS = CFG.months;
 
   // ── 15C3D data ──
-  const actual15 = [3820, 1422, 10584, -689, 4567, -1665];
-  const kh15     = [3259, -2385, 9275, 1172, 6988, 1731];
-  const ytdActual15 = [3820, 5242, 15826, 15137, 19704, 18039];
-  const ytdKH15     = [3259, 875, 10150, 11322, 18310, 20041];
-  const annualKH15  = 39904;
+  const actual15    = CFG.c15.actual;
+  const kh15        = CFG.c15.plan;
+  const ytdActual15 = CFG.c15.ytd;
+  const ytdKH15     = CFG.c15.ytdPlan;
+  const annualKH15  = CFG.c15.annualKh;
 
   const barColors15 = actual15.map((v, i) => {
     if (v < 0) return 'rgba(220,38,38,0.75)';
@@ -939,8 +940,8 @@
   });
 
   // ── Revenue Chart ──
-  const actualRev = [6274.2, 6217.2, 6546.8, 6497.1, 6611.5, 1727.6];
-  const khRev     = [6194.8, 6177.9, 6281.5, 6398.2, 6489.3, 6586.7];
+  const actualRev = CFG.rev.actual;
+  const khRev     = CFG.rev.plan;
   const pctRev    = [101.3, 100.6, 104.2, 101.5, 101.9, null];
 
   const ctxRev = document.getElementById('revenueChart').getContext('2d');
@@ -1027,67 +1028,56 @@
     }
   });
 
-  // ── REG vs Plan Chart ──
-  const actualReg = [3820, 1422, 10584, -689, 4567, -1665];
-  const khRegFlat = 3500;
-  const ytdActualReg = [3820, 5242, 15826, 15137, 19704, 18039];
-  const ytdKhReg = [3500, 7000, 10500, 14000, 17500, 21000];
+  // ── REG Chart — Lũy kế thuê bao REG vs Kế hoạch ──
+  // Nguồn: file Reg 1506 site.xlsx — dòng 4 (Totals)
+  const actualReg    = CFG.reg.growth;
+  const khRegFlat    = CFG.reg.planMonth;
+  const ytdActualReg = CFG.reg.ytd;
+  const ytdKhReg     = CFG.reg.ytdPlan;
 
   const ctxReg = document.getElementById('regChart').getContext('2d');
   new Chart(ctxReg, {
-    type: 'bar',
+    type: 'line',
     data: {
       labels: MONTHS,
       datasets: [
         {
-          label: 'KH tháng (+3,500)',
-          data: MONTHS.map(() => khRegFlat),
-          backgroundColor: 'rgba(15,76,129,0.10)',
-          borderColor: '#0f4c81',
-          borderWidth: 2,
-          borderRadius: 4,
-          yAxisID: 'y',
-          order: 3,
-        },
-        {
-          label: 'Thực hiện REG (15C3D)',
-          data: actualReg,
-          backgroundColor: actualReg.map(v => v < 0 ? 'rgba(220,38,38,0.75)' : v < khRegFlat * 0.9 ? 'rgba(217,119,6,0.75)' : 'rgba(22,163,74,0.75)'),
-          borderColor: actualReg.map(v => v < 0 ? '#dc2626' : v < khRegFlat * 0.9 ? '#d97706' : '#16a34a'),
-          borderWidth: 1,
-          borderRadius: 4,
-          yAxisID: 'y',
-          order: 2,
-        },
-        {
-          label: 'Lũy kế TH',
+          label: 'Lũy kế TH (Thực hiện)',
           data: ytdActualReg,
-          type: 'line',
-          yAxisID: 'yYTD',
           borderColor: '#e85d04',
-          backgroundColor: 'rgba(232,93,4,0.08)',
+          backgroundColor: 'rgba(232,93,4,0.10)',
+          fill: true,
           pointBackgroundColor: '#e85d04',
           pointRadius: 5,
-          pointHoverRadius: 7,
+          pointHoverRadius: 8,
           borderWidth: 2.5,
           tension: 0.3,
-          fill: false,
           order: 0,
         },
         {
-          label: 'Lũy kế KH',
+          label: 'Lũy kế KH (+3,500 TB/tháng)',
           data: ytdKhReg,
-          type: 'line',
-          yAxisID: 'yYTD',
           borderColor: '#0f4c81',
-          borderDash: [5, 4],
+          borderDash: [6, 4],
+          backgroundColor: 'transparent',
+          fill: false,
           pointBackgroundColor: '#0f4c81',
           pointRadius: 4,
           pointHoverRadius: 6,
           borderWidth: 2,
           tension: 0.3,
-          fill: false,
           order: 1,
+        },
+        {
+          label: 'Tăng trưởng tháng (TH)',
+          data: actualReg,
+          type: 'bar',
+          backgroundColor: actualReg.map(v => v < khRegFlat * 0.9 ? 'rgba(217,119,6,0.35)' : 'rgba(22,163,74,0.30)'),
+          borderColor: actualReg.map(v => v < khRegFlat * 0.9 ? '#d97706' : '#16a34a'),
+          borderWidth: 1,
+          borderRadius: 3,
+          yAxisID: 'yGrowth',
+          order: 2,
         }
       ]
     },
@@ -1100,26 +1090,33 @@
         tooltip: {
           callbacks: {
             label(c) {
-              return ' ' + c.dataset.label + ': ' + Number(c.raw).toLocaleString('vi-VN') + ' TB';
+              const v = Number(c.raw).toLocaleString('vi-VN');
+              if (c.datasetIndex === 0) {
+                const pct = (ytdActualReg[c.dataIndex] / ytdKhReg[c.dataIndex] * 100).toFixed(1);
+                return [` Lũy kế TH: ${v} TB`, ` vs KH: ${pct}%`];
+              }
+              if (c.datasetIndex === 1) return ` Lũy kế KH: ${v} TB`;
+              return ` Tăng trưởng tháng: +${v} TB (KH: +${khRegFlat.toLocaleString('vi-VN')} TB)`;
             }
           }
         }
       },
       scales: {
         y: {
-          title: { display: true, text: 'TB/tháng', font: { size: 11 }, color: '#64748b' },
-          ticks: { callback: v => v.toLocaleString('vi-VN'), font: { size: 11 } },
-          grid: { color: '#f1f5f9' },
-          suggestedMin: -3000,
-          suggestedMax: 12000,
-        },
-        yYTD: {
-          position: 'right',
-          title: { display: true, text: 'Lũy kế (TB)', font: { size: 11 }, color: '#e85d04' },
+          position: 'left',
+          title: { display: true, text: 'Lũy kế thuê bao REG (TB)', font: { size: 11 }, color: '#e85d04' },
           ticks: { callback: v => (v/1000).toFixed(0)+'k', font: { size: 11 }, color: '#e85d04' },
+          grid: { color: '#f1f5f9' },
+          suggestedMin: 0,
+          suggestedMax: 30000,
+        },
+        yGrowth: {
+          position: 'right',
+          title: { display: true, text: 'Tăng trưởng/tháng (TB)', font: { size: 11 }, color: '#64748b' },
+          ticks: { callback: v => v.toLocaleString('vi-VN'), font: { size: 11 }, color: '#64748b' },
           grid: { display: false },
           suggestedMin: 0,
-          suggestedMax: 25000,
+          suggestedMax: 10000,
         },
         x: { ticks: { font: { size: 11 } }, grid: { display: false } }
       }
