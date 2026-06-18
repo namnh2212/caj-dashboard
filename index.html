@@ -3,11 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Ä‘iá»u hÃ nh - Chi nhÃ¡nh Cajamarca</title>
+  <title>Dashboard điều hành / Gestión - Chi nhánh Cajamarca / Sucursal Cajamarca</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css">
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
-  <script src="data.js?v=w24b"></script>
+  <script src="data.js?v=w24l"></script>
   <style>
     :root {
       color-scheme: light;
@@ -25,9 +28,9 @@
       --muted: #64748b;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; }
+    body { font-family: 'Be Vietnam Pro', 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; }
 
-    /* â”€â”€ HEADER â”€â”€ */
+    /* ── HEADER ── */
     .header {
       background: linear-gradient(135deg, #0c3b6e 0%, #1a5fa8 100%);
       color: #fff;
@@ -50,10 +53,10 @@
       white-space: nowrap;
     }
 
-    /* â”€â”€ LAYOUT â”€â”€ */
+    /* ── LAYOUT ── */
     .container { padding: 16px; max-width: 1280px; margin: 0 auto; }
 
-    /* â”€â”€ KPI CARDS â”€â”€ */
+    /* ── KPI CARDS ── */
     .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
     .kpi-card {
       background: var(--card);
@@ -75,7 +78,7 @@
     .kpi-pct { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 10px; font-weight: 700; background: #fef3c7; color: #92400e; }
     .kpi-pct.ok { background: #dcfce7; color: #166534; }
 
-    /* â”€â”€ SECTION â”€â”€ */
+    /* ── SECTION ── */
     .section {
       background: var(--card);
       border-radius: 10px;
@@ -97,7 +100,7 @@
     }
     .section-body { padding: 16px; }
 
-    /* â”€â”€ CHART AREA â”€â”€ */
+    /* ── CHART AREA ── */
     .chart-wrap { display: grid; grid-template-columns: 1fr 280px; gap: 20px; align-items: start; }
     .chart-box { position: relative; height: 280px; }
     .info-panel { display: flex; flex-direction: column; gap: 6px; }
@@ -114,7 +117,7 @@
     .pill-danger { background: #fee2e2; color: #991b1b; }
     .pill-info   { background: #eff6ff; color: #1d4ed8; }
 
-    /* â”€â”€ TABS â”€â”€ */
+    /* ── TABS ── */
     .tabs { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 14px; gap: 2px; }
     .tab {
       padding: 8px 18px; font-size: 12px; font-weight: 600;
@@ -126,7 +129,7 @@
     .tab-pane { display: none; }
     .tab-pane.active { display: block; }
 
-    /* â”€â”€ DATA TABLE â”€â”€ */
+    /* ── DATA TABLE ── */
     .tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
     .tbl th {
       background: #f8fafc; padding: 8px 10px; text-align: left;
@@ -143,7 +146,7 @@
     .dim  { color: var(--muted); }
     .site { font-weight: 700; font-family: monospace; font-size: 12px; }
 
-    /* â”€â”€ SEVERITY BADGES â”€â”€ */
+    /* ── SEVERITY BADGES ── */
     .sev { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; white-space: nowrap; gap: 4px; }
     .sev-xe  { background: #1e1b4b; color: #fff; }
     .sev-c   { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
@@ -153,7 +156,7 @@
     .status-cont { background: #fef2f2; color: var(--danger); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
     .status-new  { background: #fff7ed; color: var(--warning); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
 
-    /* â”€â”€ TIMELINE â”€â”€ */
+    /* ── TIMELINE ── */
     .timeline-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
     .timeline-tbl th {
       background: #f8fafc; padding: 8px 14px; text-align: center;
@@ -175,7 +178,7 @@
     .bw2 { background: #f59e0b; color: #fff; }
     .bw1 { background: #9ca3af; color: #fff; }
 
-    /* â”€â”€ NOTE BOX â”€â”€ */
+    /* ── NOTE BOX ── */
     .note { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px 16px; font-size: 11.5px; color: #1e40af; margin-top: 14px; line-height: 1.6; }
     .note b { color: #1e3a8a; }
     .tbl-footer { margin-top: 8px; font-size: 11px; color: var(--muted); }
@@ -184,7 +187,7 @@
     .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
     .caption { font-size: 10.5px; color: var(--muted); margin-top: 6px; font-style: italic; }
 
-    /* â”€â”€ PAGE-LEVEL TABS â”€â”€ */
+    /* ── PAGE-LEVEL TABS ── */
     .page-tabs { background: #0b3461; display: flex; border-bottom: 1px solid rgba(255,255,255,.12); }
     .page-tab {
       padding: 9px 22px; font-size: 12px; font-weight: 700; color: rgba(255,255,255,.55);
@@ -195,7 +198,7 @@
     .page-pane { display: none; }
     .page-pane.active { display: block; }
 
-    /* â”€â”€ MAP PAGE â”€â”€ */
+    /* ── MAP PAGE ── */
     #page-map { height: calc(100vh - 93px); }
     #page-map.active { display: flex; }
     .map-sidebar {
@@ -253,96 +256,139 @@
 <body>
 
 <div class="header">
-  <div class="header-icon">ðŸ“Š</div>
+  <div class="header-icon">📊</div>
   <div>
-    <div class="header-title">Dashboard Ä‘iá»u hÃ nh - Chi nhÃ¡nh Cajamarca</div>
-    <div class="header-sub">BÃ¡o cÃ¡o kinh doanh hÃ ng tuáº§n â€¢ Nguá»“n: BÃ¡o cÃ¡o tuáº§n & Cáº£nh bÃ¡o thuÃª bao giáº£m</div>
+    <div class="header-title">Dashboard điều hành / Gestión · Chi nhánh Cajamarca / Sucursal Cajamarca</div>
+    <div class="header-sub">Báo cáo kinh doanh hàng tuần / Informe semanal de negocio · Nguồn / Fuente: Báo cáo tuần &amp; Cảnh báo thuê bao giảm / Alertas de bajas</div>
   </div>
-  <div class="header-badge">ðŸ“… Dá»¯ liá»‡u Ä‘áº¿n W24 â€” 15/06/2026</div>
+  <div class="header-badge">📅 Dữ liệu đến W24 — 15/06/2026</div>
 </div>
 
 <div class="page-tabs">
-  <div class="page-tab active" onclick="switchPage('dashboard',this)">ðŸ“Š Dashboard KPI</div>
-  <div class="page-tab" onclick="switchPage('map',this)">ðŸ—ºï¸ Báº£n Ä‘á»“ Tráº¡m Cáº£nh bÃ¡o</div>
+  <div class="page-tab active" onclick="switchPage('dashboard',this)">📊 Dashboard KPI</div>
+  <div class="page-tab" onclick="switchPage('map',this)">🗺️ Bản đồ / Mapa de Estaciones de Alerta</div>
 </div>
 
 <div id="page-dashboard" class="page-pane active">
 <div class="container">
 
-  <!-- â”€â”€ KPI CARDS â”€â”€ -->
+  <!-- ── KPI CARDS ── -->
   <div class="kpi-row">
     <div class="kpi-card ok">
-      <div class="kpi-label">15C3D LÅ©y káº¿ YTD â€” T1 Ä‘áº¿n T5</div>
+      <div class="kpi-label">15C3D Lũy kế YTD / Acumulado — T1–T5</div>
       <div class="kpi-value">19,704</div>
-      <div class="kpi-sub">KH YTD T5: 18,310 &nbsp; <span class="kpi-pct ok">107.6%</span></div>
+      <div class="kpi-sub">KH/Plan YTD T5: 18,310 &nbsp; <span class="kpi-pct ok">107.6%</span></div>
     </div>
     <div class="kpi-card warn">
-      <div class="kpi-label">vs KH NÄƒm (39,904 TB)</div>
+      <div class="kpi-label">vs KH Năm / Plan Anual (39,904 TB)</div>
       <div class="kpi-value">45.2%</div>
-      <div class="kpi-sub">T6 (W1+W2): -1,665 &nbsp;|&nbsp; LÅ©y káº¿: 18,039 TB</div>
+      <div class="kpi-sub">T6 (W1+W2): -1,665 &nbsp;|&nbsp; Lũy kế / Acum.: 18,039 TB</div>
     </div>
     <div class="kpi-card danger">
-      <div class="kpi-label">Tráº¡m cáº£nh bÃ¡o â€” W24</div>
+      <div class="kpi-label">Trạm cảnh báo / Estaciones Alerta — W24</div>
       <div class="kpi-value">14</div>
-      <div class="kpi-sub">6 tiáº¿p tá»¥c + 8 má»›i &nbsp;|&nbsp; REG-only: 14 tráº¡m</div>
+      <div class="kpi-sub">6 tiếp tục / continúa + 8 mới / nuevas &nbsp;|&nbsp; REG-only: 14</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">Doanh thu YTD â€” T1 Ä‘áº¿n T5</div>
+      <div class="kpi-label">Doanh thu / Ingresos YTD — T1–T5</div>
       <div class="kpi-value" style="font-size:20px;color:var(--success)">32,147 tr.</div>
-      <div class="kpi-sub">KH YTD: 31,542 tr. &nbsp; <span class="kpi-pct ok">101.9%</span></div>
+      <div class="kpi-sub">KH/Plan YTD: 31,542 tr. &nbsp; <span class="kpi-pct ok">101.9%</span></div>
     </div>
   </div>
 
-  <!-- â”€â”€ SECTION 1: MONTHLY 15C3D CHART â”€â”€ -->
+  <!-- ── SECTION 1: MONTHLY 15C3D CHART ── -->
   <div class="section">
-    <div class="section-head">ðŸ“ˆ 1. BIá»‚U Äá»’ THUÃŠ BAO 15C3D HÃ€NG THÃNG â€” SO Vá»šI Káº¾ HOáº CH & LÅ¨Y Káº¾ NÄ‚M</div>
+    <div class="section-head">📈 1. THUÊ BAO 15C3D HÀNG THÁNG / SUSCRIPTORES 15C3D MENSUAL — vs KẾ HOẠCH / PLAN &amp; LŨY KẾ / ACUMULADO NĂM</div>
     <div class="section-body">
       <div class="chart-wrap">
         <div>
           <div class="chart-box" style="height:310px">
             <canvas id="monthlyChart"></canvas>
           </div>
-          <p class="caption">* ThÃ¡ng 6 cÃ³ dá»¯ liá»‡u W1+W2 (01â€“15/06/2026), lÅ©y káº¿ thÃ¡ng = -1,665 TB. ÄÆ°á»ng lÅ©y káº¿ (pháº£i) bao gá»“m KH thÃ¡ng Ã¢m á»Ÿ T2 (káº¿ hoáº¡ch Ä‘Ã£ dá»± kiáº¿n giáº£m thá»‹ trÆ°á»ng). Nguá»“n: file 15c3d 5 thang dau nam.xlsx + BÃ¡o cÃ¡o tuáº§n W24.</p>
+          <p class="caption">* Tháng 6 có dữ liệu W1+W2 (01–15/06/2026), lũy kế tháng = -1,665 TB. Đường lũy kế (phải) bao gồm KH tháng âm ở T2 (kế hoạch đã dự kiến giảm thị trường). Nguồn: file 15c3d 5 thang dau nam.xlsx + Báo cáo tuần W24.</p>
         </div>
 
         <div class="info-panel">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:6px">CHI TIáº¾T Tá»ªNG THÃNG</div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:6px">CHI TIẾT TỪNG THÁNG / DETALLE MENSUAL</div>
           <table style="width:100%;font-size:11px;border-collapse:collapse">
             <thead>
               <tr style="border-bottom:2px solid var(--border)">
-                <th style="text-align:left;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">ThÃ¡ng</th>
-                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">TH</th>
-                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">KH</th>
-                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">LÅ©y káº¿</th>
+                <th style="text-align:left;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">Tháng / Mes</th>
+                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">TH / Real</th>
+                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">KH / Plan</th>
+                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">Lũy kế / Acum.</th>
               </tr>
             </thead>
-            <tbody id="c15Tbody"></tbody>
+            <tbody>
+              <tr style="border-bottom:1px solid #f1f5f9">
+                <td style="padding:5px 6px;font-weight:700">T1</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">3,820</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--muted)">3,259</td>
+                <td style="text-align:right;padding:5px 6px;font-variant-numeric:tabular-nums">3,820</td>
+              </tr>
+              <tr style="border-bottom:1px solid #f1f5f9">
+                <td style="padding:5px 6px;font-weight:700">T2</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">1,422</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--muted)">-2,385</td>
+                <td style="text-align:right;padding:5px 6px;font-variant-numeric:tabular-nums">5,242</td>
+              </tr>
+              <tr style="border-bottom:1px solid #f1f5f9">
+                <td style="padding:5px 6px;font-weight:700">T3</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">10,584</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--muted)">9,275</td>
+                <td style="text-align:right;padding:5px 6px;font-variant-numeric:tabular-nums">15,826</td>
+              </tr>
+              <tr style="border-bottom:1px solid #f1f5f9">
+                <td style="padding:5px 6px;font-weight:700">T4</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--danger);font-weight:700">-689</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--muted)">1,172</td>
+                <td style="text-align:right;padding:5px 6px;font-variant-numeric:tabular-nums">15,137</td>
+              </tr>
+              <tr style="border-bottom:1px solid #f1f5f9">
+                <td style="padding:5px 6px;font-weight:700">T5</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--warning);font-weight:700">4,567</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--muted)">6,988</td>
+                <td style="text-align:right;padding:5px 6px;font-weight:700">19,704</td>
+              </tr>
+              <tr style="background:#fff8f8">
+                <td style="padding:5px 6px;font-weight:700">T6*</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--danger);font-weight:700">-1,665</td>
+                <td style="text-align:right;padding:5px 6px;color:var(--muted)">1,731</td>
+                <td style="text-align:right;padding:5px 6px;font-weight:700;color:var(--warning)">18,039</td>
+              </tr>
+            </tbody>
           </table>
-          <div class="note" id="c15Note" style="font-size:11px;margin-top:8px"></div>
+          <div class="note" style="font-size:11px;margin-top:8px">
+            📊 <b>KH Năm: 39,904 TB</b><br>
+            Đạt YTD T5: <b class="grn">107.6%</b> KH lũy kế<br>
+            vs KH Năm (T6 W1+W2): <b style="color:var(--warning)">45.2%</b><br><br>
+            ⚠️ T6 giảm -1,665 TB (W1+W2), ảnh hưởng lũy kế xuống 18,039 TB.<br>
+            ℹ️ T2 có KH âm (-2,385) do kế hoạch thị trường dự kiến giảm theo mùa.
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- â”€â”€ SECTION 2: MONTHLY REG vs PLAN CHART â”€â”€ -->
+  <!-- ── SECTION 2: MONTHLY REG vs PLAN CHART ── -->
   <div class="section">
-    <div class="section-head">ðŸ“‹ 2. LÅ¨Y Káº¾ THUÃŠ BAO REG YTD â€” SO Vá»šI Káº¾ HOáº CH LÅ¨Y Káº¾ (KH: N Ã— 3,500 TB)</div>
+    <div class="section-head">📋 2. THUÊ BAO REG TUYỆT ĐỐI / SUSCRIPTORES REG TOTAL — vs KẾ HOẠCH / PLAN (base 297.941 + N×3.500 TB/mes)</div>
     <div class="section-body">
       <div class="chart-wrap">
         <div>
           <div class="chart-box" style="height:280px">
             <canvas id="regChart"></canvas>
           </div>
-          <p class="caption">* Nguá»“n: file Reg 1506 site.xlsx â€” dÃ²ng 4 (Totals), tÄƒng trÆ°á»Ÿng thÃ¡ng = REG_N âˆ’ REG_Nâ‚‹â‚. LÅ©y káº¿ TH = tá»•ng tÃ­ch lÅ©y qua cÃ¡c thÃ¡ng. LÅ©y káº¿ KH = N Ã— 3,500 TB. T6 cÃ³ dá»¯ liá»‡u Ä‘áº¿n 14/06/2026: tÄƒng trÆ°á»Ÿng thÃ¡ng +2,517 TB, lÅ©y káº¿ YTD: 22,039 TB. Cá»™t má» phÃ­a sau hiá»ƒn thá»‹ tÄƒng trÆ°á»Ÿng tá»«ng thÃ¡ng (thang Ä‘o pháº£i).</p>
+          <p class="caption" id="regCaption">* Fuente / Nguồn: Reg 1506 site.xlsx — fila / dòng 4 (Totals). Línea TH / Đường TH = tổng thuê bao REG tuyệt đối / suscriptores REG totales. KH / Plan = base 297.941 + N×3.500 TB/mes. Barras / Cột = tăng trưởng ròng từng tháng / crecimiento neto mensual (eje der. / thang đo phải). T6 (đến 14/06/2026): +2.517 TB, lũy kế YTD: 22.039 TB.</p>
         </div>
         <div class="info-panel">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:6px">LÅ¨Y Káº¾ REG Tá»ªNG THÃNG (TB)</div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:6px">THUÊ BAO REG / SUSCRIPTORES REG (TB)</div>
           <table style="width:100%;font-size:11px;border-collapse:collapse">
             <thead>
               <tr style="border-bottom:2px solid var(--border)">
-                <th style="text-align:left;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">ThÃ¡ng</th>
-                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">LÅ©y káº¿ TH</th>
-                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">LÅ©y káº¿ KH</th>
+                <th style="text-align:left;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">Tháng / Mes</th>
+                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">TH / Real</th>
+                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">KH / Plan</th>
                 <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">%</th>
               </tr>
             </thead>
@@ -354,26 +400,26 @@
     </div>
   </div>
 
-  <!-- â”€â”€ SECTION 3: REVENUE CHART â”€â”€ -->
+  <!-- ── SECTION 3: REVENUE CHART ── -->
   <div class="section">
-    <div class="section-head">ðŸ’° 3. DOANH THU HÃ€NG THÃNG â€” SO Vá»šI Káº¾ HOáº CH</div>
+    <div class="section-head">💰 3. DOANH THU HÀNG THÁNG / INGRESOS MENSUAL — vs KẾ HOẠCH / PLAN</div>
     <div class="section-body">
       <div class="chart-wrap">
         <div>
           <div class="chart-box" style="height:260px">
             <canvas id="revenueChart"></canvas>
           </div>
-          <p class="caption">* ÄÆ¡n vá»‹: triá»‡u PEN. T6 chá»‰ cÃ³ dá»¯ liá»‡u W1 (01â€“08/06/2026), nÃªn thá»±c hiá»‡n T6 tháº¥p hÇn lÃ  do chÆ°a Ä‘á»§ thÃ¡ng. % cá»™t pháº£i khÃ´ng hiá»ƒn thá»‹ cho T6 do dá»¯ liá»‡u chÆ°a Ä‘áº§y Ä‘á»§.</p>
+          <p class="caption">* Đơn vị: triệu PEN. T6 chỉ có dữ liệu W1 (01–08/06/2026), nên thực hiện T6 thấp hơn là do chưa đủ tháng. % cột phải không hiển thị cho T6 do dữ liệu chưa đầy đủ.</p>
         </div>
 
         <div class="info-panel">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:6px">DOANH THU Tá»ªNG THÃNG (triá»‡u PEN)</div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:6px">DOANH THU / INGRESOS MENSUAL (mill. PEN)</div>
           <table style="width:100%;font-size:11px;border-collapse:collapse">
             <thead>
               <tr style="border-bottom:2px solid var(--border)">
-                <th style="text-align:left;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">ThÃ¡ng</th>
-                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">TH</th>
-                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">KH</th>
+                <th style="text-align:left;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">Tháng / Mes</th>
+                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">TH / Real</th>
+                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">KH / Plan</th>
                 <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">%</th>
               </tr>
             </thead>
@@ -387,32 +433,32 @@
             </tbody>
           </table>
           <div class="note" style="font-size:11px;margin-top:8px">
-            ðŸ“Š <b>YTD T1â€“T5: 32,147 tr. PEN</b><br>
+            📊 <b>YTD T1–T5: 32,147 tr. PEN</b><br>
             KH YTD: 31,542 tr. &nbsp; <b class="grn">101.9%</b><br><br>
-            âœ… Doanh thu 5 thÃ¡ng Ä‘áº§u nÄƒm Ä‘á»u vÆ°á»£t káº¿ hoáº¡ch thÃ¡ng.
+            ✅ Doanh thu 5 tháng đầu năm đều vượt kế hoạch tháng.
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- â”€â”€ SECTION 4: WEEKLY STATION ALERTS â”€â”€ -->
+  <!-- ── SECTION 4: WEEKLY STATION ALERTS ── -->
   <div class="section">
-    <div class="section-head">âš ï¸ 4. DANH SÃCH TRáº M GIáº¢M THUÃŠ BAO 15C3D THEO Tá»ªNG TUáº¦N</div>
+    <div class="section-head">⚠️ 4. TRẠM GIẢM THUÊ BAO 15C3D / ESTACIONES CON BAJAS — THEO TỪNG TUẦN / POR SEMANA</div>
     <div class="section-body">
       <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#1e1b4b"></div> Cá»±c ká»³ nghiÃªm trá»ng (Cell*h â‰¥ 500h)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div> NghiÃªm trá»ng (â‰¥ 200h)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div> Cáº£nh bÃ¡o cao (â‰¥ 50h)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div> Cáº£nh bÃ¡o (&gt; 0h)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div> KhÃ´ng cell down</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#1e1b4b"></div> Cực kỳ nghiêm trọng (Cell*h ≥ 500h)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div> Nghiêm trọng (≥ 200h)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div> Cảnh báo cao (≥ 50h)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div> Cảnh báo (&gt; 0h)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div> Không cell down</div>
       </div>
 
       <div class="tabs">
-        <div class="tab active" onclick="switchTab('w21', this)">W21 (18â€“24/05) â€” 13 tráº¡m</div>
-        <div class="tab" onclick="switchTab('w22', this)">W22 (24â€“30/05) â€” 20 tráº¡m</div>
-        <div class="tab" onclick="switchTab('w23', this)">W23 (01â€“08/06) â€” 12 tráº¡m</div>
-        <div class="tab" onclick="switchTab('w24', this)" style="background:#dc2626;color:#fff;border-color:#dc2626">ðŸ†• W24 (08â€“15/06) â€” 14 tráº¡m</div>
+        <div class="tab active" onclick="switchTab('w21', this)">W21 (18–24/05) — 13 trạm</div>
+        <div class="tab" onclick="switchTab('w22', this)">W22 (24–30/05) — 20 trạm</div>
+        <div class="tab" onclick="switchTab('w23', this)">W23 (01–08/06) — 12 trạm</div>
+        <div class="tab" onclick="switchTab('w24', this)" style="background:#dc2626;color:#fff;border-color:#dc2626">🆕 W24 (08–15/06) — 14 trạm</div>
       </div>
 
       <!-- W21 -->
@@ -420,28 +466,28 @@
         <table class="tbl">
           <thead>
             <tr>
-              <th>#</th><th>Tráº¡m</th><th>Zona</th>
-              <th>Giáº£m 15C3D</th><th>Giáº£m REG</th>
-              <th>Cell*h Down</th><th>Má»©c Ä‘á»™</th><th>Loáº¡i sá»± cá»‘</th>
+              <th>#</th><th>Trạm</th><th>Zona</th>
+              <th>Giảm 15C3D</th><th>Giảm REG</th>
+              <th>Cell*h Down</th><th>Mức độ</th><th>Loại sự cố</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>1</td><td class="site">CAJ0299</td><td>CUTERVO</td><td class="num red">-319</td><td class="num red">-388</td><td class="num">749.88h</td><td><span class="sev sev-c">ðŸ”´ NghiÃªm trá»ng</span></td><td>Station down</td></tr>
-            <tr><td>2</td><td class="site">CAJ0094</td><td>BAMBAMARCA</td><td class="num org">-144</td><td class="num org">-168</td><td class="num">441.66h</td><td><span class="sev sev-c">ðŸ”´ NghiÃªm trá»ng</span></td><td>Station down</td></tr>
-            <tr><td>3</td><td class="site">CAJ0014</td><td>CAJ BC01</td><td class="num red">-320</td><td class="num red">-400</td><td class="num">417.05h</td><td><span class="sev sev-c">ðŸ”´ NghiÃªm trá»ng</span></td><td>Station down + LTE</td></tr>
-            <tr><td>4</td><td class="site">CAJ0010</td><td>CAJ BC14</td><td class="num org">-166</td><td class="num org">-219</td><td class="num">241.63h</td><td><span class="sev sev-c">ðŸ”´ NghiÃªm trá»ng</span></td><td>Station down + LTE</td></tr>
-            <tr><td>5</td><td class="site">CAJ0282</td><td>CHOTA</td><td class="num org">-103</td><td class="num org">-127</td><td class="num">112.47h</td><td><span class="sev sev-h">ðŸŸ¡ Cáº£nh bÃ¡o cao</span></td><td>Station down</td></tr>
-            <tr><td>6</td><td class="site">CAJ0088</td><td>CELENDIN</td><td class="num red">-291</td><td class="num red">-396</td><td class="num">60.30h</td><td><span class="sev sev-h">ðŸŸ¡ Cáº£nh bÃ¡o cao</span></td><td>LTE outage + 3G</td></tr>
-            <tr><td>7</td><td class="site">CAJ0314</td><td>CUTERVO</td><td class="num org">-183</td><td class="num org">-219</td><td class="num">58.60h</td><td><span class="sev sev-h">ðŸŸ¡ Cáº£nh bÃ¡o cao</span></td><td>LTE outage + 3G</td></tr>
-            <tr><td>8</td><td class="site">CAJ0023</td><td>CAJ BC14</td><td class="num org">-141</td><td class="num org">-156</td><td class="num">24.48h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td><td>Celda individual</td></tr>
-            <tr><td>9</td><td class="site">CAJ0181</td><td>CHOTA</td><td class="num red">-347</td><td class="num red">-485</td><td class="num">7.15h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td><td>Celda individual</td></tr>
-            <tr><td>10</td><td class="site">CAJ0021</td><td>CAJ BC14</td><td class="num org">-129</td><td class="num org">-158</td><td class="num">2.47h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td><td>Celda individual</td></tr>
-            <tr><td>11</td><td class="site">CAJ0574</td><td>CAJ BC14</td><td class="num org">-121</td><td class="num org">-139</td><td class="num">0.00h</td><td><span class="sev sev-ok">âœ… KhÃ´ng cell down</span></td><td>KhÃ´ng ghi nháº­n</td></tr>
-            <tr><td>12</td><td class="site">CAJ0110</td><td>CUTERVO</td><td class="num org">-174</td><td class="num org">-110</td><td class="num">0.00h</td><td><span class="sev sev-ok">âœ… KhÃ´ng cell down</span></td><td>KhÃ´ng ghi nháº­n</td></tr>
-            <tr><td>13</td><td class="site">CAJ0203</td><td>CAJ BC14</td><td class="num red">-439</td><td class="num red">-588</td><td class="num">0.00h</td><td><span class="sev sev-ok">âœ… KhÃ´ng cell down</span></td><td>KhÃ´ng ghi nháº­n</td></tr>
+            <tr><td>1</td><td class="site">CAJ0299</td><td>CUTERVO</td><td class="num red">-319</td><td class="num red">-388</td><td class="num">749.88h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td><td>Station down</td></tr>
+            <tr><td>2</td><td class="site">CAJ0094</td><td>BAMBAMARCA</td><td class="num org">-144</td><td class="num org">-168</td><td class="num">441.66h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td><td>Station down</td></tr>
+            <tr><td>3</td><td class="site">CAJ0014</td><td>CAJ BC01</td><td class="num red">-320</td><td class="num red">-400</td><td class="num">417.05h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td><td>Station down + LTE</td></tr>
+            <tr><td>4</td><td class="site">CAJ0010</td><td>CAJ BC14</td><td class="num org">-166</td><td class="num org">-219</td><td class="num">241.63h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td><td>Station down + LTE</td></tr>
+            <tr><td>5</td><td class="site">CAJ0282</td><td>CHOTA</td><td class="num org">-103</td><td class="num org">-127</td><td class="num">112.47h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td><td>Station down</td></tr>
+            <tr><td>6</td><td class="site">CAJ0088</td><td>CELENDIN</td><td class="num red">-291</td><td class="num red">-396</td><td class="num">60.30h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td><td>LTE outage + 3G</td></tr>
+            <tr><td>7</td><td class="site">CAJ0314</td><td>CUTERVO</td><td class="num org">-183</td><td class="num org">-219</td><td class="num">58.60h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td><td>LTE outage + 3G</td></tr>
+            <tr><td>8</td><td class="site">CAJ0023</td><td>CAJ BC14</td><td class="num org">-141</td><td class="num org">-156</td><td class="num">24.48h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td>Celda individual</td></tr>
+            <tr><td>9</td><td class="site">CAJ0181</td><td>CHOTA</td><td class="num red">-347</td><td class="num red">-485</td><td class="num">7.15h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td>Celda individual</td></tr>
+            <tr><td>10</td><td class="site">CAJ0021</td><td>CAJ BC14</td><td class="num org">-129</td><td class="num org">-158</td><td class="num">2.47h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td>Celda individual</td></tr>
+            <tr><td>11</td><td class="site">CAJ0574</td><td>CAJ BC14</td><td class="num org">-121</td><td class="num org">-139</td><td class="num">0.00h</td><td><span class="sev sev-ok">✅ Không cell down</span></td><td>Không ghi nhận</td></tr>
+            <tr><td>12</td><td class="site">CAJ0110</td><td>CUTERVO</td><td class="num org">-174</td><td class="num org">-110</td><td class="num">0.00h</td><td><span class="sev sev-ok">✅ Không cell down</span></td><td>Không ghi nhận</td></tr>
+            <tr><td>13</td><td class="site">CAJ0203</td><td>CAJ BC14</td><td class="num red">-439</td><td class="num red">-588</td><td class="num">0.00h</td><td><span class="sev sev-ok">✅ Không cell down</span></td><td>Không ghi nhận</td></tr>
           </tbody>
         </table>
-        <p class="tbl-footer">Tá»•ng: <b>13 tráº¡m</b> &nbsp;|&nbsp; Tá»•ng giáº£m 15C3D: <b class="red">-2,877 TB</b> &nbsp;|&nbsp; 4 tráº¡m NghiÃªm trá»ng &nbsp;|&nbsp; 3 tráº¡m Cáº£nh bÃ¡o cao</p>
+        <p class="tbl-footer">Tổng: <b>13 trạm</b> &nbsp;|&nbsp; Tổng giảm 15C3D: <b class="red">-2,877 TB</b> &nbsp;|&nbsp; 4 trạm Nghiêm trọng &nbsp;|&nbsp; 3 trạm Cảnh báo cao</p>
       </div>
 
       <!-- W22 -->
@@ -449,244 +495,244 @@
         <table class="tbl">
           <thead>
             <tr>
-              <th>#</th><th>Tráº¡m</th><th>Zona</th>
-              <th>Giáº£m 15C3D</th><th>Giáº£m REG</th>
-              <th>Cell*h Down</th><th>Má»©c Ä‘á»™</th><th>Tráº¡ng thÃ¡i</th>
+              <th>#</th><th>Trạm</th><th>Zona</th>
+              <th>Giảm 15C3D</th><th>Giảm REG</th>
+              <th>Cell*h Down</th><th>Mức độ</th><th>Trạng thái</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>1</td><td class="site">CAJ0370</td><td>BC14</td><td class="num red">-202</td><td class="num red">-228</td><td class="num red">1,870.43h</td><td><span class="sev sev-xe">âš« Cá»±c ká»³ N.trá»ng</span></td><td><span class="status-new">ðŸ†• Má»›i W22</span></td></tr>
-            <tr><td>2</td><td class="site">CAJ0094</td><td>BAMBAMARCA</td><td class="num org">-140</td><td class="num org">-146</td><td class="num red">1,402.06h</td><td><span class="sev sev-xe">âš« Cá»±c ká»³ N.trá»ng</span></td><td><span class="status-cont">â†— Tiáº¿p tá»¥c W21</span></td></tr>
-            <tr><td>3</td><td class="site">CAJ0010</td><td>CAJ BC14</td><td class="num red">-193</td><td class="num red">-224</td><td class="num red">954.06h</td><td><span class="sev sev-xe">âš« Cá»±c ká»³ N.trá»ng</span></td><td><span class="status-cont">â†— Tiáº¿p tá»¥c W21</span></td></tr>
-            <tr><td>4</td><td class="site">CAJ0299</td><td>CUTERVO</td><td class="num red">-301</td><td class="num red">-326</td><td class="num red">750.27h</td><td><span class="sev sev-xe">âš« Cá»±c ká»³ N.trá»ng</span></td><td><span class="status-cont">â†— Tiáº¿p tá»¥c W21</span></td></tr>
-            <tr><td>5</td><td class="site">CAJ0008</td><td>CAJ BC01</td><td class="num org">-156</td><td class="num org">-205</td><td class="num red">565.97h</td><td><span class="sev sev-xe">âš« Cá»±c ká»³ N.trá»ng</span></td><td><span class="status-new">ðŸ†• Má»›i W22</span></td></tr>
-            <tr><td>6</td><td class="site">CAJ0014</td><td>CAJ BC01</td><td class="num red">-261</td><td class="num red">-247</td><td class="num org">417.05h</td><td><span class="sev sev-c">ðŸ”´ NghiÃªm trá»ng</span></td><td><span class="status-cont">â†— Tiáº¿p tá»¥c W21</span></td></tr>
-            <tr><td>7</td><td class="site">CAJ0012</td><td>CAJ BC14</td><td class="num org">-134</td><td class="num org">-160</td><td class="num org">157.33h</td><td><span class="sev sev-h">ðŸŸ¡ Cáº£nh bÃ¡o cao</span></td><td><span class="status-new">ðŸ†• Má»›i W22</span></td></tr>
-            <tr><td>8</td><td class="site">CAJ0282</td><td>CHOTA</td><td class="num org">-114</td><td class="num org">-151</td><td class="num org">113.25h</td><td><span class="sev sev-h">ðŸŸ¡ Cáº£nh bÃ¡o cao</span></td><td><span class="status-cont">â†— Tiáº¿p tá»¥c W21</span></td></tr>
-            <tr><td>9</td><td class="site">CAJ0088</td><td>CELENDIN</td><td class="num red">-434</td><td class="num red">-512</td><td class="num org">62.34h</td><td><span class="sev sev-h">ðŸŸ¡ Cáº£nh bÃ¡o cao</span></td><td><span class="status-cont">â†— Tiáº¿p tá»¥c W21</span></td></tr>
-            <tr><td>10</td><td class="site">CAJ0314</td><td>CUTERVO</td><td class="num org">-139</td><td class="num org">-157</td><td class="num org">59.41h</td><td><span class="sev sev-h">ðŸŸ¡ Cáº£nh bÃ¡o cao</span></td><td><span class="status-cont">â†— Tiáº¿p tá»¥c W21</span></td></tr>
-            <tr><td>11</td><td class="site">CAJ0019</td><td>CAJ BC14</td><td class="num org">-162</td><td class="num org">-190</td><td class="num">32.69h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td><td><span class="status-new">ðŸ†• Má»›i W22</span></td></tr>
-            <tr><td>12</td><td class="site">CAJ0023</td><td>CAJ BC14</td><td class="num red">-184</td><td class="num org">-182</td><td class="num">24.50h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td><td><span class="status-cont">â†— Tiáº¿p tá»¥c W21</span></td></tr>
-            <tr><td>13</td><td class="site">CAJ0172</td><td>CAJ BC01</td><td class="num org">-101</td><td class="num org">-167</td><td class="num">15.95h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td><td><span class="status-new">ðŸ†• Má»›i W22</span></td></tr>
-            <tr><td>14</td><td class="site">CAJ0588</td><td>BC05</td><td class="num red">-214</td><td class="num red">-257</td><td class="num">8.86h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td><td><span class="status-new">ðŸ†• Má»›i W22</span></td></tr>
-            <tr><td>15</td><td class="site">CAJ0181</td><td>CHOTA</td><td class="num red">-466</td><td class="num red">-554</td><td class="num">8.57h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td><td><span class="status-cont">â†— Tiáº¿p tá»¥c W21</span></td></tr>
-            <tr><td>16</td><td class="site">CAJ0203</td><td>CAJ BC14</td><td class="num red">-488</td><td class="num red">-490</td><td class="num">8.12h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td><td><span class="status-cont">â†— Tiáº¿p tá»¥c W21</span></td></tr>
-            <tr><td>17</td><td class="site">CAJ0112</td><td>BC01</td><td class="num org">-107</td><td class="num org">-109</td><td class="num">3.85h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td><td><span class="status-new">ðŸ†• Má»›i W22</span></td></tr>
-            <tr><td>18</td><td class="site">CAJ0574</td><td>CAJ BC14</td><td class="num org">-112</td><td class="num dim">â€”</td><td class="num">0.01h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td><td><span class="status-cont">â†— Tiáº¿p tá»¥c W21</span></td></tr>
-            <tr><td>19</td><td class="site">CAJ0110</td><td>CUTERVO</td><td class="num red">-217</td><td class="num org">-189</td><td class="num">0.00h</td><td><span class="sev sev-ok">âœ… KhÃ´ng cell down</span></td><td><span class="status-cont">â†— Tiáº¿p tá»¥c W21</span></td></tr>
-            <tr><td>20</td><td class="site">CAJ0002B3U1</td><td>BC01</td><td class="num org">-114</td><td class="num org">-160</td><td class="num">0.00h</td><td><span class="sev sev-ok">âœ… KhÃ´ng cell down</span></td><td><span class="status-new">ðŸ†• Má»›i W22</span></td></tr>
+            <tr><td>1</td><td class="site">CAJ0370</td><td>BC14</td><td class="num red">-202</td><td class="num red">-228</td><td class="num red">1,870.43h</td><td><span class="sev sev-xe">⚫ Cực kỳ N.trọng</span></td><td><span class="status-new">🆕 Mới W22</span></td></tr>
+            <tr><td>2</td><td class="site">CAJ0094</td><td>BAMBAMARCA</td><td class="num org">-140</td><td class="num org">-146</td><td class="num red">1,402.06h</td><td><span class="sev sev-xe">⚫ Cực kỳ N.trọng</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>3</td><td class="site">CAJ0010</td><td>CAJ BC14</td><td class="num red">-193</td><td class="num red">-224</td><td class="num red">954.06h</td><td><span class="sev sev-xe">⚫ Cực kỳ N.trọng</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>4</td><td class="site">CAJ0299</td><td>CUTERVO</td><td class="num red">-301</td><td class="num red">-326</td><td class="num red">750.27h</td><td><span class="sev sev-xe">⚫ Cực kỳ N.trọng</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>5</td><td class="site">CAJ0008</td><td>CAJ BC01</td><td class="num org">-156</td><td class="num org">-205</td><td class="num red">565.97h</td><td><span class="sev sev-xe">⚫ Cực kỳ N.trọng</span></td><td><span class="status-new">🆕 Mới W22</span></td></tr>
+            <tr><td>6</td><td class="site">CAJ0014</td><td>CAJ BC01</td><td class="num red">-261</td><td class="num red">-247</td><td class="num org">417.05h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>7</td><td class="site">CAJ0012</td><td>CAJ BC14</td><td class="num org">-134</td><td class="num org">-160</td><td class="num org">157.33h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td><td><span class="status-new">🆕 Mới W22</span></td></tr>
+            <tr><td>8</td><td class="site">CAJ0282</td><td>CHOTA</td><td class="num org">-114</td><td class="num org">-151</td><td class="num org">113.25h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>9</td><td class="site">CAJ0088</td><td>CELENDIN</td><td class="num red">-434</td><td class="num red">-512</td><td class="num org">62.34h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>10</td><td class="site">CAJ0314</td><td>CUTERVO</td><td class="num org">-139</td><td class="num org">-157</td><td class="num org">59.41h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>11</td><td class="site">CAJ0019</td><td>CAJ BC14</td><td class="num org">-162</td><td class="num org">-190</td><td class="num">32.69h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td><span class="status-new">🆕 Mới W22</span></td></tr>
+            <tr><td>12</td><td class="site">CAJ0023</td><td>CAJ BC14</td><td class="num red">-184</td><td class="num org">-182</td><td class="num">24.50h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>13</td><td class="site">CAJ0172</td><td>CAJ BC01</td><td class="num org">-101</td><td class="num org">-167</td><td class="num">15.95h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td><span class="status-new">🆕 Mới W22</span></td></tr>
+            <tr><td>14</td><td class="site">CAJ0588</td><td>BC05</td><td class="num red">-214</td><td class="num red">-257</td><td class="num">8.86h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td><span class="status-new">🆕 Mới W22</span></td></tr>
+            <tr><td>15</td><td class="site">CAJ0181</td><td>CHOTA</td><td class="num red">-466</td><td class="num red">-554</td><td class="num">8.57h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>16</td><td class="site">CAJ0203</td><td>CAJ BC14</td><td class="num red">-488</td><td class="num red">-490</td><td class="num">8.12h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>17</td><td class="site">CAJ0112</td><td>BC01</td><td class="num org">-107</td><td class="num org">-109</td><td class="num">3.85h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td><span class="status-new">🆕 Mới W22</span></td></tr>
+            <tr><td>18</td><td class="site">CAJ0574</td><td>CAJ BC14</td><td class="num org">-112</td><td class="num dim">—</td><td class="num">0.01h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>19</td><td class="site">CAJ0110</td><td>CUTERVO</td><td class="num red">-217</td><td class="num org">-189</td><td class="num">0.00h</td><td><span class="sev sev-ok">✅ Không cell down</span></td><td><span class="status-cont">↗ Tiếp tục W21</span></td></tr>
+            <tr><td>20</td><td class="site">CAJ0002B3U1</td><td>BC01</td><td class="num org">-114</td><td class="num org">-160</td><td class="num">0.00h</td><td><span class="sev sev-ok">✅ Không cell down</span></td><td><span class="status-new">🆕 Mới W22</span></td></tr>
           </tbody>
         </table>
-        <p class="tbl-footer">Tá»•ng: <b>20 tráº¡m</b> &nbsp;|&nbsp; Tá»•ng giáº£m 15C3D: <b class="red">-4,239 TB</b> &nbsp;|&nbsp; 5 tráº¡m Cá»±c ká»³ N.trá»ng &nbsp;|&nbsp; 12 tráº¡m tiáº¿p tá»¥c tá»« W21 &nbsp;|&nbsp; 8 tráº¡m má»›i</p>
+        <p class="tbl-footer">Tổng: <b>20 trạm</b> &nbsp;|&nbsp; Tổng giảm 15C3D: <b class="red">-4,239 TB</b> &nbsp;|&nbsp; 5 trạm Cực kỳ N.trọng &nbsp;|&nbsp; 12 trạm tiếp tục từ W21 &nbsp;|&nbsp; 8 trạm mới</p>
       </div>
 
       <!-- W23 -->
       <div id="pane-w23" class="tab-pane">
         <div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:6px;padding:8px 14px;margin-bottom:12px;font-size:12px;font-weight:600;color:#991b1b">
-          â†— NHÃ“M 1: Tiáº¿p tá»¥c giáº£m tá»« W22 â†’ W23 (2 tráº¡m)
+          ↗ NHÓM 1: Tiếp tục giảm từ W22 → W23 (2 trạm)
         </div>
         <table class="tbl" style="margin-bottom:16px">
           <thead>
             <tr>
-              <th>#</th><th>Tráº¡m</th><th>Zona</th>
-              <th>Î”15C3D W22</th><th>Î”15C3D W23</th>
-              <th>Î” REG W23</th><th>Cell*h W23</th><th>Má»©c Ä‘á»™</th>
+              <th>#</th><th>Trạm</th><th>Zona</th>
+              <th>Δ15C3D W22</th><th>Δ15C3D W23</th>
+              <th>Δ REG W23</th><th>Cell*h W23</th><th>Mức độ</th>
             </tr>
           </thead>
           <tbody>
-            <tr style="background:#fff8f8"><td>1</td><td class="site">CAJ0112</td><td>BC01</td><td class="num org">-107</td><td class="num red">-159</td><td class="num red">-360</td><td class="num">40.70h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td></tr>
-            <tr style="background:#fff8f8"><td>2</td><td class="site">CAJ0588</td><td>BC05</td><td class="num red">-214</td><td class="num org">-151</td><td class="num red">-325</td><td class="num">44.58h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td></tr>
+            <tr style="background:#fff8f8"><td>1</td><td class="site">CAJ0112</td><td>BC01</td><td class="num org">-107</td><td class="num red">-159</td><td class="num red">-360</td><td class="num">40.70h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
+            <tr style="background:#fff8f8"><td>2</td><td class="site">CAJ0588</td><td>BC05</td><td class="num red">-214</td><td class="num org">-151</td><td class="num red">-325</td><td class="num">44.58h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
           </tbody>
         </table>
 
         <div style="background:#fff7ed;border:1px solid #fcd34d;border-radius:6px;padding:8px 14px;margin-bottom:12px;font-size:12px;font-weight:600;color:#92400e">
-           ðŸ†• NHÃ“M 2: Má»›i xuáº¥t hiá»‡n trong W23 (10 tráº¡m)
+          🆕 NHÓM 2: Mới xuất hiện trong W23 (10 trạm)
         </div>
         <table class="tbl">
           <thead>
             <tr>
-              <th>#</th><th>Tráº¡m</th><th>Zona</th>
-              <th>Î”15C3D W23</th><th>Î” REGW23</th>
-              <th>Cell*h W23</th><th>Má»©c Ä‘á»™</th>
+              <th>#</th><th>Trạm</th><th>Zona</th>
+              <th>Δ15C3D W23</th><th>Δ REG W23</th>
+              <th>Cell*h W23</th><th>Mức độ</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>1</td><td class="site">CAJ0193</td><td>BC07</td><td class="num red">-354</td><td class="num red">-1,115</td><td class="num">26.75h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td></tr>
-            <tr><td>2</td><td class="site">CAJ0368</td><td>BC08</td><td class="num org">-132</td><td class="num org">-158</td><td class="num red">260.19h</td><td><span class="sev sev-c">ðŸ”´ NghiÃªm trá»ng</span></td></tr>
-            <tr><td>3</td><td class="site">CAJ0388</td><td>BC08</td><td class="num org">-118</td><td class="num org">-117</td><td class="num org">123.43h</td><td><span class="sev sev-h">ðŸŸ¡ Cáº£nh bÃ¡o cao</span></td></tr>
-            <tr><td>4</td><td class="site">CAJ0435</td><td>BC01</td><td class="num org">-140</td><td class="num red">-267</td><td class="num org">91.17h</td><td><span class="sev sev-h">ðŸŸ¡ Cáº£nh bÃ¡o cao</span></td></tr>
-            <tr><td>5</td><td class="site">CAJ0205</td><td>BC10</td><td class="num org">-169</td><td class="num red">-500</td><td class="num org">61.83h</td><td><span class="sev sev-h">ðŸŸ¡ Cáº£nh bÃ¡o cao</span></td></tr>
-            <tr><td>6</td><td class="site">CAJ0263</td><td>BC07</td><td class="num org">-182</td><td class="num org">-168</td><td class="num">1.15h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td></tr>
-            <tr><td>7</td><td class="site">CAJ0020B3U1</td><td>BC14</td><td class="num org">-175</td><td class="num red">-492</td><td class="num">0.00h</td><td><span class="sev sev-ok">âœ… KhÃ´ng cell down</span></td></tr>
-            <tr><td>8</td><td class="site">CAJ0023B3U2</td><td>BC14</td><td class="num org">-151</td><td class="num red">-401</td><td class="num">0.00h</td><td><span class="sev sev-ok">âœ… KhÃ´ng cell down</span></td></tr>
-            <tr><td>9</td><td class="site">CAJ0207</td><td>BC07</td><td class="num org">-139</td><td class="num red">-410</td><td class="num">0.00h</td><td><span class="sev sev-ok">âœ… KhÃ´ng cell down</span></td></tr>
-            <tr><td>10</td><td class="site">CAJ0116</td><td>BC05</td><td class="num org">-116</td><td class="num org">-191</td><td class="num">4.58h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td></tr>
+            <tr><td>1</td><td class="site">CAJ0193</td><td>BC07</td><td class="num red">-354</td><td class="num red">-1,115</td><td class="num">26.75h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
+            <tr><td>2</td><td class="site">CAJ0368</td><td>BC08</td><td class="num org">-132</td><td class="num org">-158</td><td class="num red">260.19h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td></tr>
+            <tr><td>3</td><td class="site">CAJ0388</td><td>BC08</td><td class="num org">-118</td><td class="num org">-117</td><td class="num org">123.43h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td></tr>
+            <tr><td>4</td><td class="site">CAJ0435</td><td>BC01</td><td class="num org">-140</td><td class="num red">-267</td><td class="num org">91.17h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td></tr>
+            <tr><td>5</td><td class="site">CAJ0205</td><td>BC10</td><td class="num org">-169</td><td class="num red">-500</td><td class="num org">61.83h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td></tr>
+            <tr><td>6</td><td class="site">CAJ0263</td><td>BC07</td><td class="num org">-182</td><td class="num org">-168</td><td class="num">1.15h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
+            <tr><td>7</td><td class="site">CAJ0020B3U1</td><td>BC14</td><td class="num org">-175</td><td class="num red">-492</td><td class="num">0.00h</td><td><span class="sev sev-ok">✅ Không cell down</span></td></tr>
+            <tr><td>8</td><td class="site">CAJ0023B3U2</td><td>BC14</td><td class="num org">-151</td><td class="num red">-401</td><td class="num">0.00h</td><td><span class="sev sev-ok">✅ Không cell down</span></td></tr>
+            <tr><td>9</td><td class="site">CAJ0207</td><td>BC07</td><td class="num org">-139</td><td class="num red">-410</td><td class="num">0.00h</td><td><span class="sev sev-ok">✅ Không cell down</span></td></tr>
+            <tr><td>10</td><td class="site">CAJ0116</td><td>BC05</td><td class="num org">-116</td><td class="num org">-191</td><td class="num">4.58h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
           </tbody>
         </table>
-        <p class="tbl-footer">Tá»•ng W23: <b>12 tráº¡m</b> (2 tiáº¿p tá»¥c + 10 má»›i) &nbsp;|&nbsp; Tá»•ng giáº£m 15C3D: <b class="red">-1,986 TB</b> &nbsp;|&nbsp; <b class="grn">18/20 tráº¡m W22 Ä‘Ã£ cáº£i thiá»‡n & thoÃ¡t danh sÃ¡ch (90%)</b></p>
+        <p class="tbl-footer">Tổng W23: <b>12 trạm</b> (2 tiếp tục + 10 mới) &nbsp;|&nbsp; Tổng giảm 15C3D: <b class="red">-1,986 TB</b> &nbsp;|&nbsp; <b class="grn">18/20 trạm W22 đã cải thiện & thoát danh sách (90%)</b></p>
       </div>
 
       <!-- W24 -->
       <div id="pane-w24" class="tab-pane">
         <div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:6px;padding:8px 14px;margin-bottom:12px;font-size:12px;font-weight:600;color:#991b1b">
-          â†— NHÃ“M 1: Tiáº¿p tá»¥c giáº£m W23â†’W24 (6 tráº¡m)
+          ↗ NHÓM 1: Tiếp tục giảm W23→W24 (6 trạm)
         </div>
         <table class="tbl" style="margin-bottom:16px">
           <thead>
             <tr>
-              <th>#</th><th>Tráº¡m</th><th>BC</th><th>Zona</th>
-              <th>Î”15C3D W23</th><th>Î”15C3D W24</th><th>Xu hÆ°á»›ng</th>
-              <th>Î” REG W24</th><th>Cell*h W24</th><th>Má»©c Ä‘á»™</th>
+              <th>#</th><th>Trạm</th><th>BC</th><th>Zona</th>
+              <th>Δ15C3D W23</th><th>Δ15C3D W24</th><th>Xu hướng</th>
+              <th>Δ REG W24</th><th>Cell*h W24</th><th>Mức độ</th>
             </tr>
           </thead>
           <tbody>
-            <tr style="background:#fff8f8"><td>1</td><td class="site">CAJ0193</td><td>BC07</td><td>BAMBAMARCA</td><td class="num red">-354</td><td class="num org">-334</td><td class="grn">â†— Há»“i phá»¥c</td><td class="num red">-578</td><td class="num">480.35h</td><td><span class="sev sev-c">ðŸ”´ NghiÃªm trá»ng</span></td></tr>
-            <tr style="background:#fff8f8"><td>2</td><td class="site">CAJ0020B3U1</td><td>BC01</td><td>CAJAMARCA</td><td class="num org">-175</td><td class="num red">-272</td><td class="red">â†˜ Tiáº¿p tá»¥c</td><td class="num red">-495</td><td class="num">0h</td><td><span class="sev sev-ok">âœ… KhÃ´ng cell down</span></td></tr>
-            <tr style="background:#fff8f8"><td>3</td><td class="site">CAJ0023B3U2</td><td>BC01</td><td>CAJAMARCA</td><td class="num org">-151</td><td class="num red">-222</td><td class="red">â†˜ Tiáº¿p tá»¥c</td><td class="num red">-397</td><td class="num">0h</td><td><span class="sev sev-ok">âœ… KhÃ´ng cell down</span></td></tr>
-            <tr style="background:#fff8f8"><td>4</td><td class="site">CAJ0112</td><td>BC01</td><td>CAJAMARCA</td><td class="num org">-159</td><td class="num org">-156</td><td class="grn">â†— Há»“i phá»¥c</td><td class="num red">-303</td><td class="num">40.98h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td></tr>
-            <tr style="background:#fff8f8"><td>5</td><td class="site">CAJ0588</td><td>BC05</td><td>CUTERVO</td><td class="num org">-151</td><td class="num org">-149</td><td class="grn">â†— Há»“i phá»¥c</td><td class="num org">-250</td><td class="num">44.79h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td></tr>
-            <tr style="background:#fff8f8"><td>6</td><td class="site">CAJ0205</td><td>BC10</td><td>CAJABAMBA</td><td class="num org">-169</td><td class="num org">-113</td><td class="grn">â†— Há»“i phá»¥c</td><td class="num org">-207</td><td class="num">267.94h</td><td><span class="sev sev-c">ðŸ”´ NghiÃªm trá»ng</span></td></tr>
+            <tr style="background:#fff8f8"><td>1</td><td class="site">CAJ0193</td><td>BC07</td><td>BAMBAMARCA</td><td class="num red">-354</td><td class="num org">-334</td><td class="grn">↗ Hồi phục</td><td class="num red">-578</td><td class="num">480.35h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td></tr>
+            <tr style="background:#fff8f8"><td>2</td><td class="site">CAJ0020B3U1</td><td>BC01</td><td>CAJAMARCA</td><td class="num org">-175</td><td class="num red">-272</td><td class="red">↘ Tiếp tục</td><td class="num red">-495</td><td class="num">0h</td><td><span class="sev sev-ok">✅ Không cell down</span></td></tr>
+            <tr style="background:#fff8f8"><td>3</td><td class="site">CAJ0023B3U2</td><td>BC01</td><td>CAJAMARCA</td><td class="num org">-151</td><td class="num red">-222</td><td class="red">↘ Tiếp tục</td><td class="num red">-397</td><td class="num">0h</td><td><span class="sev sev-ok">✅ Không cell down</span></td></tr>
+            <tr style="background:#fff8f8"><td>4</td><td class="site">CAJ0112</td><td>BC01</td><td>CAJAMARCA</td><td class="num org">-159</td><td class="num org">-156</td><td class="grn">↗ Hồi phục</td><td class="num red">-303</td><td class="num">40.98h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
+            <tr style="background:#fff8f8"><td>5</td><td class="site">CAJ0588</td><td>BC05</td><td>CUTERVO</td><td class="num org">-151</td><td class="num org">-149</td><td class="grn">↗ Hồi phục</td><td class="num org">-250</td><td class="num">44.79h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
+            <tr style="background:#fff8f8"><td>6</td><td class="site">CAJ0205</td><td>BC10</td><td>CAJABAMBA</td><td class="num org">-169</td><td class="num org">-113</td><td class="grn">↗ Hồi phục</td><td class="num org">-207</td><td class="num">267.94h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td></tr>
           </tbody>
         </table>
 
         <div style="background:#fff7ed;border:1px solid #fcd34d;border-radius:6px;padding:8px 14px;margin-bottom:12px;font-size:12px;font-weight:600;color:#92400e">
-          ðŸ†• NHÃ“M 2: Má»›i xuáº¥t hiá»‡n trong W24 (8 tráº¡m)
+          🆕 NHÓM 2: Mới xuất hiện trong W24 (8 trạm)
         </div>
         <table class="tbl" style="margin-bottom:16px">
           <thead>
             <tr>
-              <th>#</th><th>Tráº¡m</th><th>BC</th><th>Zona</th>
-              <th>Î”15C3D W24</th><th>Î” REG W24</th><th>Cell*h W24</th><th>Má»©c Ä‘á»™</th>
+              <th>#</th><th>Trạm</th><th>BC</th><th>Zona</th>
+              <th>Δ15C3D W24</th><th>Δ REG W24</th><th>Cell*h W24</th><th>Mức độ</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>1</td><td class="site">CAJ0252</td><td>BC07</td><td>BAMBAMARCA / Chota</td><td class="num red">-206</td><td class="num red">-374</td><td class="num">63.38h</td><td><span class="sev sev-h">ðŸŸ¡ Cáº£nh bÃ¡o cao</span></td></tr>
-            <tr><td>2</td><td class="site">CAJ0013</td><td>BC01</td><td>CAJAMARCA</td><td class="num org">-166</td><td class="num red">-303</td><td class="num">38.19h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td></tr>
-            <tr><td>3</td><td class="site">CAJ0476</td><td>BC08</td><td>CELEDIN</td><td class="num org">-129</td><td class="num org">-190</td><td class="num org">484.76h</td><td><span class="sev sev-c">ðŸ”´ NghiÃªm trá»ng</span></td></tr>
-            <tr><td>4</td><td class="site">CAJ0220</td><td>BC01</td><td>CAJAMARCA / Los BaÃ±os</td><td class="num org">-127</td><td class="num org">-240</td><td class="num">23.06h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td></tr>
-            <tr><td>5</td><td class="site">CAJ0113</td><td>BC08</td><td>CELEDIN / San Marcos</td><td class="num org">-116</td><td class="num org">-243</td><td class="num">62.51h</td><td><span class="sev sev-h">ðŸŸ¡ Cáº£nh bÃ¡o cao</span></td></tr>
-            <tr><td>6</td><td class="site">CAJ0110</td><td>BC05</td><td>CUTERVO</td><td class="num org">-107</td><td class="num org">-136</td><td class="num">1.48h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td></tr>
-            <tr><td>7</td><td class="site">CAJ0007</td><td>BC01</td><td>CAJAMARCA</td><td class="num org">-106</td><td class="num org">-146</td><td class="num">0.92h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td></tr>
-            <tr><td>8</td><td class="site">CAJ0070</td><td>BC01</td><td>CAJAMARCA</td><td class="num org">-101</td><td class="num org">-190</td><td class="num">11.34h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td></tr>
+            <tr><td>1</td><td class="site">CAJ0252</td><td>BC07</td><td>BAMBAMARCA / Chota</td><td class="num red">-206</td><td class="num red">-374</td><td class="num">63.38h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td></tr>
+            <tr><td>2</td><td class="site">CAJ0013</td><td>BC01</td><td>CAJAMARCA</td><td class="num org">-166</td><td class="num red">-303</td><td class="num">38.19h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
+            <tr><td>3</td><td class="site">CAJ0476</td><td>BC08</td><td>CELEDIN</td><td class="num org">-129</td><td class="num org">-190</td><td class="num org">484.76h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td></tr>
+            <tr><td>4</td><td class="site">CAJ0220</td><td>BC01</td><td>CAJAMARCA / Los Baños</td><td class="num org">-127</td><td class="num org">-240</td><td class="num">23.06h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
+            <tr><td>5</td><td class="site">CAJ0113</td><td>BC08</td><td>CELEDIN / San Marcos</td><td class="num org">-116</td><td class="num org">-243</td><td class="num">62.51h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td></tr>
+            <tr><td>6</td><td class="site">CAJ0110</td><td>BC05</td><td>CUTERVO</td><td class="num org">-107</td><td class="num org">-136</td><td class="num">1.48h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
+            <tr><td>7</td><td class="site">CAJ0007</td><td>BC01</td><td>CAJAMARCA</td><td class="num org">-106</td><td class="num org">-146</td><td class="num">0.92h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
+            <tr><td>8</td><td class="site">CAJ0070</td><td>BC01</td><td>CAJAMARCA</td><td class="num org">-101</td><td class="num org">-190</td><td class="num">11.34h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
           </tbody>
         </table>
 
         <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:8px 14px;margin-bottom:12px;font-size:12px;font-weight:600;color:#166534">
-          âœ… NHÃ“M 3: ThoÃ¡t / Cáº£i thiá»‡n trong W24 (6 tráº¡m, cÃ³ trong W23)
+          ✅ NHÓM 3: Thoát / Cải thiện trong W24 (6 trạm, có trong W23)
         </div>
         <table class="tbl" style="margin-bottom:16px">
           <thead>
             <tr>
-              <th>Tráº¡m</th><th>Î”15C3D W23</th><th>Î”15C3D W24</th><th>Xu hÆ°á»›ng</th>
-              <th>Î” REG W24</th><th>Cell*h W24</th><th>Má»©c Ä‘á»™</th>
+              <th>Trạm</th><th>Δ15C3D W23</th><th>Δ15C3D W24</th><th>Xu hướng</th>
+              <th>Δ REG W24</th><th>Cell*h W24</th><th>Mức độ</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td class="site">CAJ0263</td><td class="num red">-182</td><td class="num org">-100</td><td class="grn">â†— Cáº£i thiá»‡n</td><td class="num org">-103</td><td class="num">142.51h</td><td><span class="sev sev-h">ðŸŸ¡ Cáº£nh bÃ¡o cao</span></td></tr>
-            <tr><td class="site">CAJ0435</td><td class="num org">-140</td><td class="num org">-73</td><td class="grn">â†— Cáº£i thiá»‡n</td><td class="num org">-133</td><td class="num">122.19h</td><td><span class="sev sev-h">ðŸŸ¡ Cáº£nh bÃ¡o cao</span></td></tr>
-            <tr><td class="site">CAJ0207</td><td class="num org">-139</td><td class="num org">-73</td><td class="grn">â†— Cáº£i thiá»‡n</td><td class="num org">-94</td><td class="num">89.82h</td><td><span class="sev sev-h">ðŸŸ¡ Cáº£nh bÃ¡o cao</span></td></tr>
-            <tr><td class="site">CAJ0368</td><td class="num org">-132</td><td class="num org">-82</td><td class="grn">â†— Cáº£i thiá»‡n</td><td class="num org">-103</td><td class="num">272.32h</td><td><span class="sev sev-c">ðŸ”´ NghiÃªm trá»ng</span></td></tr>
-            <tr><td class="site">CAJ0388</td><td class="num org">-118</td><td class="num grn">+2</td><td class="grn">âœ… ThoÃ¡t danh sÃ¡ch</td><td class="num grn">+40</td><td class="num">123.96h</td><td><span class="sev sev-h">ðŸŸ¡ Cáº£nh bÃ¡o cao</span></td></tr>
-            <tr><td class="site">CAJ0116</td><td class="num org">-116</td><td class="num org">-94</td><td class="grn">â†— Cáº£i thiá»‡n</td><td class="num red">-161</td><td class="num">4.79h</td><td><span class="sev sev-a">ðŸ”µ Cáº£nh bÃ¡o</span></td></tr>
+            <tr><td class="site">CAJ0263</td><td class="num red">-182</td><td class="num org">-100</td><td class="grn">↗ Cải thiện</td><td class="num org">-103</td><td class="num">142.51h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td></tr>
+            <tr><td class="site">CAJ0435</td><td class="num org">-140</td><td class="num org">-73</td><td class="grn">↗ Cải thiện</td><td class="num org">-133</td><td class="num">122.19h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td></tr>
+            <tr><td class="site">CAJ0207</td><td class="num org">-139</td><td class="num org">-73</td><td class="grn">↗ Cải thiện</td><td class="num org">-94</td><td class="num">89.82h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td></tr>
+            <tr><td class="site">CAJ0368</td><td class="num org">-132</td><td class="num org">-82</td><td class="grn">↗ Cải thiện</td><td class="num org">-103</td><td class="num">272.32h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td></tr>
+            <tr><td class="site">CAJ0388</td><td class="num org">-118</td><td class="num grn">+2</td><td class="grn">✅ Thoát danh sách</td><td class="num grn">+40</td><td class="num">123.96h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td></tr>
+            <tr><td class="site">CAJ0116</td><td class="num org">-116</td><td class="num org">-94</td><td class="grn">↗ Cải thiện</td><td class="num red">-161</td><td class="num">4.79h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
           </tbody>
         </table>
 
         <div style="background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:8px 14px;margin-bottom:12px;font-size:12px;font-weight:600;color:#475569">
-          ðŸ“‰ NHÃ“M 4: Chá»‰ giáº£m REG, khÃ´ng cÃ³ trong 15C3D (14 tráº¡m) â€” cáº§n theo dÃµi
+          📉 NHÓM 4: Chỉ giảm REG, không có trong 15C3D (14 trạm) — cần theo dõi
         </div>
         <p style="font-size:11px;color:var(--muted);padding:4px 0 8px">CAJ0183 (-182), CAJ0370 (-157), CAJ0108 (-145), CAJ0140 (-137), CAJ0374 (-136), CAJ0222 (-135, Callayuc), CAJ0079 (-134, Cachachi), CAJ0002B3U1 (-126), CAJ0007B4U2 (-123), CAJ0141 (-120), CAJ0023 (-113), CAJ0306 (-109), CAJ0046 (-107), CAJ0212 (-103, Querocotillo)</p>
 
-        <p class="tbl-footer">Tá»•ng W24: <b>14 tráº¡m 15C3D</b> (6 tiáº¿p tá»¥c + 8 má»›i) &nbsp;|&nbsp; Î”15C3D nhÃ³m chÃ­nh: <b class="red">-2,304 TB</b> &nbsp;|&nbsp; REG-only: 14 tráº¡m thÃªm &nbsp;|&nbsp; <b class="grn">6/12 tráº¡m W23 Ä‘Ã£ cáº£i thiá»‡n (50%)</b></p>
+        <p class="tbl-footer">Tổng W24: <b>14 trạm 15C3D</b> (6 tiếp tục + 8 mới) &nbsp;|&nbsp; Δ15C3D nhóm chính: <b class="red">-2,304 TB</b> &nbsp;|&nbsp; REG-only: 14 trạm thêm &nbsp;|&nbsp; <b class="grn">6/12 trạm W23 đã cải thiện (50%)</b></p>
       </div>
 
     </div>
   </div>
 
-  <!-- â”€â”€ SECTION 5: TIMELINE â”€â”€ -->
+  <!-- ── SECTION 5: TIMELINE ── -->
   <div class="section">
-    <div class="section-head">ðŸ“‰ 5. TRáº M GIáº¢M LIÃŠN Tá»¤C â€” THEO DÃ•I THEO THá»œI GIAN (W22 â†’ W23 â†’ W24)</div>
+    <div class="section-head">📉 5. TRẠM GIẢM LIÊN TỤC / TENDENCIA CONTINUA — THEO DÕI / SEGUIMIENTO (W22 → W23 → W24)</div>
     <div class="section-body">
       <table class="timeline-tbl">
         <thead>
           <tr>
-            <th style="min-width:140px">Tráº¡m / Site</th>
-            <th>W22<br><span style="font-weight:400;text-transform:none">24â€“30/05</span></th>
-            <th>W23<br><span style="font-weight:400;text-transform:none">01â€“08/06</span></th>
-            <th>W24<br><span style="font-weight:400;text-transform:none">08â€“15/06</span></th>
-            <th>Sá»‘ tuáº§n giáº£m</th>
-            <th style="text-align:left">Tráº¡ng thÃ¡i hiá»‡n táº¡i</th>
+            <th style="min-width:140px">Trạm / Estación</th>
+            <th>W22<br><span style="font-weight:400;text-transform:none">24–30/05</span></th>
+            <th>W23<br><span style="font-weight:400;text-transform:none">01–08/06</span></th>
+            <th>W24<br><span style="font-weight:400;text-transform:none">08–15/06</span></th>
+            <th>Số tuần / Semanas</th>
+            <th style="text-align:left">Trạng thái / Estado</th>
           </tr>
         </thead>
         <tbody>
-          <!-- Giáº£m 3 tuáº§n liÃªn tiáº¿p W22â†’W23â†’W24 -->
+          <!-- Giảm 3 tuần liên tiếp W22→W23→W24 -->
           <tr class="persist">
-            <td>âš  CAJ0112</td>
-            <td><div class="dot dot-org">ðŸ†•</div></td>
-            <td><div class="dot dot-red">âœ—</div></td>
-            <td><div class="dot dot-red">âœ—</div></td>
-            <td><span class="badge-weeks bw3" style="background:#fca5a5;color:#7f1d1d">3 tuáº§n</span></td>
-            <td class="red"><b>ðŸ”´ Giáº£m liÃªn tá»¥c 3 tuáº§n (W22â†’W23â†’W24)</b></td>
+            <td>⚠ CAJ0112</td>
+            <td><div class="dot dot-org">🆕</div></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><span class="badge-weeks bw3" style="background:#fca5a5;color:#7f1d1d">3 tuần</span></td>
+            <td class="red"><b>🔴 Giảm liên tục 3 tuần (W22→W23→W24)</b></td>
           </tr>
           <tr class="persist">
-            <td>âš  CAJ0588</td>
-            <td><div class="dot dot-org">ðŸ†•</div></td>
-            <td><div class="dot dot-red">âœ—</div></td>
-            <td><div class="dot dot-red">âœ—</div></td>
-            <td><span class="badge-weeks bw3" style="background:#fca5a5;color:#7f1d1d">3 tuáº§n</span></td>
-            <td class="red"><b>ðŸ”´ Giáº£m liÃªn tá»¥c 3 tuáº§n (W22â†’W23â†’W24)</b></td>
+            <td>⚠ CAJ0588</td>
+            <td><div class="dot dot-org">🆕</div></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><span class="badge-weeks bw3" style="background:#fca5a5;color:#7f1d1d">3 tuần</span></td>
+            <td class="red"><b>🔴 Giảm liên tục 3 tuần (W22→W23→W24)</b></td>
           </tr>
-          <!-- Má»›i W23, tiáº¿p tá»¥c W24 -->
+          <!-- Mới W23, tiếp tục W24 -->
           <tr class="persist">
-            <td>âš  CAJ0193</td>
-            <td><div class="dot dot-dim">â€”</div></td>
-            <td><div class="dot dot-org">ðŸ†•</div></td>
-            <td><div class="dot dot-red">âœ—</div></td>
-            <td><span class="badge-weeks bw2">2 tuáº§n</span></td>
-            <td class="org"><b>âš  Äang tiáº¿p tá»¥c giáº£m (W23â†’W24)</b></td>
-          </tr>
-          <tr class="persist">
-            <td>âš  CAJ0020B3U1</td>
-            <td><div class="dot dot-dim">â€”</div></td>
-            <td><div class="dot dot-org">ðŸ†•</div></td>
-            <td><div class="dot dot-red">âœ—</div></td>
-            <td><span class="badge-weeks bw2">2 tuáº§n</span></td>
-            <td class="org"><b>âš  Äang tiáº¿p tá»¥c giáº£m (W23â†’W24)</b></td>
+            <td>⚠ CAJ0193</td>
+            <td><div class="dot dot-dim">—</div></td>
+            <td><div class="dot dot-org">🆕</div></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><span class="badge-weeks bw2">2 tuần</span></td>
+            <td class="org"><b>⚠ Đang tiếp tục giảm (W23→W24)</b></td>
           </tr>
           <tr class="persist">
-            <td>âš  CAJ0023B3U2</td>
-            <td><div class="dot dot-dim">â€”</div></td>
-            <td><div class="dot dot-org">ðŸ†•</div></td>
-            <td><div class="dot dot-red">âœ—</div></td>
-            <td><span class="badge-weeks bw2">2 tuáº§n</span></td>
-            <td class="org"><b>âš  Äang tiáº¿p tá»¥c giáº£m (W23â†’W24)</b></td>
+            <td>⚠ CAJ0020B3U1</td>
+            <td><div class="dot dot-dim">—</div></td>
+            <td><div class="dot dot-org">🆕</div></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><span class="badge-weeks bw2">2 tuần</span></td>
+            <td class="org"><b>⚠ Đang tiếp tục giảm (W23→W24)</b></td>
           </tr>
           <tr class="persist">
-            <td>âš  CAJ0205</td>
-            <td><div class="dot dot-dim">â€”</div></td>
-            <td><div class="dot dot-org">ðŸ†•</div></td>
-            <td><div class="dot dot-red">âœ—</div></td>
-            <td><span class="badge-weeks bw2">2 tuáº§n</span></td>
-            <td class="org"><b>âš  Äang tiáº¿p tá»¥c giáº£m (W23â†’W24)</b></td>
+            <td>⚠ CAJ0023B3U2</td>
+            <td><div class="dot dot-dim">—</div></td>
+            <td><div class="dot dot-org">🆕</div></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><span class="badge-weeks bw2">2 tuần</span></td>
+            <td class="org"><b>⚠ Đang tiếp tục giảm (W23→W24)</b></td>
           </tr>
-          <!-- Cáº£i thiá»‡n W23â†’W24 -->
-          <tr><td>CAJ0263</td><td><div class="dot dot-dim">â€”</div></td><td><div class="dot dot-red">âœ—</div></td><td><div class="dot dot-grn">âœ“</div></td><td><span class="badge-weeks bw1">1 tuáº§n</span></td><td class="grn">âœ… Cáº£i thiá»‡n trong W24 (-182â†’-100)</td></tr>
-          <tr><td>CAJ0368</td><td><div class="dot dot-dim">â€”</div></td><td><div class="dot dot-red">âœ—</div></td><td><div class="dot dot-grn">âœ“</div></td><td><span class="badge-weeks bw1">1 tuáº§n</span></td><td class="grn">âœ… Cáº£i thiá»‡n trong W24 (-132â†’-82)</td></tr>
-          <tr><td>CAJ0388</td><td><div class="dot dot-dim">â€”</div></td><td><div class="dot dot-red">âœ—</div></td><td><div class="dot dot-grn">âœ“</div></td><td><span class="badge-weeks bw1">1 tuáº§n</span></td><td class="grn">âœ… ThoÃ¡t danh sÃ¡ch W24 (-118â†’+2)</td></tr>
-          <tr><td>CAJ0116</td><td><div class="dot dot-dim">â€”</div></td><td><div class="dot dot-red">âœ—</div></td><td><div class="dot dot-grn">âœ“</div></td><td><span class="badge-weeks bw1">1 tuáº§n</span></td><td class="grn">âœ… Cáº£i thiá»‡n trong W24 (-116â†’-94)</td></tr>
+          <tr class="persist">
+            <td>⚠ CAJ0205</td>
+            <td><div class="dot dot-dim">—</div></td>
+            <td><div class="dot dot-org">🆕</div></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><span class="badge-weeks bw2">2 tuần</span></td>
+            <td class="org"><b>⚠ Đang tiếp tục giảm (W23→W24)</b></td>
+          </tr>
+          <!-- Cải thiện W23→W24 -->
+          <tr><td>CAJ0263</td><td><div class="dot dot-dim">—</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw1">1 tuần</span></td><td class="grn">✅ Cải thiện trong W24 (-182→-100)</td></tr>
+          <tr><td>CAJ0368</td><td><div class="dot dot-dim">—</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw1">1 tuần</span></td><td class="grn">✅ Cải thiện trong W24 (-132→-82)</td></tr>
+          <tr><td>CAJ0388</td><td><div class="dot dot-dim">—</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw1">1 tuần</span></td><td class="grn">✅ Thoát danh sách W24 (-118→+2)</td></tr>
+          <tr><td>CAJ0116</td><td><div class="dot dot-dim">—</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw1">1 tuần</span></td><td class="grn">✅ Cải thiện trong W24 (-116→-94)</td></tr>
         </tbody>
       </table>
 
       <div class="legend" style="margin-top:14px">
-        <div class="legend-item"><div class="dot dot-red" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">âœ—</div>&nbsp;Äang giáº£m 15C3D</div>
-        <div class="legend-item"><div class="dot dot-grn" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">âœ“</div>&nbsp;ÄÃ£ cáº£i thiá»‡n / thoÃ¡t danh sÃ¡ch</div>
-        <div class="legend-item"><div class="dot dot-org" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">ðŸ†•</div>&nbsp;Xuáº¥t hiá»‡n láº§n Ä‘áº§u tuáº§n nÃ y</div>
-        <div class="legend-item"><div class="dot dot-dim" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">â€”</div>&nbsp;KhÃ´ng trong danh sÃ¡ch tuáº§n Ä‘Ã³</div>
+        <div class="legend-item"><div class="dot dot-red" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">✗</div>&nbsp;Đang giảm 15C3D</div>
+        <div class="legend-item"><div class="dot dot-grn" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">✓</div>&nbsp;Đã cải thiện / thoát danh sách</div>
+        <div class="legend-item"><div class="dot dot-org" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">🆕</div>&nbsp;Xuất hiện lần đầu tuần này</div>
+        <div class="legend-item"><div class="dot dot-dim" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">—</div>&nbsp;Không trong danh sách tuần đó</div>
       </div>
 
       <div class="note">
-        ðŸ”´ <b>Cáº£nh bÃ¡o Æ°u tiÃªn cao:</b> <b>CAJ0112</b> vÃ  <b>CAJ0588</b> giáº£m <b>3 tuáº§n liÃªn tiáº¿p</b> (W22â†’W23â†’W24). Cáº§n leo thang xá»­ lÃ½ ngay.<br><br>
-        âš ï¸ <b>Cáº§n theo dÃµi:</b> <b>CAJ0193</b>, <b>CAJ0020B3U1</b>, <b>CAJ0023B3U2</b>, <b>CAJ0205</b> â€” tiáº¿p tá»¥c giáº£m 2 tuáº§n (W23â†’W24). CAJ0193 cÃ³ Cell*h 480h lÃ  trÆ°á»ng há»£p nghiÃªm trá»ng nháº¥t.<br><br>
-        âœ… <b>TÃ­n hiá»‡u tÃ­ch cá»±c:</b> 6/12 tráº¡m W23 Ä‘Ã£ cáº£i thiá»‡n hoáº·c thoÃ¡t danh sÃ¡ch trong W24 (50%). <b>CAJ0388</b> Ä‘Ã£ thoÃ¡t hoÃ n toÃ n (+2 TB).
+        🔴 <b>Cảnh báo ưu tiên cao:</b> <b>CAJ0112</b> và <b>CAJ0588</b> giảm <b>3 tuần liên tiếp</b> (W22→W23→W24). Cần leo thang xử lý ngay.<br><br>
+        ⚠️ <b>Cần theo dõi:</b> <b>CAJ0193</b>, <b>CAJ0020B3U1</b>, <b>CAJ0023B3U2</b>, <b>CAJ0205</b> — tiếp tục giảm 2 tuần (W23→W24). CAJ0193 có Cell*h 480h là trường hợp nghiêm trọng nhất.<br><br>
+        ✅ <b>Tín hiệu tích cực:</b> 6/12 trạm W23 đã cải thiện hoặc thoát danh sách trong W24 (50%). <b>CAJ0388</b> đã thoát hoàn toàn (+2 TB).
       </div>
     </div>
   </div>
@@ -694,46 +740,46 @@
 </div><!-- /container -->
 </div><!-- /page-dashboard -->
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+<!-- ══════════════════════════════════════════════
      MAP PAGE
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+════════════════════════════════════════════════ -->
 <div id="page-map" class="page-pane">
   <div class="map-sidebar">
     <div class="msec">
-      <h2>Tá»•ng quan</h2>
+      <h2>Tổng quan / Resumen</h2>
       <div class="mkpi-grid">
-        <div class="mkpi"><div class="mkpi-val" style="color:#f87171" id="mc-active">8</div><div class="mkpi-lbl">ðŸ”´ Má»›i W24</div></div>
-        <div class="mkpi"><div class="mkpi-val" style="color:#fb923c" id="mc-ongoing">6</div><div class="mkpi-lbl">ðŸŸ  Tiáº¿p tá»¥c W24</div></div>
-        <div class="mkpi"><div class="mkpi-val" style="color:#4ade80" id="mc-improved">22</div><div class="mkpi-lbl">âœ… ÄÃ£ cáº£i thiá»‡n</div></div>
-        <div class="mkpi"><div class="mkpi-val" style="color:#60a5fa" id="mc-5g">13</div><div class="mkpi-lbl">ðŸ“¡ CÃ³ 5G</div></div>
+        <div class="mkpi"><div class="mkpi-val" style="color:#f87171" id="mc-active">8</div><div class="mkpi-lbl">🔴 Mới / Nuevas W24</div></div>
+        <div class="mkpi"><div class="mkpi-val" style="color:#fb923c" id="mc-ongoing">6</div><div class="mkpi-lbl">🟠 Tiếp tục / Continúa W24</div></div>
+        <div class="mkpi"><div class="mkpi-val" style="color:#4ade80" id="mc-improved">22</div><div class="mkpi-lbl">✅ Cải thiện / Mejorado</div></div>
+        <div class="mkpi"><div class="mkpi-val" style="color:#60a5fa" id="mc-5g">13</div><div class="mkpi-lbl">📡 Có 5G / Con 5G</div></div>
       </div>
     </div>
     <div class="msec">
-      <h2>ChÃº thÃ­ch</h2>
+      <h2>Chú thích / Leyenda</h2>
       <div style="font-size:11px;display:flex;flex-direction:column;gap:6px">
-        <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:#ef4444;flex-shrink:0"></div>Má»›i xuáº¥t hiá»‡n W24 (Ä‘ang cáº£nh bÃ¡o)</div>
-        <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:#f97316;flex-shrink:0"></div>Tiáº¿p tá»¥c giáº£m W23â†’W24</div>
-        <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:#22c55e;flex-shrink:0"></div>ÄÃ£ cáº£i thiá»‡n / thoÃ¡t danh sÃ¡ch</div>
-        <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;border:2.5px dashed #60a5fa;flex-shrink:0"></div>VÃ²ng ngoÃ i = cÃ³ 5G</div>
-        <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:#64748b;flex-shrink:0;opacity:.5"></div>KÃ­ch thÆ°á»›c âˆ má»©c giáº£m 15C3D</div>
+        <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:#ef4444;flex-shrink:0"></div>Mới xuất hiện W24 (đang cảnh báo)</div>
+        <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:#f97316;flex-shrink:0"></div>Tiếp tục giảm W23→W24</div>
+        <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:#22c55e;flex-shrink:0"></div>Đã cải thiện / thoát danh sách</div>
+        <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;border:2.5px dashed #60a5fa;flex-shrink:0"></div>Vòng ngoài = có 5G</div>
+        <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:#64748b;flex-shrink:0;opacity:.5"></div>Kích thước ∝ mức giảm 15C3D</div>
       </div>
     </div>
     <div class="msec">
-      <h2>Bá»™ lá»c</h2>
-      <button class="mfbtn active" onclick="mapFilter('all',this)"><span class="mfdot" style="background:#60a5fa"></span>Táº¥t cáº£<span class="mfcnt">36</span></button>
-      <button class="mfbtn" onclick="mapFilter('active',this)"><span class="mfdot" style="background:#ef4444"></span>ðŸ”´ Má»›i W24<span class="mfcnt">8</span></button>
-      <button class="mfbtn" onclick="mapFilter('ongoing',this)"><span class="mfdot" style="background:#f97316"></span>ðŸŸ  Tiáº¿p tá»¥c<span class="mfcnt">6</span></button>
-      <button class="mfbtn" onclick="mapFilter('improved',this)"><span class="mfdot" style="background:#22c55e"></span>âœ… ÄÃ£ cáº£i thiá»‡n<span class="mfcnt">22</span></button>
-      <button class="mfbtn" onclick="mapFilter('5g',this)"><span class="mfdot" style="background:#60a5fa"></span>ðŸ“¡ 5G<span class="mfcnt">13</span></button>
+      <h2>Bộ lọc / Filtro</h2>
+      <button class="mfbtn active" onclick="mapFilter('all',this)"><span class="mfdot" style="background:#60a5fa"></span>Tất cả / Todas<span class="mfcnt">36</span></button>
+      <button class="mfbtn" onclick="mapFilter('active',this)"><span class="mfdot" style="background:#ef4444"></span>🔴 Mới / Nuevas W24<span class="mfcnt">8</span></button>
+      <button class="mfbtn" onclick="mapFilter('ongoing',this)"><span class="mfdot" style="background:#f97316"></span>🟠 Tiếp tục / Continúa<span class="mfcnt">6</span></button>
+      <button class="mfbtn" onclick="mapFilter('improved',this)"><span class="mfdot" style="background:#22c55e"></span>✅ Cải thiện / Mejorado<span class="mfcnt">22</span></button>
+      <button class="mfbtn" onclick="mapFilter('5g',this)"><span class="mfdot" style="background:#60a5fa"></span>📡 5G<span class="mfcnt">13</span></button>
     </div>
-    <div class="msec" style="padding-bottom:6px;border-bottom:none"><h2>Danh sÃ¡ch tráº¡m</h2></div>
+    <div class="msec" style="padding-bottom:6px;border-bottom:none"><h2>Danh sách trạm / Lista de Estaciones</h2></div>
     <div class="mlist" id="mlist"></div>
   </div>
   <div id="leaflet-map"></div>
 </div>
 
 <script>
-  // â”€â”€ Page-level tab switching â”€â”€
+  // ── Page-level tab switching ──
   let leafletMap = null;
   function switchPage(id, el) {
     document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
@@ -746,7 +792,7 @@
     }
   }
 
-  // â”€â”€ Station tab switching (W21/W22/W23) â”€â”€
+  // ── Station tab switching (W21/W22/W23) ──
   function switchTab(id, el) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
@@ -756,7 +802,7 @@
 
   const MONTHS = CFG.months;
 
-  // â”€â”€ 15C3D data â”€â”€
+  // ── 15C3D data ──
   const actual15    = CFG.c15.actual;
   const kh15        = CFG.c15.plan;
   const ytdActual15 = CFG.c15.ytd;
@@ -781,7 +827,7 @@
       labels: MONTHS,
       datasets: [
         {
-          label: 'KH thÃ¡ng',
+          label: 'KH tháng',
           data: kh15,
           backgroundColor: 'rgba(15,76,129,0.10)',
           borderColor: '#0f4c81',
@@ -791,7 +837,7 @@
           order: 3,
         },
         {
-          label: 'Thá»±c hiá»‡n thÃ¡ng',
+          label: 'Thực hiện tháng',
           data: actual15,
           backgroundColor: barColors15,
           borderColor: borderColors15,
@@ -801,7 +847,7 @@
           order: 2,
         },
         {
-          label: 'LÅ©y káº¿ TH',
+          label: 'Lũy kế TH',
           data: ytdActual15,
           type: 'line',
           yAxisID: 'yYTD',
@@ -816,7 +862,7 @@
           order: 0,
         },
         {
-          label: 'LÅ©y káº¿ KH',
+          label: 'Lũy kế KH',
           data: ytdKH15,
           type: 'line',
           yAxisID: 'yYTD',
@@ -831,7 +877,7 @@
           order: 1,
         },
         {
-          label: 'KH NÄƒm (39,904)',
+          label: 'KH Năm (39,904)',
           data: MONTHS.map(() => annualKH15),
           type: 'line',
           yAxisID: 'yYTD',
@@ -854,7 +900,7 @@
           callbacks: {
             label(c) {
               const v = c.raw;
-              if (c.dataset.yAxisID === 'yYTD' || c.dataset.label.includes('KH NÄƒm')) {
+              if (c.dataset.yAxisID === 'yYTD' || c.dataset.label.includes('KH Năm')) {
                 return ' ' + c.dataset.label + ': ' + Number(v).toLocaleString('vi-VN') + ' TB';
               }
               return ' ' + c.dataset.label + ': ' + Number(v).toLocaleString('vi-VN') + ' TB';
@@ -864,7 +910,7 @@
       },
       scales: {
         y: {
-          title: { display: true, text: 'TB/thÃ¡ng', font: { size: 11 }, color: '#64748b' },
+          title: { display: true, text: 'TB/tháng', font: { size: 11 }, color: '#64748b' },
           ticks: { callback: v => v.toLocaleString('vi-VN'), font: { size: 11 } },
           grid: { color: '#f1f5f9' },
           suggestedMin: -3000,
@@ -872,7 +918,7 @@
         },
         yYTD: {
           position: 'right',
-          title: { display: true, text: 'LÅ©y káº¿ (TB)', font: { size: 11 }, color: '#e85d04' },
+          title: { display: true, text: 'Lũy kế (TB)', font: { size: 11 }, color: '#e85d04' },
           ticks: { callback: v => (v/1000).toFixed(0)+'k', font: { size: 11 }, color: '#e85d04' },
           grid: { display: false },
           suggestedMin: 0,
@@ -883,7 +929,7 @@
     }
   });
 
-  // â”€â”€ Revenue Chart â”€â”€
+  // ── Revenue Chart ──
   const actualRev = CFG.rev.actual;
   const khRev     = CFG.rev.plan;
   const pctRev    = [101.3, 100.6, 104.2, 101.5, 101.9, null];
@@ -905,7 +951,7 @@
           order: 2,
         },
         {
-          label: 'Thá»±c hiá»‡n (tr. PEN)',
+          label: 'Thực hiện (tr. PEN)',
           data: actualRev,
           backgroundColor: actualRev.map((v, i) => khRev[i] && v >= khRev[i] * 0.99
             ? 'rgba(22,163,74,0.75)' : 'rgba(217,119,6,0.75)'),
@@ -917,7 +963,7 @@
           order: 1,
         },
         {
-          label: '% Äáº¡t KH',
+          label: '% Đạt KH',
           data: pctRev,
           type: 'line',
           yAxisID: 'yPct',
@@ -943,8 +989,8 @@
         tooltip: {
           callbacks: {
             label(c) {
-              if (c.dataset.label === '% Äáº¡t KH') {
-                return c.raw == null ? '' : ' % Äáº¡t: ' + c.raw + '%';
+              if (c.dataset.label === '% Đạt KH') {
+                return c.raw == null ? '' : ' % Đạt: ' + c.raw + '%';
               }
               return ' ' + c.dataset.label + ': ' + Number(c.raw).toLocaleString('vi-VN') + ' tr.';
             }
@@ -953,7 +999,7 @@
       },
       scales: {
         y: {
-          title: { display: true, text: 'Triá»‡u PEN', font: { size: 11 }, color: '#64748b' },
+          title: { display: true, text: 'Triệu PEN', font: { size: 11 }, color: '#64748b' },
           ticks: { callback: v => v.toLocaleString('vi-VN'), font: { size: 11 } },
           grid: { color: '#f1f5f9' },
           suggestedMin: 0,
@@ -961,7 +1007,7 @@
         },
         yPct: {
           position: 'right',
-          title: { display: true, text: '% Äáº¡t', font: { size: 11 }, color: '#e85d04' },
+          title: { display: true, text: '% Đạt', font: { size: 11 }, color: '#e85d04' },
           ticks: { callback: v => v + '%', font: { size: 11 }, color: '#e85d04' },
           grid: { display: false },
           min: 95,
@@ -972,39 +1018,42 @@
     }
   });
 
-  // â”€â”€ REG Chart â€” LÅ©y káº¿ thuÃª bao REG vs Káº¿ hoáº¡ch â”€â”€
-  // Nguá»“n: file Reg 1506 site.xlsx â€” dÃ²ng 4 (Totals)
-  const actualReg    = CFG.reg.growth;
-  const khRegFlat    = CFG.reg.planMonth;
-  const ytdActualReg = CFG.reg.ytd;
-  const ytdKhReg     = CFG.reg.ytdPlan;
-
-  (function buildC15Table() {
-    const mo=CFG.months, ac=CFG.c15.actual, pl=CFG.c15.plan, yt=CFG.c15.ytd;
-    const tb=document.getElementById('c15Tbody');
-    if(!tb) return;
-    const fmt=v=>(v>0?'+':'')+v.toLocaleString('vi-VN');
-    tb.innerHTML=mo.map((m,i)=>{
-      const isL=i===mo.length-1, rs=isL?'background:#f0fdf4':'border-bottom:1px solid #f1f5f9';
-      const tc=ac[i]>=0?'var(--success)':'#ef4444', kc=pl[i]>=0?'var(--text)':'#ef4444';
-      return `<tr style="${rs}"><td style="padding:5px 6px;font-weight:700">${m}</td><td style="text-align:right;padding:5px 6px;color:${tc};font-weight:700">${fmt(ac[i])}</td><td style="text-align:right;padding:5px 6px;color:${kc}">${fmt(pl[i])}</td><td style="text-align:right;padding:5px 6px;font-weight:700">${yt[i].toLocaleString('vi-VN')}</td></tr>`;
-    }).join('');
-    const nd=document.getElementById('c15Note');
-    if(nd){const l=mo.length-1;nd.innerHTML=`📊 <b>KH năm: ${CFG.c15.annualKh.toLocaleString('vi-VN')} TB</b><br>Lũy kế TH T1–T5: <b style="color:var(--success)">${CFG.kpi.c15YtdActual.toLocaleString('vi-VN')} TB</b><br>Lũy kế KH T1–T5: <b>${CFG.kpi.c15YtdPlan.toLocaleString('vi-VN')} TB</b><br>vs KH lũy kế: <b style="color:var(--success)">${CFG.kpi.c15YtdPct}%</b> ✅<br>T6 (W1+W2): <b style="color:#ef4444">${CFG.kpi.c15T6Actual.toLocaleString('vi-VN')} TB</b> (${CFG.kpi.c15T6Change.toLocaleString('vi-VN')} TB).`;}
-  })();
-
+  // ── REG Sidebar Table — dynamic from CFG (absolute subscriber counts) ──
   (function buildRegTable() {
-    const mo = CFG.months, ytd = CFG.reg.ytd, kh = CFG.reg.ytdPlan;
-    const tb = document.getElementById('regTbody');
-    if (tb) tb.innerHTML = mo.map((m,i) => {
-      const pct = (ytd[i]/kh[i]*100).toFixed(1), isL = i===mo.length-1;
-      const rs = isL?'background:#f0fdf4':'border-bottom:1px solid #f1f5f9';
-      return `<tr style="${rs}"><td style="padding:5px 6px;font-weight:700">${m}</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">${ytd[i].toLocaleString('vi-VN')}</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">${kh[i].toLocaleString('vi-VN')}</td><td style="text-align:right;padding:5px 6px"><span class="pill ${pct>=100?'pill-ok':'pill-warn'}">${pct}%</span></td></tr>`;
+    const months = CFG.months;
+    const act = CFG.reg.absActual;
+    const kh  = CFG.reg.absPlan;
+    const tb  = document.getElementById('regTbody');
+    if (!tb) return;
+    tb.innerHTML = months.map((m, i) => {
+      const pct = (act[i] / kh[i] * 100).toFixed(1);
+      const isLast = i === months.length - 1;
+      const rowStyle = isLast ? 'background:#f0fdf4' : 'border-bottom:1px solid #f1f5f9';
+      const pillCls  = pct >= 100 ? 'pill-ok' : 'pill-warn';
+      return `<tr style="${rowStyle}">
+        <td style="padding:5px 6px;font-weight:700">${m}</td>
+        <td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">${act[i].toLocaleString('vi-VN')}</td>
+        <td style="text-align:right;padding:5px 6px;color:var(--muted)">${kh[i].toLocaleString('vi-VN')}</td>
+        <td style="text-align:right;padding:5px 6px"><span class="pill ${pillCls}">${pct}%</span></td>
+      </tr>`;
     }).join('');
-    const ly=ytd[ytd.length-1], lk=kh[kh.length-1], lp=(ly/lk*100).toFixed(1), op=(ly/lk*100-100).toFixed(1);
-    const nd = document.getElementById('regNote');
-    if (nd) nd.innerHTML = `📊 <b>KH: +${CFG.reg.planMonth.toLocaleString('vi-VN')} TB/tháng</b><br>Lũy kế TH (${CFG.reg.t6Note}): <b style="color:var(--success)">${ly.toLocaleString('vi-VN')} TB</b><br>Lũy kế KH (T6): <b>${lk.toLocaleString('vi-VN')} TB</b><br>vs KH lũy kế: <b style="color:var(--success)">${lp}%</b> ${lp>=100?'✅':'⚠️'}`;
+    const lastAct = act[act.length - 1];
+    const lastKh  = kh[kh.length - 1];
+    const lastPct = (lastAct / lastKh * 100).toFixed(1);
+    const note = document.getElementById('regNote');
+    if (note) note.innerHTML = `📊 <b>Thuê bao REG ${CFG.reg.t6Note}: ${lastAct.toLocaleString('vi-VN')} TB</b><br>
+      <span style="color:var(--muted);font-size:10px">Suscriptores REG: ${lastAct.toLocaleString()}</span><br>
+      KH / Plan T6: <b>${lastKh.toLocaleString('vi-VN')} TB</b><br>
+      vs KH: <b style="color:var(--success)">${lastPct}%</b> ✅<br>
+      Tăng từ base / Crecimiento desde base: <b style="color:var(--success)">+${CFG.reg.ytd[CFG.reg.ytd.length-1].toLocaleString('vi-VN')} TB</b>`;
   })();
+
+  // ── REG Chart — Thuê bao REG tuyệt đối vs Kế hoạch / Suscriptores REG total vs Plan ──
+  // Nguồn: file Reg 1506 site.xlsx — dòng 4 (Totals), base T0=297.941
+  const actualReg    = CFG.reg.growth;       // tăng trưởng ròng tháng (cột phụ)
+  const khRegFlat    = CFG.reg.planMonth;
+  const absActualReg = CFG.reg.absActual;    // tổng thuê bao tuyệt đối TH
+  const absKhReg     = CFG.reg.absPlan;      // tổng thuê bao tuyệt đối KH
 
   const ctxReg = document.getElementById('regChart').getContext('2d');
   new Chart(ctxReg, {
@@ -1013,8 +1062,8 @@
       labels: MONTHS,
       datasets: [
         {
-          label: 'LÅ©y káº¿ TH (Thá»±c hiá»‡n)',
-          data: ytdActualReg,
+          label: 'TB REG thực hiện / Real (TB)',
+          data: absActualReg,
           borderColor: '#e85d04',
           backgroundColor: 'rgba(232,93,4,0.10)',
           fill: true,
@@ -1026,8 +1075,8 @@
           order: 0,
         },
         {
-          label: 'LÅ©y káº¿ KH (+3,500 TB/thÃ¡ng)',
-          data: ytdKhReg,
+          label: 'KH / Plan (+3.500 TB/mes)',
+          data: absKhReg,
           borderColor: '#0f4c81',
           borderDash: [6, 4],
           backgroundColor: 'transparent',
@@ -1040,7 +1089,7 @@
           order: 1,
         },
         {
-          label: 'TÄƒng trÆ°á»Ÿng thÃ¡ng (TH)',
+          label: 'Tăng trưởng ròng / Crecimiento neto (TB)',
           data: actualReg,
           type: 'bar',
           backgroundColor: actualReg.map(v => v < khRegFlat * 0.9 ? 'rgba(217,119,6,0.35)' : 'rgba(22,163,74,0.30)'),
@@ -1063,11 +1112,11 @@
             label(c) {
               const v = Number(c.raw).toLocaleString('vi-VN');
               if (c.datasetIndex === 0) {
-                const pct = (ytdActualReg[c.dataIndex] / ytdKhReg[c.dataIndex] * 100).toFixed(1);
-                return [` LÅ©y káº¿ TH: ${v} TB`, ` vs KH: ${pct}%`];
+                const pct = (absActualReg[c.dataIndex] / absKhReg[c.dataIndex] * 100).toFixed(1);
+                return [` TB REG TH: ${v}`, ` vs KH/Plan: ${pct}%`];
               }
-              if (c.datasetIndex === 1) return ` LÅ©y káº¿ KH: ${v} TB`;
-              return ` TÄƒng trÆ°á»Ÿng thÃ¡ng: +${v} TB (KH: +${khRegFlat.toLocaleString('vi-VN')} TB)`;
+              if (c.datasetIndex === 1) return ` KH/Plan: ${v} TB`;
+              return ` Tăng trưởng ròng / Crecimiento: +${v} TB`;
             }
           }
         }
@@ -1075,15 +1124,15 @@
       scales: {
         y: {
           position: 'left',
-          title: { display: true, text: 'LÅ©y káº¿ thuÃª bao REG (TB)', font: { size: 11 }, color: '#e85d04' },
+          title: { display: true, text: 'Thuê bao REG / Suscriptores REG', font: { size: 11 }, color: '#e85d04' },
           ticks: { callback: v => (v/1000).toFixed(0)+'k', font: { size: 11 }, color: '#e85d04' },
           grid: { color: '#f1f5f9' },
-          suggestedMin: 0,
-          suggestedMax: 30000,
+          min: 295000,
+          suggestedMax: 325000,
         },
         yGrowth: {
           position: 'right',
-          title: { display: true, text: 'TÄƒng trÆ°á»Ÿng/thÃ¡ng (TB)', font: { size: 11 }, color: '#64748b' },
+          title: { display: true, text: 'Tăng trưởng ròng / Crecimiento (TB)', font: { size: 11 }, color: '#64748b' },
           ticks: { callback: v => v.toLocaleString('vi-VN'), font: { size: 11 }, color: '#64748b' },
           grid: { display: false },
           suggestedMin: 0,
@@ -1094,56 +1143,56 @@
     }
   });
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // ══════════════════════════════════════════
   //  LEAFLET MAP
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // ══════════════════════════════════════════
   const MAP_STATIONS = [
-    {"code":"CAJ0299","base":"CAJ0299","lat":-6.249032,"lon":-78.95742,"zone":"CUTERVO","prov":"Cutervo","addr":"Querocotillo, Cutervo, Cajamarca, PerÃº","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-301,"deltaReg":-326,"status":"improved"},
-    {"code":"CAJ0094","base":"CAJ0094","lat":-6.76938,"lon":-78.47781,"zone":"BAMBAMARCA","prov":"Hualgayoc","addr":"Bambamarca, Hualgayoc, Cajamarca, PerÃº","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-140,"deltaReg":-146,"status":"improved"},
-    {"code":"CAJ0014","base":"CAJ0014","lat":-7.14245,"lon":-78.49913,"zone":"CAJAMARCA","prov":"Los BaÃ±os del Inca","addr":"Los BaÃ±os del Inca, Cajamarca, PerÃº","is5g":true,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-261,"deltaReg":-247,"status":"improved"},
-    {"code":"CAJ0010","base":"CAJ0010","lat":-7.16727,"lon":-78.50778,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, PerÃº","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-193,"deltaReg":-224,"status":"improved"},
-    {"code":"CAJ0282","base":"CAJ0282","lat":-6.5721,"lon":-78.61675,"zone":"BAMBAMARCA","prov":"Chota","addr":"Chota, Cajamarca, PerÃº","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-114,"deltaReg":-151,"status":"improved"},
-    {"code":"CAJ0088","base":"CAJ0088","lat":-6.86629,"lon":-78.14502,"zone":"CAJABAMBA","prov":"CelendÃ­n","addr":"CelendÃ­n, Cajamarca, PerÃº","is5g":true,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-434,"deltaReg":-512,"status":"improved"},
-    {"code":"CAJ0314","base":"CAJ0314","lat":-6.17855,"lon":-78.999947,"zone":"CUTERVO","prov":"Cutervo","addr":"Querocotillo, Cutervo, Cajamarca, PerÃº","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-139,"deltaReg":-157,"status":"improved"},
-    {"code":"CAJ0023","base":"CAJ0023","lat":-7.15737,"lon":-78.46372,"zone":"CAJAMARCA","prov":"Los BaÃ±os del Inca","addr":"Los BaÃ±os del Inca, Cajamarca, PerÃº","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-184,"deltaReg":-182,"status":"improved"},
-    {"code":"CAJ0181","base":"CAJ0181","lat":-6.560257,"lon":-78.64663,"zone":"BAMBAMARCA","prov":"Chota","addr":"Chota, Cajamarca, PerÃº","is5g":true,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-466,"deltaReg":-554,"status":"improved"},
-    {"code":"CAJ0021","base":"CAJ0021","lat":-7.12542,"lon":-78.47259,"zone":"CAJAMARCA","prov":"Los BaÃ±os del Inca","addr":"Los BaÃ±os del Inca, Cajamarca, PerÃº","is5g":true,"weeks":["W21"],"lastWeek":"W21","delta15":-129,"deltaReg":-158,"status":"improved"},
-    {"code":"CAJ0574","base":"CAJ0574","lat":-7.165282,"lon":-78.503745,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, PerÃº","is5g":true,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-112,"deltaReg":null,"status":"improved"},
-    {"code":"CAJ0203","base":"CAJ0203","lat":-7.205765,"lon":-78.518085,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, PerÃº","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-488,"deltaReg":-490,"status":"improved"},
-    {"code":"CAJ0370","base":"CAJ0370","lat":-7.087521,"lon":-78.421629,"zone":"CAJAMARCA","prov":"Los BaÃ±os del Inca","addr":"Los BaÃ±os del Inca, Cajamarca, PerÃº","is5g":false,"weeks":["W22"],"lastWeek":"W22","delta15":-202,"deltaReg":-228,"status":"improved"},
-    {"code":"CAJ0008","base":"CAJ0008","lat":-7.15986,"lon":-78.50867,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, PerÃº","is5g":true,"weeks":["W22"],"lastWeek":"W22","delta15":-156,"deltaReg":-205,"status":"improved"},
-    {"code":"CAJ0012","base":"CAJ0012","lat":-7.1249,"lon":-78.51068,"zone":"CAJAMARCA","prov":"Los BaÃ±os del Inca","addr":"Los BaÃ±os del Inca, Cajamarca, PerÃº","is5g":true,"weeks":["W22"],"lastWeek":"W22","delta15":-134,"deltaReg":-160,"status":"improved"},
-    {"code":"CAJ0019","base":"CAJ0019","lat":-7.18096,"lon":-78.50496,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, PerÃº","is5g":true,"weeks":["W22"],"lastWeek":"W22","delta15":-162,"deltaReg":-190,"status":"improved"},
-    {"code":"CAJ0172","base":"CAJ0172","lat":-7.22121,"lon":-78.48073,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, PerÃº","is5g":false,"weeks":["W22"],"lastWeek":"W22","delta15":-101,"deltaReg":-167,"status":"improved"},
-    {"code":"CAJ0002B3U1","base":"CAJ0002","lat":-7.14376,"lon":-78.52407,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, PerÃº","is5g":false,"weeks":["W22"],"lastWeek":"W22","delta15":-114,"deltaReg":-160,"status":"improved"},
-    {"code":"CAJ0263","base":"CAJ0263","lat":-6.723993,"lon":-78.461057,"zone":"BAMBAMARCA","prov":"Hualgayoc","addr":"Bambamarca, Hualgayoc, Cajamarca, PerÃº","is5g":false,"weeks":["W23"],"lastWeek":"W24","delta15":-100,"deltaReg":-103,"status":"improved"},
-    {"code":"CAJ0368","base":"CAJ0368","lat":-7.378458,"lon":-78.07954,"zone":"CELEDIN","prov":"San Marcos","addr":"IchocÃ¡n, San Marcos, Cajamarca, PerÃº","is5g":false,"weeks":["W23"],"lastWeek":"W24","delta15":-82,"deltaReg":-103,"status":"improved"},
-    {"code":"CAJ0388","base":"CAJ0388","lat":-7.656689,"lon":-78.059454,"zone":"CELEDIN","prov":"Cajabamba","addr":"Cajabamba, Cajamarca, PerÃº","is5g":false,"weeks":["W23"],"lastWeek":"W24","delta15":2,"deltaReg":40,"status":"improved"},
-    {"code":"CAJ0116","base":"CAJ0116","lat":-6.624082,"lon":-78.94206,"zone":"CUTERVO","prov":"Santa Cruz","addr":"Santa Cruz, Cajamarca, PerÃº","is5g":false,"weeks":["W23"],"lastWeek":"W24","delta15":-94,"deltaReg":-161,"status":"improved"},
-    {"code":"CAJ0588","base":"CAJ0588","lat":-6.379588,"lon":-78.814186,"zone":"CUTERVO","prov":"Cutervo","addr":"Cutervo, Cajamarca, PerÃº","is5g":true,"weeks":["W22","W23","W24"],"lastWeek":"W24","delta15":-149,"deltaReg":-250,"status":"ongoing"},
-    {"code":"CAJ0112","base":"CAJ0112","lat":-7.15315,"lon":-78.51386,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, PerÃº","is5g":true,"weeks":["W22","W23","W24"],"lastWeek":"W24","delta15":-156,"deltaReg":-303,"status":"ongoing"},
-    {"code":"CAJ0193","base":"CAJ0193","lat":-6.688911,"lon":-78.52917,"zone":"BAMBAMARCA","prov":"Hualgayoc","addr":"Bambamarca, Hualgayoc, Cajamarca, PerÃº","is5g":true,"weeks":["W23","W24"],"lastWeek":"W24","delta15":-334,"deltaReg":-578,"status":"ongoing"},
-    {"code":"CAJ0020B3U1","base":"CAJ0020","lat":-7.193428,"lon":-78.499877,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, PerÃº","is5g":true,"weeks":["W23","W24"],"lastWeek":"W24","delta15":-272,"deltaReg":-495,"status":"ongoing"},
-    {"code":"CAJ0023B3U2","base":"CAJ0023","lat":-7.172624,"lon":-78.43213,"zone":"CAJAMARCA","prov":"Los BaÃ±os del Inca","addr":"Los BaÃ±os del Inca, Cajamarca, PerÃº","is5g":false,"weeks":["W23","W24"],"lastWeek":"W24","delta15":-222,"deltaReg":-397,"status":"ongoing"},
-    {"code":"CAJ0205","base":"CAJ0205","lat":-6.856259,"lon":-78.14541,"zone":"CAJABAMBA","prov":"CelendÃ­n","addr":"CelendÃ­n, Cajamarca, PerÃº","is5g":false,"weeks":["W23","W24"],"lastWeek":"W24","delta15":-113,"deltaReg":-207,"status":"ongoing"},
-    {"code":"CAJ0252","base":"CAJ0252","lat":-6.553,"lon":-78.649,"zone":"BAMBAMARCA","prov":"Chota","addr":"Chota, Cajamarca, PerÃº","is5g":false,"weeks":["W24"],"lastWeek":"W24","delta15":-206,"deltaReg":-374,"status":"active"},
-    {"code":"CAJ0013","base":"CAJ0013","lat":-7.158,"lon":-78.507,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, PerÃº","is5g":false,"weeks":["W24"],"lastWeek":"W24","delta15":-166,"deltaReg":-303,"status":"active"},
-    {"code":"CAJ0476","base":"CAJ0476","lat":-6.871,"lon":-78.163,"zone":"CELEDIN","prov":"CelendÃ­n","addr":"CelendÃ­n, Cajamarca, PerÃº","is5g":false,"weeks":["W24"],"lastWeek":"W24","delta15":-129,"deltaReg":-190,"status":"active"},
-    {"code":"CAJ0220","base":"CAJ0220","lat":-7.115,"lon":-78.445,"zone":"CAJAMARCA","prov":"Los BaÃ±os del Inca","addr":"Los BaÃ±os del Inca, Cajamarca, PerÃº","is5g":false,"weeks":["W24"],"lastWeek":"W24","delta15":-127,"deltaReg":-240,"status":"active"},
-    {"code":"CAJ0113","base":"CAJ0113","lat":-7.335,"lon":-78.175,"zone":"CELEDIN","prov":"San Marcos","addr":"San Marcos, Cajamarca, PerÃº","is5g":false,"weeks":["W24"],"lastWeek":"W24","delta15":-116,"deltaReg":-243,"status":"active"},
-    {"code":"CAJ0110","base":"CAJ0110","lat":-6.384542,"lon":-78.817008,"zone":"CUTERVO","prov":"Cutervo","addr":"Cutervo, Cajamarca, PerÃº","is5g":true,"weeks":["W21","W22","W24"],"lastWeek":"W24","delta15":-107,"deltaReg":-136,"status":"active"},
-    {"code":"CAJ0007","base":"CAJ0007","lat":-7.162,"lon":-78.511,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, PerÃº","is5g":false,"weeks":["W24"],"lastWeek":"W24","delta15":-106,"deltaReg":-146,"status":"active"},
-    {"code":"CAJ0070","base":"CAJ0070","lat":-7.178,"lon":-78.491,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, PerÃº","is5g":false,"weeks":["W24"],"lastWeek":"W24","delta15":-101,"deltaReg":-190,"status":"active"}
+    {"code":"CAJ0299","base":"CAJ0299","lat":-6.249032,"lon":-78.95742,"zone":"CUTERVO","prov":"Cutervo","addr":"Querocotillo, Cutervo, Cajamarca, Perú","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-301,"deltaReg":-326,"status":"improved"},
+    {"code":"CAJ0094","base":"CAJ0094","lat":-6.76938,"lon":-78.47781,"zone":"BAMBAMARCA","prov":"Hualgayoc","addr":"Bambamarca, Hualgayoc, Cajamarca, Perú","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-140,"deltaReg":-146,"status":"improved"},
+    {"code":"CAJ0014","base":"CAJ0014","lat":-7.14245,"lon":-78.49913,"zone":"CAJAMARCA","prov":"Los Baños del Inca","addr":"Los Baños del Inca, Cajamarca, Perú","is5g":true,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-261,"deltaReg":-247,"status":"improved"},
+    {"code":"CAJ0010","base":"CAJ0010","lat":-7.16727,"lon":-78.50778,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-193,"deltaReg":-224,"status":"improved"},
+    {"code":"CAJ0282","base":"CAJ0282","lat":-6.5721,"lon":-78.61675,"zone":"BAMBAMARCA","prov":"Chota","addr":"Chota, Cajamarca, Perú","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-114,"deltaReg":-151,"status":"improved"},
+    {"code":"CAJ0088","base":"CAJ0088","lat":-6.86629,"lon":-78.14502,"zone":"CAJABAMBA","prov":"Celendín","addr":"Celendín, Cajamarca, Perú","is5g":true,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-434,"deltaReg":-512,"status":"improved"},
+    {"code":"CAJ0314","base":"CAJ0314","lat":-6.17855,"lon":-78.999947,"zone":"CUTERVO","prov":"Cutervo","addr":"Querocotillo, Cutervo, Cajamarca, Perú","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-139,"deltaReg":-157,"status":"improved"},
+    {"code":"CAJ0023","base":"CAJ0023","lat":-7.15737,"lon":-78.46372,"zone":"CAJAMARCA","prov":"Los Baños del Inca","addr":"Los Baños del Inca, Cajamarca, Perú","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-184,"deltaReg":-182,"status":"improved"},
+    {"code":"CAJ0181","base":"CAJ0181","lat":-6.560257,"lon":-78.64663,"zone":"BAMBAMARCA","prov":"Chota","addr":"Chota, Cajamarca, Perú","is5g":true,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-466,"deltaReg":-554,"status":"improved"},
+    {"code":"CAJ0021","base":"CAJ0021","lat":-7.12542,"lon":-78.47259,"zone":"CAJAMARCA","prov":"Los Baños del Inca","addr":"Los Baños del Inca, Cajamarca, Perú","is5g":true,"weeks":["W21"],"lastWeek":"W21","delta15":-129,"deltaReg":-158,"status":"improved"},
+    {"code":"CAJ0574","base":"CAJ0574","lat":-7.165282,"lon":-78.503745,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":true,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-112,"deltaReg":null,"status":"improved"},
+    {"code":"CAJ0203","base":"CAJ0203","lat":-7.205765,"lon":-78.518085,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":false,"weeks":["W21","W22"],"lastWeek":"W22","delta15":-488,"deltaReg":-490,"status":"improved"},
+    {"code":"CAJ0370","base":"CAJ0370","lat":-7.087521,"lon":-78.421629,"zone":"CAJAMARCA","prov":"Los Baños del Inca","addr":"Los Baños del Inca, Cajamarca, Perú","is5g":false,"weeks":["W22"],"lastWeek":"W22","delta15":-202,"deltaReg":-228,"status":"improved"},
+    {"code":"CAJ0008","base":"CAJ0008","lat":-7.15986,"lon":-78.50867,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":true,"weeks":["W22"],"lastWeek":"W22","delta15":-156,"deltaReg":-205,"status":"improved"},
+    {"code":"CAJ0012","base":"CAJ0012","lat":-7.1249,"lon":-78.51068,"zone":"CAJAMARCA","prov":"Los Baños del Inca","addr":"Los Baños del Inca, Cajamarca, Perú","is5g":true,"weeks":["W22"],"lastWeek":"W22","delta15":-134,"deltaReg":-160,"status":"improved"},
+    {"code":"CAJ0019","base":"CAJ0019","lat":-7.18096,"lon":-78.50496,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":true,"weeks":["W22"],"lastWeek":"W22","delta15":-162,"deltaReg":-190,"status":"improved"},
+    {"code":"CAJ0172","base":"CAJ0172","lat":-7.22121,"lon":-78.48073,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":false,"weeks":["W22"],"lastWeek":"W22","delta15":-101,"deltaReg":-167,"status":"improved"},
+    {"code":"CAJ0002B3U1","base":"CAJ0002","lat":-7.14376,"lon":-78.52407,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":false,"weeks":["W22"],"lastWeek":"W22","delta15":-114,"deltaReg":-160,"status":"improved"},
+    {"code":"CAJ0263","base":"CAJ0263","lat":-6.723993,"lon":-78.461057,"zone":"BAMBAMARCA","prov":"Hualgayoc","addr":"Bambamarca, Hualgayoc, Cajamarca, Perú","is5g":false,"weeks":["W23"],"lastWeek":"W24","delta15":-100,"deltaReg":-103,"status":"improved"},
+    {"code":"CAJ0368","base":"CAJ0368","lat":-7.378458,"lon":-78.07954,"zone":"CELEDIN","prov":"San Marcos","addr":"Ichocán, San Marcos, Cajamarca, Perú","is5g":false,"weeks":["W23"],"lastWeek":"W24","delta15":-82,"deltaReg":-103,"status":"improved"},
+    {"code":"CAJ0388","base":"CAJ0388","lat":-7.656689,"lon":-78.059454,"zone":"CELEDIN","prov":"Cajabamba","addr":"Cajabamba, Cajamarca, Perú","is5g":false,"weeks":["W23"],"lastWeek":"W24","delta15":2,"deltaReg":40,"status":"improved"},
+    {"code":"CAJ0116","base":"CAJ0116","lat":-6.624082,"lon":-78.94206,"zone":"CUTERVO","prov":"Santa Cruz","addr":"Santa Cruz, Cajamarca, Perú","is5g":false,"weeks":["W23"],"lastWeek":"W24","delta15":-94,"deltaReg":-161,"status":"improved"},
+    {"code":"CAJ0588","base":"CAJ0588","lat":-6.379588,"lon":-78.814186,"zone":"CUTERVO","prov":"Cutervo","addr":"Cutervo, Cajamarca, Perú","is5g":true,"weeks":["W22","W23","W24"],"lastWeek":"W24","delta15":-149,"deltaReg":-250,"status":"ongoing"},
+    {"code":"CAJ0112","base":"CAJ0112","lat":-7.15315,"lon":-78.51386,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":true,"weeks":["W22","W23","W24"],"lastWeek":"W24","delta15":-156,"deltaReg":-303,"status":"ongoing"},
+    {"code":"CAJ0193","base":"CAJ0193","lat":-6.688911,"lon":-78.52917,"zone":"BAMBAMARCA","prov":"Hualgayoc","addr":"Bambamarca, Hualgayoc, Cajamarca, Perú","is5g":true,"weeks":["W23","W24"],"lastWeek":"W24","delta15":-334,"deltaReg":-578,"status":"ongoing"},
+    {"code":"CAJ0020B3U1","base":"CAJ0020","lat":-7.193428,"lon":-78.499877,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":true,"weeks":["W23","W24"],"lastWeek":"W24","delta15":-272,"deltaReg":-495,"status":"ongoing"},
+    {"code":"CAJ0023B3U2","base":"CAJ0023","lat":-7.172624,"lon":-78.43213,"zone":"CAJAMARCA","prov":"Los Baños del Inca","addr":"Los Baños del Inca, Cajamarca, Perú","is5g":false,"weeks":["W23","W24"],"lastWeek":"W24","delta15":-222,"deltaReg":-397,"status":"ongoing"},
+    {"code":"CAJ0205","base":"CAJ0205","lat":-6.856259,"lon":-78.14541,"zone":"CAJABAMBA","prov":"Celendín","addr":"Celendín, Cajamarca, Perú","is5g":false,"weeks":["W23","W24"],"lastWeek":"W24","delta15":-113,"deltaReg":-207,"status":"ongoing"},
+    {"code":"CAJ0252","base":"CAJ0252","lat":-6.553,"lon":-78.649,"zone":"BAMBAMARCA","prov":"Chota","addr":"Chota, Cajamarca, Perú","is5g":false,"weeks":["W24"],"lastWeek":"W24","delta15":-206,"deltaReg":-374,"status":"active"},
+    {"code":"CAJ0013","base":"CAJ0013","lat":-7.158,"lon":-78.507,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":false,"weeks":["W24"],"lastWeek":"W24","delta15":-166,"deltaReg":-303,"status":"active"},
+    {"code":"CAJ0476","base":"CAJ0476","lat":-6.871,"lon":-78.163,"zone":"CELEDIN","prov":"Celendín","addr":"Celendín, Cajamarca, Perú","is5g":false,"weeks":["W24"],"lastWeek":"W24","delta15":-129,"deltaReg":-190,"status":"active"},
+    {"code":"CAJ0220","base":"CAJ0220","lat":-7.115,"lon":-78.445,"zone":"CAJAMARCA","prov":"Los Baños del Inca","addr":"Los Baños del Inca, Cajamarca, Perú","is5g":false,"weeks":["W24"],"lastWeek":"W24","delta15":-127,"deltaReg":-240,"status":"active"},
+    {"code":"CAJ0113","base":"CAJ0113","lat":-7.335,"lon":-78.175,"zone":"CELEDIN","prov":"San Marcos","addr":"San Marcos, Cajamarca, Perú","is5g":false,"weeks":["W24"],"lastWeek":"W24","delta15":-116,"deltaReg":-243,"status":"active"},
+    {"code":"CAJ0110","base":"CAJ0110","lat":-6.384542,"lon":-78.817008,"zone":"CUTERVO","prov":"Cutervo","addr":"Cutervo, Cajamarca, Perú","is5g":true,"weeks":["W21","W22","W24"],"lastWeek":"W24","delta15":-107,"deltaReg":-136,"status":"active"},
+    {"code":"CAJ0007","base":"CAJ0007","lat":-7.162,"lon":-78.511,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":false,"weeks":["W24"],"lastWeek":"W24","delta15":-106,"deltaReg":-146,"status":"active"},
+    {"code":"CAJ0070","base":"CAJ0070","lat":-7.178,"lon":-78.491,"zone":"CAJAMARCA","prov":"Cajamarca","addr":"Cajamarca, Perú","is5g":false,"weeks":["W24"],"lastWeek":"W24","delta15":-101,"deltaReg":-190,"status":"active"}
   ];
 
   const SC = { active:'#ef4444', ongoing:'#f97316', improved:'#22c55e' };
-  const SL = { active:'\U0001f534 Má»›i W24', ongoing:'\U0001f7e0 Tiáº¿p tá»¥c W23â†’W24', improved:'âœ… ÄÃ£ cáº£i thiá»‡n' };
+  const SL = { active:'🔴 Mới / Nueva W24', ongoing:'🟠 Tiếp tục / Continúa W23→W24', improved:'✅ Cải thiện / Mejorado' };
   let mapMarkers = [], mapFilter_cur = 'all';
 
   function initLeafletMap() {
     leafletMap = L.map('leaflet-map', { center: [-6.9, -78.55], zoom: 8 });
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: 'Â© OpenStreetMap Â© CARTO', maxZoom: 19
+      attribution: '© OpenStreetMap © CARTO', maxZoom: 19
     }).addTo(leafletMap);
 
     MAP_STATIONS.forEach(s => {
@@ -1158,13 +1207,13 @@
       }).addTo(leafletMap);
 
       const wbadges = s.weeks.map(w => `<span class="lwb lwb-${w}">${w}</span>`).join('');
-      const reg = s.deltaReg != null ? s.deltaReg+' TB' : 'â€”';
+      const reg = s.deltaReg != null ? s.deltaReg+' TB' : '—';
       m.bindPopup(`<div class="lpu">
         <div class="lpu-code">${s.code}${s.is5g?' <span class="mb5g">5G</span>':''}</div>
         <div class="lpu-addr">\u{1F4CD} ${s.addr}</div>
         <div class="lpu-row"><span class="lpu-lbl">Zona</span><span class="lpu-val">${s.zone}</span></div>
-        <div class="lpu-row"><span class="lpu-lbl">Giáº£m 15C3D</span><span class="lpu-neg">${s.delta15} TB</span></div>
-        <div class="lpu-row"><span class="lpu-lbl">Giáº£m REG</span><span class="lpu-neg">${reg}</span></div>
+        <div class="lpu-row"><span class="lpu-lbl">Giảm 15C3D</span><span class="lpu-neg">${s.delta15} TB</span></div>
+        <div class="lpu-row"><span class="lpu-lbl">Giảm REG</span><span class="lpu-neg">${reg}</span></div>
         <div class="lpu-weeks">${wbadges}</div>
         <div><span class="lsb lsb-${s.status}">${SL[s.status]}</span></div>
       </div>`, { maxWidth:260 });
@@ -1205,7 +1254,7 @@
       div.innerHTML = `<div class="midot" style="background:${SC[s.status]}"></div>
         <div style="flex:1;min-width:0">
           <div class="micode">${s.code}${s.is5g?' <span class="mb5g">5G</span>':''}</div>
-          <div class="misub">${s.zone} Â· ${s.prov}</div>
+          <div class="misub">${s.zone} · ${s.prov}</div>
         </div>
         <div class="midelta">${s.delta15}</div>`;
       div.onclick = () => {
