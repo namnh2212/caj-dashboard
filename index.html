@@ -316,9 +316,9 @@
                 <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">LÅ©y káº¿</th>
               </tr>
             </thead>
-            <tbody id="regTbody"></tbody>
+            <tbody id="c15Tbody"></tbody>
           </table>
-          <div class="note" id="regNote" style="font-size:11px;margin-top:8px"></div>
+          <div class="note" id="c15Note" style="font-size:11px;margin-top:8px"></div>
         </div>
       </div>
     </div>
@@ -346,14 +346,7 @@
                 <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">%</th>
               </tr>
             </thead>
-            <tbody>
-              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T1</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">6,103</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">3,500</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">174.4%</span></td></tr>
-              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T2</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">10,004</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">7,000</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">143.0%</span></td></tr>
-              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T3</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">17,162</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">10,500</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">163.4%</span></td></tr>
-              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T4</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">21,053</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">14,000</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">150.4%</span></td></tr>
-              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T5</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">23,727</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">17,500</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">135.6%</span></td></tr>
-              <tr style="background:#f0fdf4"><td style="padding:5px 6px;font-weight:700">T6*</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">27,300</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">21,000</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">130.0%</span></td></tr>
-            </tbody>
+            <tbody id="regTbody"></tbody>
           </table>
           <div class="note" style="font-size:11px;margin-top:8px">
             ðŸ“Š <b>KH tÄƒng trÆ°á»Ÿng rÃ¢ng: +3,500 TB/thÃ¡ng</b><br>
@@ -991,6 +984,20 @@
   const khRegFlat    = CFG.reg.planMonth;
   const ytdActualReg = CFG.reg.ytd;
   const ytdKhReg     = CFG.reg.ytdPlan;
+
+  (function buildC15Table() {
+    const mo=CFG.months, ac=CFG.c15.actual, pl=CFG.c15.plan, yt=CFG.c15.ytd;
+    const tb=document.getElementById('c15Tbody');
+    if(!tb) return;
+    const fmt=v=>(v>0?'+':'')+v.toLocaleString('vi-VN');
+    tb.innerHTML=mo.map((m,i)=>{
+      const isL=i===mo.length-1, rs=isL?'background:#f0fdf4':'border-bottom:1px solid #f1f5f9';
+      const tc=ac[i]>=0?'var(--success)':'#ef4444', kc=pl[i]>=0?'var(--text)':'#ef4444';
+      return `<tr style="${rs}"><td style="padding:5px 6px;font-weight:700">${m}</td><td style="text-align:right;padding:5px 6px;color:${tc};font-weight:700">${fmt(ac[i])}</td><td style="text-align:right;padding:5px 6px;color:${kc}">${fmt(pl[i])}</td><td style="text-align:right;padding:5px 6px;font-weight:700">${yt[i].toLocaleString('vi-VN')}</td></tr>`;
+    }).join('');
+    const nd=document.getElementById('c15Note');
+    if(nd){const l=mo.length-1;nd.innerHTML=`📊 <b>KH năm: ${CFG.c15.annualKh.toLocaleString('vi-VN')} TB</b><br>Lũy kế TH T1–T5: <b style="color:var(--success)">${CFG.kpi.c15YtdActual.toLocaleString('vi-VN')} TB</b><br>Lũy kế KH T1–T5: <b>${CFG.kpi.c15YtdPlan.toLocaleString('vi-VN')} TB</b><br>vs KH lũy kế: <b style="color:var(--success)">${CFG.kpi.c15YtdPct}%</b> ✅<br>T6 (W1+W2): <b style="color:#ef4444">${CFG.kpi.c15T6Actual.toLocaleString('vi-VN')} TB</b> (${CFG.kpi.c15T6Change.toLocaleString('vi-VN')} TB).`;}
+  })();
 
   (function buildRegTable() {
     const mo = CFG.months, ytd = CFG.reg.ytd, kh = CFG.reg.ytdPlan;
