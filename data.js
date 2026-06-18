@@ -38,9 +38,9 @@ const CFG = {
     revYtdPct    : 101.9,
 
     // REG
-    regYtdActual : 27300,   // Lũy kế TH T6 (đến 14/06)
+    regYtdActual : 22039,   // Lũy kế TH T6 (đến 14/06)
     regYtdPlan   : 21000,   // Lũy kế KH T6
-    regYtdPct    : 130.0,
+    regYtdPct    : 104.9,
   },
 
   // ── DỮ LIỆU THUÊ BAO 15C3D HÀNG THÁNG ───────────────────────
@@ -61,8 +61,8 @@ const CFG = {
   // ytd    = lũy kế thuê bao REG đến cuối tháng N
   // ytdPlan= lũy kế KH = N × planMonth
   reg: {
-    growth   : [6103, 3901, 7158, 3891, 2674, 3573],
-    ytd      : [6103, 10004, 17162, 21053, 23727, 27300],
+    growth   : [4560, 6948, 3295, 3614, 1105, 2517],
+    ytd      : [4560, 11508, 14803, 18417, 19522, 22039],
     ytdPlan  : [3500,  7000, 10500, 14000, 17500, 21000],
     planMonth: 3500,           // KH tăng trưởng ròng mỗi tháng
     t6Note   : 'đến 14/06/2026',
