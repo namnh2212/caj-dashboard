@@ -202,51 +202,52 @@
     #page-map { height: calc(100vh - 93px); }
     #page-map.active { display: flex; }
     .map-sidebar {
-      width: 272px; flex-shrink: 0; background: #1e293b; color: #e2e8f0;
-      border-right: 1px solid #334155; display: flex; flex-direction: column; overflow: hidden;
+      width: 272px; flex-shrink: 0; background: #f8fafc; color: #1e293b;
+      border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; overflow: hidden;
     }
     .map-sidebar h2 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: #64748b; margin-bottom: 8px; }
-    .msec { padding: 11px 13px; border-bottom: 1px solid #334155; }
+    .msec { padding: 11px 13px; border-bottom: 1px solid #e2e8f0; }
     .mkpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-    .mkpi { background: #0f172a; border-radius: 7px; padding: 7px 9px; border: 1px solid #334155; }
-    .mkpi-val { font-size: 20px; font-weight: 800; line-height: 1; }
+    .mkpi { background: #ffffff; border-radius: 7px; padding: 7px 9px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+    .mkpi-val { font-size: 20px; font-weight: 800; line-height: 1; color: #0f4c81; }
     .mkpi-lbl { font-size: 10px; color: #64748b; margin-top: 1px; }
     .mfbtn {
-      background: #0f172a; border: 1px solid #334155; color: #94a3b8;
+      background: #ffffff; border: 1px solid #e2e8f0; color: #475569;
       border-radius: 5px; padding: 5px 9px; font-size: 11px; cursor: pointer;
       text-align: left; width: 100%; margin-bottom: 5px; display: flex; align-items: center; gap: 6px;
     }
-    .mfbtn.active { background: #1e3a5f; border-color: #3b82f6; color: #60a5fa; }
+    .mfbtn:hover { background: #f1f5f9; }
+    .mfbtn.active { background: #eff6ff; border-color: #3b82f6; color: #1d4ed8; font-weight: 600; }
     .mfdot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-    .mfcnt { margin-left: auto; background: #334155; border-radius: 9px; padding: 1px 6px; font-size: 10px; font-weight: 700; }
+    .mfcnt { margin-left: auto; background: #e2e8f0; color: #475569; border-radius: 9px; padding: 1px 6px; font-size: 10px; font-weight: 700; }
     .mlist { flex: 1; overflow-y: auto; }
-    .mitem { padding: 8px 13px; border-bottom: 1px solid #1e293b; cursor: pointer; display: flex; align-items: center; gap: 8px; }
-    .mitem:hover { background: #273549; }
+    .mitem { padding: 8px 13px; border-bottom: 1px solid #f1f5f9; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+    .mitem:hover { background: #f1f5f9; }
     .midot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-    .micode { font-size: 11px; font-weight: 700; font-family: monospace; color: #e2e8f0; }
+    .micode { font-size: 11px; font-weight: 700; font-family: monospace; color: #1e293b; }
     .misub { font-size: 10px; color: #64748b; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .midelta { font-size: 11px; font-weight: 700; color: #f87171; flex-shrink: 0; }
-    .mb5g { background: #1e3a5f; color: #60a5fa; border: 1px solid #3b82f6; border-radius: 3px; padding: 1px 4px; font-size: 9px; font-weight: 900; }
+    .midelta { font-size: 11px; font-weight: 700; color: #dc2626; flex-shrink: 0; }
+    .mb5g { background: #eff6ff; color: #1d4ed8; border: 1px solid #3b82f6; border-radius: 3px; padding: 1px 4px; font-size: 9px; font-weight: 900; }
     #leaflet-map { flex: 1; }
     ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
-    .leaflet-popup-content-wrapper { background: #1e293b !important; color: #e2e8f0 !important; border: 1px solid #334155 !important; border-radius: 10px !important; box-shadow: 0 8px 32px rgba(0,0,0,.5) !important; }
-    .leaflet-popup-tip { background: #1e293b !important; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+    .leaflet-popup-content-wrapper { background: #ffffff !important; color: #1e293b !important; border: 1px solid #e2e8f0 !important; border-radius: 10px !important; box-shadow: 0 4px 20px rgba(0,0,0,.12) !important; }
+    .leaflet-popup-tip { background: #ffffff !important; }
     .leaflet-popup-content { margin: 0 !important; }
     .lpu { padding: 11px 13px; min-width: 205px; }
-    .lpu-code { font-size: 13px; font-weight: 800; font-family: monospace; display: flex; align-items: center; gap: 7px; }
+    .lpu-code { font-size: 13px; font-weight: 800; font-family: monospace; color: #0f4c81; display: flex; align-items: center; gap: 7px; }
     .lpu-addr { font-size: 10px; color: #64748b; margin: 3px 0 8px; }
     .lpu-row { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px; }
     .lpu-lbl { color: #64748b; }
-    .lpu-val { font-weight: 700; }
-    .lpu-neg { color: #f87171; font-weight: 700; }
+    .lpu-val { font-weight: 700; color: #1e293b; }
+    .lpu-neg { color: #dc2626; font-weight: 700; }
     .lpu-weeks { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 7px; }
     .lwb { padding: 2px 7px; border-radius: 7px; font-size: 10px; font-weight: 700; }
-    .lwb-W21 { background: #713f12; color: #fde68a; }
-    .lwb-W22 { background: #7c2d12; color: #fed7aa; }
-    .lwb-W23 { background: #450a0a; color: #fca5a5; border: 1px solid #ef4444; }
-    .lwb-W24 { background: #7f1d1d; color: #fecaca; border: 1px solid #dc2626; }
+    .lwb-W21 { background: #fef3c7; color: #92400e; border: 1px solid #d97706; }
+    .lwb-W22 { background: #ffedd5; color: #9a3412; border: 1px solid #ea580c; }
+    .lwb-W23 { background: #fee2e2; color: #991b1b; border: 1px solid #ef4444; }
+    .lwb-W24 { background: #fecaca; color: #7f1d1d; border: 1px solid #dc2626; }
     .lsb { display: inline-block; padding: 2px 9px; border-radius: 9px; font-size: 10px; font-weight: 700; margin-top: 7px; }
     .lsb-active  { background: #450a0a; color: #fca5a5; border: 1px solid #ef4444; }
     .lsb-ongoing { background: #431407; color: #fdba74; border: 1px solid #f97316; }
@@ -1191,8 +1192,8 @@
 
   function initLeafletMap() {
     leafletMap = L.map('leaflet-map', { center: [-6.9, -78.55], zoom: 8 });
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '© OpenStreetMap © CARTO', maxZoom: 19
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/">CARTO</a>', maxZoom: 19
     }).addTo(leafletMap);
 
     MAP_STATIONS.forEach(s => {
