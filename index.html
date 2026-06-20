@@ -13,88 +13,99 @@
   <script>
 // ════════════════════════════════════════════════════════════════
 //  data.js — CẬP NHẬT HÀNG TUẦN
-//  Nguồn: Báo cáo tuần & Cảnh báo thuê bao giảm hàng tuần
-//  Cách cập nhật: chỉ sửa file này, upload lên GitHub (file nhỏ ~3KB)
+//  ┌─────────────────────────────────────────────────────────┐
+//  │  CHỈ CẦN CẬP NHẬT CÁC TRƯỜNG SAU MỖI TUẦN:            │
+//  │  • header.week, header.date                             │
+//  │  • c15.actual[5]  → TH 15C3D T6 lũy kế tháng          │
+//  │  • c15.ytd[5]     → c15.ytd[4] + c15.actual[5]        │
+//  │  • rev.actual[5]  → Doanh thu T6 lũy kế tháng (tr.PEN)│
+//  │  • rev.t6Note     → ghi chú kỳ dữ liệu T6             │
+//  │  • reg.absActual[5] → "C. Thuê bao Reg" từ báo cáo    │
+//  │  • reg.t6Note     → ngày dữ liệu REG                  │
+//  │  • alert.*        → số liệu cảnh báo trạm tuần mới    │
+//  └─────────────────────────────────────────────────────────┘
+//  Tất cả giá trị KPI, % và bảng hiển thị tự tính từ trên.
 // ════════════════════════════════════════════════════════════════
 const CFG = {
 
   // ── KỲ BÁO CÁO ──────────────────────────────────────────────
-  header: {
-    week: 'W24',
-    date: '15/06/2026',
-  },
+  header: { week: 'W24', date: '15/06/2026' },
 
   // ── NHÃN THÁNG ───────────────────────────────────────────────
   months: ['T1/26', 'T2/26', 'T3/26', 'T4/26', 'T5/26', 'T6*'],
 
-  // ── KPI TÓM TẮT (dùng cho cards đầu trang) ──────────────────
-  kpi: {
-    // 15C3D
-    c15YtdActual : 19704,   // Lũy kế TH T1–T5 (tháng đầy đủ)
-    c15YtdPlan   : 18310,   // Lũy kế KH T1–T5
-    c15YtdPct    : 107.6,
-    c15AnnualKh  : 39904,   // KH cả năm
-    c15AnnualPct : 47.0,    // % vs KH năm (dùng T6 lũy kế)
-    c15T6Actual  : 18737,   // Lũy kế T6 (W1+W2, chưa đủ tháng)
-    c15T6Change  : -967,    // Thay đổi T6 W1+W2
-
-    // Cảnh báo trạm (tuần gần nhất)
-    alertWeek    : 'W24',
-    alertTotal   : 14,
-    alertOngoing : 6,
-    alertNew     : 8,
-    alertRegOnly : 14,
-
-    // Doanh thu (triệu PEN)
-    revYtdActual : 32147,   // T1–T5
-    revYtdPlan   : 31542,
-    revYtdPct    : 101.9,
-
-    // REG (delta từ base 297.941 tháng 12/2025)
-    regYtdActual : 22039,   // Lũy kế tăng ròng đến T6 (14/06): REG_N(T6)−base
-    regYtdPlan   : 21000,   // Lũy kế KH T6 = 6 × 3.500
-    regYtdPct    : 104.9,
-  },
+  // ── CẢNH BÁO TRẠM (cập nhật hàng tuần) ──────────────────────
+  alert: { week: 'W24', total: 14, ongoing: 6, new: 8, regOnly: 14 },
 
   // ── DỮ LIỆU THUÊ BAO 15C3D HÀNG THÁNG ───────────────────────
-  // Nguồn: file 15c3d 5 thang dau nam.xlsx + Báo cáo tuần
   c15: {
-    actual  : [3820,  1422, 10584,  -689, 4567,  -967],
+    actual  : [3820,  1422, 10584,  -689, 4567,  -967], // ← T6 cập nhật
     plan    : [3259, -2385,  9275,  1172, 6988,  1731],
-    ytd     : [3820,  5242, 15826, 15137, 19704, 18737],
+    ytd     : [3820,  5242, 15826, 15137, 19704, 18737], // ← T6 = ytd[4]+actual[5]
     ytdPlan : [3259,   875, 10150, 11322, 18310, 20041],
     annualKh: 39904,
-    // Ghi chú sidebar từng tháng [TH, KH, lũy kế TH]
-    // (tự tính từ arrays trên)
-  },
-
-  // ── DỮ LIỆU THUÊ BAO REG HÀNG THÁNG ─────────────────────────
-  // Nguồn: file Reg 1506 site.xlsx — dòng 4 (Totals), cột REG_N
-  // Base (T0, 31/12/2025): 297.941
-  // growth  = REG_N(T) − REG_N(T−1)  : tăng trưởng ròng tháng
-  // ytd     = REG_N(T) − base         : lũy kế tăng từ đầu năm
-  // absActual = REG_N tuyệt đối (dùng để tham chiếu)
-  // ytdPlan = N × 3.500               : KH lũy kế
-  reg: {
-    base      : 297941,
-    growth    : [4560, 6948, 3295, 3614, 1105, 2517],
-    ytd       : [4560, 11508, 14803, 18417, 19522, 22039],
-    absActual : [302501, 309449, 312744, 316358, 317463, 319980],
-    absPlan   : [301441, 304941, 308441, 311941, 315441, 318941],
-    ytdPlan   : [3500,  7000, 10500, 14000, 17500, 21000],
-    planMonth : 3500,
-    t6Note    : 'đến 14/06/2026',
   },
 
   // ── DOANH THU HÀNG THÁNG (triệu PEN) ────────────────────────
-  // Nguồn: Báo cáo tuần — Revenue
   rev: {
-    actual : [6274.2, 6217.2, 6546.8, 6497.1, 6611.5, 4166.4],
-    plan   : [6194.8, 6177.9, 6281.5, 6398.2, 6489.3, 6586.7],
-    // T6 có W1+W2 (01–15/06), chưa đầy đủ tháng
+    actual  : [6274.2, 6217.2, 6546.8, 6497.1, 6611.5, 4166.4], // ← T6 cập nhật
+    plan    : [6194.8, 6177.9, 6281.5, 6398.2, 6489.3, 6586.7],
+    t6Note  : 'W1+W2 (01–15/06/2026)', // ← cập nhật kỳ dữ liệu T6
+    ytdMonths: 5,                        // số tháng hoàn chỉnh (T1–T5)
+  },
+
+  // ── THUÊ BAO REG ─────────────────────────────────────────────
+  // CẬP NHẬT: chỉ sửa absActual (giá trị cuối) + t6Note
+  // Nguồn: dòng "C. Thuê bao Reg" trong báo cáo tuần
+  reg: {
+    base      : 297941,         // base T0 = 31/12/2025 — CỐ ĐỊNH
+    planMonth : 3500,           // KH tăng ròng/tháng — CỐ ĐỊNH
+    absActual : [302501, 309449, 312744, 316358, 317463, 319980], // ← T6 cập nhật
+    absPlan   : [301441, 304941, 308441, 311941, 315441, 318941], // CỐ ĐỊNH cả năm
+    t6Note    : 'đến 14/06/2026', // ← cập nhật ngày REG
   },
 
 };
+// ── AUTO-DERIVE — không cần chỉnh thủ công ───────────────────
+// Tính growth/ytd/ytdPlan cho REG, pct cho rev, và toàn bộ CFG.kpi
+(function deriveCFG() {
+  const reg = CFG.reg;
+  reg.growth  = reg.absActual.map((v, i) => i === 0 ? v - reg.base : v - reg.absActual[i - 1]);
+  reg.ytd     = reg.absActual.map(v => v - reg.base);
+  reg.ytdPlan = reg.absPlan.map(v => v - reg.base);
+
+  const n  = CFG.rev.ytdMonths; // số tháng hoàn chỉnh
+  const ra = CFG.rev.actual, rp = CFG.rev.plan;
+  CFG.rev.ytdActual = Math.round(ra.slice(0, n).reduce((s, v) => s + v, 0));
+  CFG.rev.ytdPlan   = Math.round(rp.slice(0, n).reduce((s, v) => s + v, 0));
+  CFG.rev.ytdPct    = +(CFG.rev.ytdActual / CFG.rev.ytdPlan * 100).toFixed(1);
+  CFG.rev.pct       = ra.map((v, i) => i >= n ? null : +(v / rp[i] * 100).toFixed(1));
+
+  const c15  = CFG.c15;
+  const last = c15.actual.length - 1;
+  const ytdT5 = c15.ytd[last - 1], ytdT6 = c15.ytd[last];
+
+  CFG.kpi = {
+    c15YtdActual : ytdT5,
+    c15YtdPlan   : c15.ytdPlan[last - 1],
+    c15YtdPct    : +(ytdT5 / c15.ytdPlan[last - 1] * 100).toFixed(1),
+    c15AnnualKh  : c15.annualKh,
+    c15AnnualPct : +(ytdT6 / c15.annualKh * 100).toFixed(1),
+    c15T6Actual  : ytdT6,
+    c15T6Change  : c15.actual[last],
+    alertWeek    : CFG.alert.week,
+    alertTotal   : CFG.alert.total,
+    alertOngoing : CFG.alert.ongoing,
+    alertNew     : CFG.alert.new,
+    alertRegOnly : CFG.alert.regOnly,
+    revYtdActual : CFG.rev.ytdActual,
+    revYtdPlan   : CFG.rev.ytdPlan,
+    revYtdPct    : CFG.rev.ytdPct,
+    regYtdActual : reg.ytd[last],
+    regYtdPlan   : reg.ytdPlan[last],
+    regYtdPct    : +(reg.ytd[last] / reg.ytdPlan[last] * 100).toFixed(1),
+  };
+})();
 // ════════════════════════════════════════════════════════════════
 
   </script>
@@ -360,29 +371,8 @@ const CFG = {
 <div id="page-dashboard" class="page-pane active">
 <div class="container">
 
-  <!-- ── KPI CARDS ── -->
-  <div class="kpi-row">
-    <div class="kpi-card ok">
-      <div class="kpi-label">15C3D Lũy kế YTD / Acumulado — T1–T5</div>
-      <div class="kpi-value">19,704</div>
-      <div class="kpi-sub">KH/Plan YTD T5: 18,310 &nbsp; <span class="kpi-pct ok">107.6%</span></div>
-    </div>
-    <div class="kpi-card warn">
-      <div class="kpi-label">vs KH Năm / Plan Anual (39,904 TB)</div>
-      <div class="kpi-value">47.0%</div>
-      <div class="kpi-sub">T6 (W1+W2): -967 &nbsp;|&nbsp; Lũy kế / Acum.: 18,737 TB</div>
-    </div>
-    <div class="kpi-card danger">
-      <div class="kpi-label">Trạm cảnh báo / Estaciones Alerta — W24</div>
-      <div class="kpi-value">14</div>
-      <div class="kpi-sub">6 tiếp tục / continúa + 8 mới / nuevas &nbsp;|&nbsp; REG-only: 14</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">Doanh thu / Ingresos YTD — T1–T5</div>
-      <div class="kpi-value" style="font-size:20px;color:var(--success)">32,147 tr.</div>
-      <div class="kpi-sub">KH/Plan YTD: 31,542 tr. &nbsp; <span class="kpi-pct ok">101.9%</span></div>
-    </div>
-  </div>
+  <!-- ── KPI CARDS — rendered by JS from CFG.kpi ── -->
+  <div id="kpiCards" class="kpi-row"></div>
 
   <!-- ── SECTION 1: MONTHLY 15C3D CHART ── -->
   <div class="section">
@@ -393,7 +383,7 @@ const CFG = {
           <div class="chart-box" style="height:310px">
             <canvas id="monthlyChart"></canvas>
           </div>
-          <p class="caption">* Tháng 6 có dữ liệu W1+W2 (01–15/06/2026), lũy kế tháng = -967 TB. Đường lũy kế (phải) bao gồm KH tháng âm ở T2 (kế hoạch đã dự kiến giảm thị trường). Nguồn: file 15c3d 5 thang dau nam.xlsx + Báo cáo tuần W24.</p>
+          <p class="caption" id="c15Caption"></p>
         </div>
 
         <div class="info-panel">
@@ -407,52 +397,9 @@ const CFG = {
                 <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">Lũy kế / Acum.</th>
               </tr>
             </thead>
-            <tbody>
-              <tr style="border-bottom:1px solid #f1f5f9">
-                <td style="padding:5px 6px;font-weight:700">T1</td>
-                <td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">3,820</td>
-                <td style="text-align:right;padding:5px 6px;color:var(--muted)">3,259</td>
-                <td style="text-align:right;padding:5px 6px;font-variant-numeric:tabular-nums">3,820</td>
-              </tr>
-              <tr style="border-bottom:1px solid #f1f5f9">
-                <td style="padding:5px 6px;font-weight:700">T2</td>
-                <td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">1,422</td>
-                <td style="text-align:right;padding:5px 6px;color:var(--muted)">-2,385</td>
-                <td style="text-align:right;padding:5px 6px;font-variant-numeric:tabular-nums">5,242</td>
-              </tr>
-              <tr style="border-bottom:1px solid #f1f5f9">
-                <td style="padding:5px 6px;font-weight:700">T3</td>
-                <td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">10,584</td>
-                <td style="text-align:right;padding:5px 6px;color:var(--muted)">9,275</td>
-                <td style="text-align:right;padding:5px 6px;font-variant-numeric:tabular-nums">15,826</td>
-              </tr>
-              <tr style="border-bottom:1px solid #f1f5f9">
-                <td style="padding:5px 6px;font-weight:700">T4</td>
-                <td style="text-align:right;padding:5px 6px;color:var(--danger);font-weight:700">-689</td>
-                <td style="text-align:right;padding:5px 6px;color:var(--muted)">1,172</td>
-                <td style="text-align:right;padding:5px 6px;font-variant-numeric:tabular-nums">15,137</td>
-              </tr>
-              <tr style="border-bottom:1px solid #f1f5f9">
-                <td style="padding:5px 6px;font-weight:700">T5</td>
-                <td style="text-align:right;padding:5px 6px;color:var(--warning);font-weight:700">4,567</td>
-                <td style="text-align:right;padding:5px 6px;color:var(--muted)">6,988</td>
-                <td style="text-align:right;padding:5px 6px;font-weight:700">19,704</td>
-              </tr>
-              <tr style="background:#fff8f8">
-                <td style="padding:5px 6px;font-weight:700">T6*</td>
-                <td style="text-align:right;padding:5px 6px;color:var(--danger);font-weight:700">-967</td>
-                <td style="text-align:right;padding:5px 6px;color:var(--muted)">1,731</td>
-                <td style="text-align:right;padding:5px 6px;font-weight:700;color:var(--warning)">18,737</td>
-              </tr>
-            </tbody>
+            <tbody id="c15Tbody"></tbody>
           </table>
-          <div class="note" style="font-size:11px;margin-top:8px">
-            📊 <b>KH Năm: 39,904 TB</b><br>
-            Đạt YTD T5: <b class="grn">107.6%</b> KH lũy kế<br>
-            vs KH Năm (T6 W1+W2): <b style="color:var(--warning)">47.0%</b><br><br>
-            ⚠️ T6 giảm -967 TB (W1+W2), ảnh hưởng lũy kế xuống 18,737 TB.<br>
-            ℹ️ T2 có KH âm (-2,385) do kế hoạch thị trường dự kiến giảm theo mùa.
-          </div>
+          <div class="note" id="c15Note" style="font-size:11px;margin-top:8px"></div>
         </div>
       </div>
     </div>
@@ -497,7 +444,7 @@ const CFG = {
           <div class="chart-box" style="height:260px">
             <canvas id="revenueChart"></canvas>
           </div>
-          <p class="caption">* Đơn vị: triệu PEN. T6 có dữ liệu W1+W2 (01–15/06/2026), chưa đầy đủ tháng. % cột phải không hiển thị cho T6 do dữ liệu chưa đầy đủ.</p>
+          <p class="caption" id="revCaption"></p>
         </div>
 
         <div class="info-panel">
@@ -511,20 +458,9 @@ const CFG = {
                 <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">%</th>
               </tr>
             </thead>
-            <tbody>
-              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T1</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">6,274</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">6,195</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">101.3%</span></td></tr>
-              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T2</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">6,217</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">6,178</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">100.6%</span></td></tr>
-              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T3</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">6,547</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">6,282</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">104.2%</span></td></tr>
-              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T4</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">6,497</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">6,398</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">101.5%</span></td></tr>
-              <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px 6px;font-weight:700">T5</td><td style="text-align:right;padding:5px 6px;color:var(--success);font-weight:700">6,611</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">6,489</td><td style="text-align:right;padding:5px 6px"><span class="pill pill-ok">101.9%</span></td></tr>
-              <tr style="background:#f0fdf4"><td style="padding:5px 6px;font-weight:700">T6*</td><td style="text-align:right;padding:5px 6px;color:var(--warning);font-weight:700">4,166</td><td style="text-align:right;padding:5px 6px;color:var(--muted)">6,587</td><td style="text-align:right;padding:5px 6px;color:var(--muted);font-size:10px">W1+W2</td></tr>
-            </tbody>
+            <tbody id="revTbody"></tbody>
           </table>
-          <div class="note" style="font-size:11px;margin-top:8px">
-            📊 <b>YTD T1–T5: 32,147 tr. PEN</b><br>
-            KH YTD: 31,542 tr. &nbsp; <b class="grn">101.9%</b><br><br>
-            ✅ Doanh thu 5 tháng đầu năm đều vượt kế hoạch tháng.
-          </div>
+          <div class="note" id="revNote" style="font-size:11px;margin-top:8px"></div>
         </div>
       </div>
     </div>
@@ -890,6 +826,103 @@ const CFG = {
 
   const MONTHS = CFG.months;
 
+  // ── KPI Cards (dynamic from CFG.kpi) ────────────────────────
+  (function buildKPICards() {
+    const k = CFG.kpi;
+    const ch = k.c15T6Change;
+    const chFmt = (ch < 0 ? '' : '+') + ch.toLocaleString('vi-VN');
+    document.getElementById('kpiCards').innerHTML =
+      `<div class="kpi-card ok">
+        <div class="kpi-label">15C3D Lũy kế YTD / Acumulado — T1–T5</div>
+        <div class="kpi-value">${k.c15YtdActual.toLocaleString('vi-VN')}</div>
+        <div class="kpi-sub">KH/Plan YTD T5: ${k.c15YtdPlan.toLocaleString('vi-VN')} &nbsp; <span class="kpi-pct ok">${k.c15YtdPct}%</span></div>
+      </div>
+      <div class="kpi-card warn">
+        <div class="kpi-label">vs KH Năm / Plan Anual (${k.c15AnnualKh.toLocaleString('vi-VN')} TB)</div>
+        <div class="kpi-value">${k.c15AnnualPct}%</div>
+        <div class="kpi-sub">T6 (W1+W2): ${chFmt} &nbsp;|&nbsp; Lũy kế / Acum.: ${k.c15T6Actual.toLocaleString('vi-VN')} TB</div>
+      </div>
+      <div class="kpi-card danger">
+        <div class="kpi-label">Trạm cảnh báo / Estaciones Alerta — ${k.alertWeek}</div>
+        <div class="kpi-value">${k.alertTotal}</div>
+        <div class="kpi-sub">${k.alertOngoing} tiếp tục / continúa + ${k.alertNew} mới / nuevas &nbsp;|&nbsp; REG-only: ${k.alertRegOnly}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Doanh thu / Ingresos YTD — T1–T5</div>
+        <div class="kpi-value" style="font-size:20px;color:var(--success)">${k.revYtdActual.toLocaleString('vi-VN')} tr.</div>
+        <div class="kpi-sub">KH/Plan YTD: ${k.revYtdPlan.toLocaleString('vi-VN')} tr. &nbsp; <span class="kpi-pct ok">${k.revYtdPct}%</span></div>
+      </div>`;
+  })();
+
+  // ── 15C3D Sidebar Table + Caption + Note (dynamic) ──────────
+  (function build15C3DTable() {
+    const months = MONTHS, act = CFG.c15.actual, pl = CFG.c15.plan, ytd = CFG.c15.ytd;
+    const last = act.length - 1;
+    const tb = document.getElementById('c15Tbody');
+    if (tb) tb.innerHTML = months.map((m, i) => {
+      const isLast = i === last;
+      const bg = isLast ? 'background:#fff8f8' : 'border-bottom:1px solid #f1f5f9';
+      const ac = act[i], isPos = ac >= 0;
+      const acColor = isPos ? 'var(--success)' : 'var(--danger)';
+      const ytdColor = isLast ? 'var(--warning)' : '';
+      const ytdStyle = ytdColor ? `font-weight:700;color:${ytdColor}` : 'font-variant-numeric:tabular-nums';
+      return `<tr style="${bg}">
+        <td style="padding:5px 6px;font-weight:700">${m}</td>
+        <td style="text-align:right;padding:5px 6px;color:${acColor};font-weight:700">${ac.toLocaleString('vi-VN')}</td>
+        <td style="text-align:right;padding:5px 6px;color:var(--muted)">${pl[i].toLocaleString('vi-VN')}</td>
+        <td style="text-align:right;padding:5px 6px;${ytdStyle}">${ytd[i].toLocaleString('vi-VN')}</td>
+      </tr>`;
+    }).join('');
+    const k = CFG.kpi, ch = k.c15T6Change;
+    const note = document.getElementById('c15Note');
+    if (note) note.innerHTML =
+      `📊 <b>KH Năm: ${k.c15AnnualKh.toLocaleString('vi-VN')} TB</b><br>
+      Đạt YTD T5: <b class="grn">${k.c15YtdPct}%</b> KH lũy kế<br>
+      vs KH Năm (T6 W1+W2): <b style="color:var(--warning)">${k.c15AnnualPct}%</b><br><br>
+      ⚠️ T6 giảm ${ch.toLocaleString('vi-VN')} TB (W1+W2), ảnh hưởng lũy kế xuống ${k.c15T6Actual.toLocaleString('vi-VN')} TB.<br>
+      ℹ️ T2 có KH âm (${CFG.c15.plan[1].toLocaleString('vi-VN')}) do kế hoạch thị trường dự kiến giảm theo mùa.`;
+    const cap = document.getElementById('c15Caption');
+    if (cap) cap.textContent =
+      `* Tháng 6 có dữ liệu ${CFG.rev.t6Note}, lũy kế tháng = ${ch.toLocaleString('vi-VN')} TB. ` +
+      `Đường lũy kế (phải) bao gồm KH tháng âm ở T2 (kế hoạch đã dự kiến giảm thị trường). ` +
+      `Nguồn: file 15c3d 5 thang dau nam.xlsx + Báo cáo tuần ${CFG.header.week}.`;
+  })();
+
+  // ── Revenue Sidebar Table + Caption + Note (dynamic) ────────
+  (function buildRevTable() {
+    const months = MONTHS, act = CFG.rev.actual, pl = CFG.rev.plan, pct = CFG.rev.pct;
+    const n = CFG.rev.ytdMonths;
+    const tb = document.getElementById('revTbody');
+    if (tb) tb.innerHTML = months.map((m, i) => {
+      const isLast = i === months.length - 1;
+      const bg = isLast ? 'background:#f0fdf4' : 'border-bottom:1px solid #f1f5f9';
+      const ac = Math.round(act[i]), kh = Math.round(pl[i]);
+      const acColor = act[i] >= pl[i] * 0.99 ? 'var(--success)' : 'var(--warning)';
+      let pctCell;
+      if (pct[i] === null) {
+        pctCell = `<span style="color:var(--muted);font-size:10px">${CFG.rev.t6Note.split(' ')[0]}</span>`;
+      } else {
+        const cls = pct[i] >= 100 ? 'pill-ok' : 'pill-warn';
+        pctCell = `<span class="pill ${cls}">${pct[i]}%</span>`;
+      }
+      return `<tr style="${bg}">
+        <td style="padding:5px 6px;font-weight:700">${m}</td>
+        <td style="text-align:right;padding:5px 6px;color:${acColor};font-weight:700">${ac.toLocaleString('vi-VN')}</td>
+        <td style="text-align:right;padding:5px 6px;color:var(--muted)">${kh.toLocaleString('vi-VN')}</td>
+        <td style="text-align:right;padding:5px 6px">${pctCell}</td>
+      </tr>`;
+    }).join('');
+    const k = CFG.kpi;
+    const note = document.getElementById('revNote');
+    if (note) note.innerHTML =
+      `📊 <b>YTD T1–T5: ${k.revYtdActual.toLocaleString('vi-VN')} tr. PEN</b><br>
+      KH YTD: ${k.revYtdPlan.toLocaleString('vi-VN')} tr. &nbsp; <b class="grn">${k.revYtdPct}%</b><br><br>
+      ✅ Doanh thu 5 tháng đầu năm đều vượt kế hoạch tháng.`;
+    const cap = document.getElementById('revCaption');
+    if (cap) cap.textContent =
+      `* Đơn vị: triệu PEN. T6 có dữ liệu ${CFG.rev.t6Note}, chưa đầy đủ tháng. % không hiển thị cho T6 do dữ liệu chưa đầy đủ.`;
+  })();
+
   // ── 15C3D data ──
   const actual15    = CFG.c15.actual;
   const kh15        = CFG.c15.plan;
@@ -1020,7 +1053,7 @@ const CFG = {
   // ── Revenue Chart ──
   const actualRev = CFG.rev.actual;
   const khRev     = CFG.rev.plan;
-  const pctRev    = [101.3, 100.6, 104.2, 101.5, 101.9, null];
+  const pctRev    = CFG.rev.pct; // auto-computed by deriveCFG()
 
   const ctxRev = document.getElementById('revenueChart').getContext('2d');
   new Chart(ctxRev, {
@@ -1106,7 +1139,7 @@ const CFG = {
     }
   });
 
-  // ── REG Sidebar Table — dynamic from CFG (absolute subscriber counts) ──
+  // ── REG Sidebar Table + Caption (dynamic from CFG) ──────────
   (function buildRegTable() {
     const months = CFG.months;
     const act = CFG.reg.absActual;
@@ -1134,6 +1167,12 @@ const CFG = {
       KH / Plan T6: <b>${lastKh.toLocaleString('vi-VN')} TB</b><br>
       vs KH: <b style="color:var(--success)">${lastPct}%</b> ✅<br>
       Tăng từ base / Crecimiento desde base: <b style="color:var(--success)">+${CFG.reg.ytd[CFG.reg.ytd.length-1].toLocaleString('vi-VN')} TB</b>`;
+    const r = CFG.reg, lastI = act.length - 1;
+    const cap = document.getElementById('regCaption');
+    if (cap) cap.textContent =
+      `* Fuente / Nguồn: Reg site.xlsx — fila/dòng Totals. Línea/Đường TH = tổng TB REG tuyệt đối. ` +
+      `KH/Plan = base ${r.base.toLocaleString('vi-VN')} + N×${r.planMonth.toLocaleString('vi-VN')} TB/mes. ` +
+      `T6 (${r.t6Note}): +${r.growth[lastI].toLocaleString('vi-VN')} TB, lũy kế YTD: ${r.ytd[lastI].toLocaleString('vi-VN')} TB.`;
   })();
 
   // ── REG Chart — Thuê bao REG tuyệt đối vs Kế hoạch / Suscriptores REG total vs Plan ──
@@ -1321,38 +1360,3 @@ const CFG = {
       const show = f==='all' || f===s.status || (f==='5g' && s.is5g);
       if (show) { if(!leafletMap.hasLayer(m)) m.addTo(leafletMap); if(ring&&!leafletMap.hasLayer(ring)) ring.addTo(leafletMap); }
       else { if(leafletMap.hasLayer(m)) leafletMap.removeLayer(m); if(ring&&leafletMap.hasLayer(ring)) leafletMap.removeLayer(ring); }
-    });
-    buildMlist(f);
-  }
-
-  function buildMlist(f) {
-    const el = document.getElementById('mlist');
-    el.innerHTML = '';
-    const sorted = [...MAP_STATIONS].sort((a,b) => {
-      const o = {active:0,ongoing:1,improved:2};
-      return o[a.status]!==o[b.status] ? o[a.status]-o[b.status] : a.delta15-b.delta15;
-    });
-    sorted.forEach(s => {
-      if (f==='active'&&s.status!=='active') return;
-      if (f==='ongoing'&&s.status!=='ongoing') return;
-      if (f==='improved'&&s.status!=='improved') return;
-      if (f==='5g'&&!s.is5g) return;
-      const div = document.createElement('div');
-      div.className = 'mitem';
-      div.innerHTML = `<div class="midot" style="background:${SC[s.status]}"></div>
-        <div style="flex:1;min-width:0">
-          <div class="micode">${s.code}${s.is5g?' <span class="mb5g">5G</span>':''}</div>
-          <div class="misub">${s.zone} · ${s.prov}</div>
-        </div>
-        <div class="midelta">${s.delta15}</div>`;
-      div.onclick = () => {
-        leafletMap.setView([s.lat,s.lon],13);
-        mapMarkers.find(x=>x.s.code===s.code)?.m.openPopup();
-      };
-      el.appendChild(div);
-    });
-  }
-</script>
-
-</body>
-</html>
