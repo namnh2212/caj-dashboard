@@ -29,19 +29,19 @@
 const CFG = {
 
   // ── KỲ BÁO CÁO ──────────────────────────────────────────────
-  header: { week: 'W24', date: '15/06/2026' },
+  header: { week: 'W25', date: '22/06/2026' },
 
   // ── NHÃN THÁNG ───────────────────────────────────────────────
   months: ['T1/26', 'T2/26', 'T3/26', 'T4/26', 'T5/26', 'T6*'],
 
   // ── CẢNH BÁO TRẠM (cập nhật hàng tuần) ──────────────────────
-  alert: { week: 'W24', total: 14, ongoing: 6, new: 8, regOnly: 14 },
+  alert: { week: 'W25', total: 17, ongoing: 12, new: 5, regOnly: 8 },
 
   // ── DỮ LIỆU THUÊ BAO 15C3D HÀNG THÁNG ───────────────────────
   c15: {
-    actual  : [3820,  1422, 10584,  -689, 4567,  -967], // ← T6 cập nhật
+    actual  : [3820,  1422, 10584,  -689, 4567, -1333], // ← T6 W1+W2+W3 (-967 + -366)
     plan    : [3259, -2385,  9275,  1172, 6988,  1731],
-    ytd     : [3820,  5242, 15826, 15137, 19704, 18737], // ← T6 = ytd[4]+actual[5]
+    ytd     : [3820,  5242, 15826, 15137, 19704, 18371], // ← T6 = ytd[4]+actual[5]
     ytdPlan : [3259,   875, 10150, 11322, 18310, 20041],
     annualKh: 39904,
   },
@@ -50,7 +50,7 @@ const CFG = {
   rev: {
     actual  : [6274.2, 6217.2, 6546.8, 6497.1, 6611.5, 4166.4], // ← T6 cập nhật
     plan    : [6194.8, 6177.9, 6281.5, 6398.2, 6489.3, 6586.7],
-    t6Note  : 'W1+W2 (01–15/06/2026)', // ← cập nhật kỳ dữ liệu T6
+    t6Note  : 'W1+W2+W3 (01–22/06/2026)', // ← cập nhật kỳ dữ liệu T6
     ytdMonths: 5,                        // số tháng hoàn chỉnh (T1–T5)
   },
 
@@ -106,6 +106,72 @@ const CFG = {
     regYtdPct    : +(reg.ytd[last] / reg.ytdPlan[last] * 100).toFixed(1),
   };
 })();
+// ── MODULE TRẠM CẢNH BÁO — cập nhật hàng tuần ───────────────
+// CHỈ CẦN CẬP NHẬT MỖI TUẦN: thêm tuần mới vào CFG.stations
+// ongoing[] = tiếp tục, newW[] = mới, improved[] = cải thiện
+// Trường estado: 'pending' | 'inprogress' | 'resolved' | 'noaction'
+CFG.stations = {
+  w24: {
+    label:'W24 (08–15/06)', count:14, delta15:-2304, regOnlyCount:14,
+    ongoing:[
+      {id:'CAJ0193', bc:'BC07',zona:'BAMBAMARCA',      d15p:-354,d15:-334,dReg:-578, cellh:480.35,sev:'c', trend:'r',cause:'Station down, Cell*h 480h',solution:'Xác minh kỹ thuật + campañas BC07',responsible:'BC07',    deadline:'',     estado:'pending'    },
+      {id:'CAJ0020B3U1',bc:'BC01',zona:'CAJAMARCA',    d15p:-175,d15:-272,dReg:-495, cellh:0,     sev:'ok',trend:'c',cause:'VP Bitel chuyển địa điểm, mất thuê bao',solution:'Kênh cố định CAJSC11 đã mở (cuối T5)',responsible:'Marcoly',deadline:'05/06',estado:'inprogress' },
+      {id:'CAJ0023B3U2',bc:'BC01',zona:'CAJAMARCA',    d15p:-151,d15:-222,dReg:-397, cellh:0,     sev:'ok',trend:'c',cause:'Ảnh hưởng chuyển VP Bitel (cùng khu vực)',solution:'Theo dõi cùng CAJ0020B3U1',responsible:'Marcoly',deadline:'',     estado:'inprogress' },
+      {id:'CAJ0112', bc:'BC01',zona:'CAJAMARCA',        d15p:-159,d15:-156,dReg:-303, cellh:40.98, sev:'a', trend:'r',cause:'Upgrade plan, cần balanceo cargas llave',solution:'Campañas 4 cuadras khu vực (lịch 24/06)',responsible:'Marcoly',deadline:'24/06',estado:'pending'    },
+      {id:'CAJ0588', bc:'BC05',zona:'CUTERVO',          d15p:-151,d15:-149,dReg:-250, cellh:44.79, sev:'a', trend:'r',cause:'Cắt điện do nợ, dân không cho lắp máy phát',solution:'Khu trường học, ít dân cư — tìm tiếp cận mới',responsible:'Rolando',deadline:'05/06',estado:'pending'    },
+      {id:'CAJ0205', bc:'BC10',zona:'CAJABAMBA',        d15p:-169,d15:-113,dReg:-207, cellh:267.94,sev:'c', trend:'r',cause:'Cell*h cao 267h',solution:'Theo dõi kỹ thuật + lên lịch campañas BC10',responsible:'BC10',    deadline:'',     estado:'pending'    },
+    ],
+    newW:[
+      {id:'CAJ0252',bc:'BC07',zona:'BAMBAMARCA/Chota',  d15:-206,dReg:-374,cellh:63.38, sev:'h',cause:'Cảnh báo cao, Cell*h 63h',solution:'Khảo sát nguyên nhân + campañas BC07',responsible:'BC07',    deadline:'',     estado:'pending'   },
+      {id:'CAJ0013',bc:'BC01',zona:'CAJAMARCA',          d15:-166,dReg:-303,cellh:38.19, sev:'a',cause:'Cell down 38h',solution:'Theo dõi + campañas khu vực',responsible:'Marcoly',deadline:'',     estado:'pending'   },
+      {id:'CAJ0476',bc:'BC08',zona:'CELEDIN',            d15:-129,dReg:-190,cellh:484.76,sev:'c',cause:'Cell*h nghiêm trọng 484h',solution:'Ưu tiên xử lý kỹ thuật khẩn cấp BC08',responsible:'BC08',    deadline:'',     estado:'pending'   },
+      {id:'CAJ0220',bc:'BC01',zona:'CAJAMARCA/Los Baños',d15:-127,dReg:-240,cellh:23.06, sev:'a',cause:'Cell down 23h',solution:'Campañas khu vực Los Baños',responsible:'Marcoly',deadline:'',     estado:'pending'   },
+      {id:'CAJ0113',bc:'BC08',zona:'CELEDIN/San Marcos', d15:-116,dReg:-243,cellh:62.51, sev:'h',cause:'Cảnh báo cao, Cell*h 62h',solution:'Campañas BC08 khu San Marcos',responsible:'BC08',    deadline:'',     estado:'pending'   },
+      {id:'CAJ0110',bc:'BC05',zona:'CUTERVO',            d15:-107,dReg:-136,cellh:1.48,  sev:'a',cause:'Thay thiết bị 5G, mất tín hiệu tạm thời',solution:'Campañas hàng ngày — đã triển khai',responsible:'Rolando',deadline:'',     estado:'resolved'  },
+      {id:'CAJ0007',bc:'BC01',zona:'CAJAMARCA',          d15:-106,dReg:-146,cellh:0.92,  sev:'a',cause:'Cell down < 1h',solution:'Campañas + theo dõi tín hiệu',responsible:'Marcoly',deadline:'',     estado:'pending'   },
+      {id:'CAJ0070',bc:'BC01',zona:'CAJAMARCA',          d15:-101,dReg:-190,cellh:11.34, sev:'a',cause:'Cell down 11h',solution:'Campañas khu vực',responsible:'Marcoly',deadline:'',     estado:'pending'   },
+    ],
+    improved:[
+      {id:'CAJ0263',d15p:-182,d15:-100,dReg:-103, cellh:142.51,sev:'h',trend:'i'},
+      {id:'CAJ0435',d15p:-140,d15:-73, dReg:-133, cellh:122.19,sev:'h',trend:'i'},
+      {id:'CAJ0207',d15p:-139,d15:-73, dReg:-94,  cellh:89.82, sev:'h',trend:'i'},
+      {id:'CAJ0368',d15p:-132,d15:-82, dReg:-103, cellh:272.32,sev:'c',trend:'i'},
+      {id:'CAJ0388',d15p:-118,d15:+2,  dReg:+40,  cellh:123.96,sev:'h',trend:'e'},
+      {id:'CAJ0116',d15p:-116,d15:-94, dReg:-161, cellh:4.79,  sev:'a',trend:'i'},
+    ],
+    regOnlyList:'CAJ0183(-182), CAJ0370(-157), CAJ0108(-145), CAJ0140(-137), CAJ0374(-136), CAJ0222(-135,Callayuc), CAJ0079(-134,Cachachi), CAJ0002B3U1(-126), CAJ0007B4U2(-123), CAJ0141(-120), CAJ0023(-113), CAJ0306(-109), CAJ0046(-107), CAJ0212(-103,Querocotillo)',
+  },
+  // ── W25 — TUẦN HIỆN TẠI (15–22/06/2026) ────────────────────
+  w25: {
+    label:'🆕 W25 (15–22/06)', count:17, delta15:-3270, regOnlyCount:8,
+    ongoing:[
+      {id:'CAJ0013',    bc:'BC01',zona:'CAJAMARCA',            d15p:-166,d15:-391,dReg:-580, cellh:164.83,sev:'h', trend:'c',cause:'Baja tensión (điện áp thấp)',                                 solution:'Khảo sát kỹ thuật + campañas BC01',                responsible:'BC01',    deadline:'',     estado:'pending'    },
+      {id:'CAJ0020B3U1',bc:'BC01',zona:'CAJAMARCA',            d15p:-272,d15:-351,dReg:-492, cellh:0,     sev:'ok',trend:'c',cause:'VP Bitel chuyển địa điểm — không có vấn đề kỹ thuật',      solution:'Theo dõi — kênh cố định đã mở từ cuối T5',        responsible:'Marcoly',deadline:'',     estado:'inprogress' },
+      {id:'CAJ0023B3U2',bc:'BC14',zona:'CAJAMARCA/Los Baños',  d15p:-222,d15:-294,dReg:-397, cellh:0,     sev:'ok',trend:'c',cause:'Ảnh hưởng VP Bitel — không có vấn đề kỹ thuật',            solution:'Theo dõi cùng CAJ0020B3U1',                        responsible:'Marcoly',deadline:'',     estado:'inprogress' },
+      {id:'CAJ0193',    bc:'BC07',zona:'BAMBAMARCA',           d15p:-334,d15:-293,dReg:-369, cellh:756.49,sev:'xe',trend:'r',cause:'Cháy BTS — cáp coaxial dự kiến 20/06',                     solution:'Hoàn thành lắp cáp coaxial + theo dõi phục hồi',  responsible:'BC07',    deadline:'20/06',estado:'inprogress' },
+      {id:'CAJ0220',    bc:'BC01',zona:'CAJAMARCA/Los Baños',  d15p:-127,d15:-216,dReg:-262, cellh:23.16, sev:'a', trend:'c',cause:'Mất điện — Corte de energía',                               solution:'Campañas khu Los Baños del Inca',                  responsible:'Marcoly',deadline:'',     estado:'pending'    },
+      {id:'CAJ0112',    bc:'BC01',zona:'CAJAMARCA',            d15p:-156,d15:-186,dReg:-275, cellh:42.63, sev:'a', trend:'c',cause:'Banco medidores, đổi 3 pha — chờ ký STA',                  solution:'Đẩy tiến độ STA + campañas 4 cuadras (24/06)',     responsible:'Marcoly',deadline:'24/06',estado:'inprogress' },
+      {id:'CAJ0252',    bc:'BC07',zona:'BAMBAMARCA/Chota',     d15p:-206,d15:-181,dReg:-229, cellh:63.41, sev:'h', trend:'r',cause:'Cáp không phù hợp — cần thay cáp 2x25',                    solution:'Kiểm tra kho + thay cáp + campañas BC07',          responsible:'BC07',    deadline:'',     estado:'pending'    },
+      {id:'CAJ0588',    bc:'BC05',zona:'CUTERVO',              d15p:-149,d15:-176,dReg:-232, cellh:44.79, sev:'a', trend:'c',cause:'Chưa có báo cáo nguyên nhân',                              solution:'Xác minh nguyên nhân + campañas BC05',             responsible:'Rolando',deadline:'',     estado:'pending'    },
+      {id:'CAJ0113',    bc:'BC08',zona:'CELEDIN/San Marcos',   d15p:-116,d15:-167,dReg:-239, cellh:203.85,sev:'c', trend:'c',cause:'Cắt điện có kế hoạch — Cell*h 203h',                        solution:'Theo dõi phục hồi + campañas BC08',                responsible:'BC08',    deadline:'',     estado:'pending'    },
+      {id:'CAJ0070',    bc:'BC01',zona:'CAJAMARCA',            d15p:-101,d15:-150,dReg:-204, cellh:14.66, sev:'a', trend:'c',cause:'Baja tensión (điện áp thấp)',                               solution:'Campañas khu vực Cajamarca',                       responsible:'Marcoly',deadline:'',     estado:'pending'    },
+      {id:'CAJ0110',    bc:'BC05',zona:'CUTERVO',              d15p:-107,d15:-123,dReg:-187, cellh:1.48,  sev:'a', trend:'c',cause:'Thay thiết bị 5G — cell*h 1.48h',                           solution:'Campañas hàng ngày + theo dõi phục hồi',           responsible:'Rolando',deadline:'',     estado:'pending'    },
+      {id:'CAJ0476',    bc:'BC08',zona:'CELEDIN',              d15p:-129,d15:-109,dReg:-121, cellh:522.51,sev:'xe',trend:'r',cause:'Đàm phán quyền đất đổi lộ trình điện — Cell*h 522h',        solution:'Ưu tiên đàm phán + lắp điện trifasico BC08',       responsible:'BC08',    deadline:'',     estado:'pending'    },
+    ],
+    newW:[
+      {id:'CAJ0370',bc:'BC01',zona:'CAJAMARCA/Los Baños', d15:-169,dReg:-238,cellh:705.71,sev:'xe',cause:'Chờ đổi sang trung thế — Cell*h 705h khẩn cấp',   solution:'Ưu tiên khẩn cấp — khởi động đổi trung thế',      responsible:'BC01',    deadline:'',     estado:'pending'   },
+      {id:'CAJ0041',bc:'BC07',zona:'BAMBAMARCA/Chota',    d15:-129,dReg:-145,cellh:6.12,  sev:'a', cause:'Sin reporte previo',                              solution:'Khảo sát nguyên nhân + campañas BC07',            responsible:'BC07',    deadline:'',     estado:'pending'   },
+      {id:'CAJ0183',bc:'BC01',zona:'CAJAMARCA',           d15:-116,dReg:-184,cellh:274.01,sev:'c', cause:'Nhiệt độ cao, cửa BTS mở — Cell*h 274h',          solution:'Đóng cửa + kiểm tra hệ thống làm mát',            responsible:'Marcoly',deadline:'',     estado:'pending'   },
+      {id:'CAJ0361',bc:'BC01',zona:'CAJAMARCA',           d15:-115,dReg:-153,cellh:0.73,  sev:'a', cause:'Sin reporte previo',                              solution:'Khảo sát nguyên nhân + campañas BC01',            responsible:'Marcoly',deadline:'',     estado:'pending'   },
+      {id:'CAJ0212',bc:'BC05',zona:'CUTERVO/Querocotillo',d15:-104,dReg:-120,cellh:0.96,  sev:'a', cause:'Chưa có báo cáo nguyên nhân',                    solution:'Xác minh nguyên nhân + campañas BC05',            responsible:'Rolando',deadline:'',     estado:'pending'   },
+    ],
+    improved:[
+      {id:'CAJ0205',d15p:-113,d15:-96, dReg:-112,cellh:267.94,sev:'c',trend:'r'},
+      {id:'CAJ0007',d15p:-106,d15:-54, dReg:-47, cellh:246.78,sev:'c',trend:'r'},
+    ],
+    regOnlyList:'CAJ0374(-126,Chota,103h), CAJ0159(-122,Celendín,88h), CAJ0108(-121,Chota,4h), CAJ0116(-121,Santa Cruz,5h), CAJ0046(-110,Cutervo,251h🔴), CAJ0002B3U1(-106,0h), CAJ0306(-102,12h), CAJ0141(-101,3h)',
+  },
+};
 // ════════════════════════════════════════════════════════════════
 
   </script>
@@ -284,6 +350,15 @@ const CFG = {
     .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
     .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
     .caption { font-size: 10.5px; color: var(--muted); margin-top: 6px; font-style: italic; }
+
+    /* ── SOLUTION FILTER BUTTONS ── */
+    .sol-btn { padding: 4px 10px; font-size: 11px; font-weight: 600; border: 1px solid #cbd5e1; border-radius: 4px; background: #f8fafc; color: #475569; cursor: pointer; }
+    .sol-btn:hover { background: #e2e8f0; }
+    .sol-btn.sol-btn-active { background: #1e3a8a; color: #fff; border-color: #1e3a8a; }
+    .estado-pending    { color: #92400e; background: #fef3c7; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; white-space: nowrap; }
+    .estado-inprogress { color: #1e40af; background: #dbeafe; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; white-space: nowrap; }
+    .estado-resolved   { color: #065f46; background: #d1fae5; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; white-space: nowrap; }
+    .estado-noaction   { color: #475569; background: #f1f5f9; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; white-space: nowrap; }
 
     /* ── PAGE-LEVEL TABS ── */
     .page-tabs { background: #0b3461; display: flex; border-bottom: 1px solid rgba(255,255,255,.12); }
@@ -479,10 +554,11 @@ const CFG = {
       </div>
 
       <div class="tabs">
-        <div class="tab active" onclick="switchTab('w21', this)">W21 (18–24/05) — 13 trạm</div>
+        <div class="tab" onclick="switchTab('w21', this)">W21 (18–24/05) — 13 trạm</div>
         <div class="tab" onclick="switchTab('w22', this)">W22 (24–30/05) — 20 trạm</div>
         <div class="tab" onclick="switchTab('w23', this)">W23 (01–08/06) — 12 trạm</div>
-        <div class="tab" onclick="switchTab('w24', this)" style="background:#dc2626;color:#fff;border-color:#dc2626">🆕 W24 (08–15/06) — 14 trạm</div>
+        <div class="tab" onclick="switchTab('w24', this)">W24 (08–15/06) — 14 trạm</div>
+        <div class="tab active" onclick="switchTab('w25', this)" style="background:#dc2626;color:#fff;border-color:#dc2626">🆕 W25 (15–22/06) — 17 trạm</div>
       </div>
 
       <!-- W21 -->
@@ -596,85 +672,17 @@ const CFG = {
         <p class="tbl-footer">Tổng W23: <b>12 trạm</b> (2 tiếp tục + 10 mới) &nbsp;|&nbsp; Tổng giảm 15C3D: <b class="red">-1,986 TB</b> &nbsp;|&nbsp; <b class="grn">18/20 trạm W22 đã cải thiện & thoát danh sách (90%)</b></p>
       </div>
 
-      <!-- W24 -->
-      <div id="pane-w24" class="tab-pane">
-        <div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:6px;padding:8px 14px;margin-bottom:12px;font-size:12px;font-weight:600;color:#991b1b">
-          ↗ NHÓM 1: Tiếp tục giảm W23→W24 (6 trạm)
-        </div>
-        <table class="tbl" style="margin-bottom:16px">
-          <thead>
-            <tr>
-              <th>#</th><th>Trạm</th><th>BC</th><th>Zona</th>
-              <th>Δ15C3D W23</th><th>Δ15C3D W24</th><th>Xu hướng</th>
-              <th>Δ REG W24</th><th>Cell*h W24</th><th>Mức độ</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="background:#fff8f8"><td>1</td><td class="site">CAJ0193</td><td>BC07</td><td>BAMBAMARCA</td><td class="num red">-354</td><td class="num org">-334</td><td class="grn">↗ Hồi phục</td><td class="num red">-578</td><td class="num">480.35h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td></tr>
-            <tr style="background:#fff8f8"><td>2</td><td class="site">CAJ0020B3U1</td><td>BC01</td><td>CAJAMARCA</td><td class="num org">-175</td><td class="num red">-272</td><td class="red">↘ Tiếp tục</td><td class="num red">-495</td><td class="num">0h</td><td><span class="sev sev-ok">✅ Không cell down</span></td></tr>
-            <tr style="background:#fff8f8"><td>3</td><td class="site">CAJ0023B3U2</td><td>BC01</td><td>CAJAMARCA</td><td class="num org">-151</td><td class="num red">-222</td><td class="red">↘ Tiếp tục</td><td class="num red">-397</td><td class="num">0h</td><td><span class="sev sev-ok">✅ Không cell down</span></td></tr>
-            <tr style="background:#fff8f8"><td>4</td><td class="site">CAJ0112</td><td>BC01</td><td>CAJAMARCA</td><td class="num org">-159</td><td class="num org">-156</td><td class="grn">↗ Hồi phục</td><td class="num red">-303</td><td class="num">40.98h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
-            <tr style="background:#fff8f8"><td>5</td><td class="site">CAJ0588</td><td>BC05</td><td>CUTERVO</td><td class="num org">-151</td><td class="num org">-149</td><td class="grn">↗ Hồi phục</td><td class="num org">-250</td><td class="num">44.79h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
-            <tr style="background:#fff8f8"><td>6</td><td class="site">CAJ0205</td><td>BC10</td><td>CAJABAMBA</td><td class="num org">-169</td><td class="num org">-113</td><td class="grn">↗ Hồi phục</td><td class="num org">-207</td><td class="num">267.94h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td></tr>
-          </tbody>
-        </table>
-
-        <div style="background:#fff7ed;border:1px solid #fcd34d;border-radius:6px;padding:8px 14px;margin-bottom:12px;font-size:12px;font-weight:600;color:#92400e">
-          🆕 NHÓM 2: Mới xuất hiện trong W24 (8 trạm)
-        </div>
-        <table class="tbl" style="margin-bottom:16px">
-          <thead>
-            <tr>
-              <th>#</th><th>Trạm</th><th>BC</th><th>Zona</th>
-              <th>Δ15C3D W24</th><th>Δ REG W24</th><th>Cell*h W24</th><th>Mức độ</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>1</td><td class="site">CAJ0252</td><td>BC07</td><td>BAMBAMARCA / Chota</td><td class="num red">-206</td><td class="num red">-374</td><td class="num">63.38h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td></tr>
-            <tr><td>2</td><td class="site">CAJ0013</td><td>BC01</td><td>CAJAMARCA</td><td class="num org">-166</td><td class="num red">-303</td><td class="num">38.19h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
-            <tr><td>3</td><td class="site">CAJ0476</td><td>BC08</td><td>CELEDIN</td><td class="num org">-129</td><td class="num org">-190</td><td class="num org">484.76h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td></tr>
-            <tr><td>4</td><td class="site">CAJ0220</td><td>BC01</td><td>CAJAMARCA / Los Baños</td><td class="num org">-127</td><td class="num org">-240</td><td class="num">23.06h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
-            <tr><td>5</td><td class="site">CAJ0113</td><td>BC08</td><td>CELEDIN / San Marcos</td><td class="num org">-116</td><td class="num org">-243</td><td class="num">62.51h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td></tr>
-            <tr><td>6</td><td class="site">CAJ0110</td><td>BC05</td><td>CUTERVO</td><td class="num org">-107</td><td class="num org">-136</td><td class="num">1.48h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
-            <tr><td>7</td><td class="site">CAJ0007</td><td>BC01</td><td>CAJAMARCA</td><td class="num org">-106</td><td class="num org">-146</td><td class="num">0.92h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
-            <tr><td>8</td><td class="site">CAJ0070</td><td>BC01</td><td>CAJAMARCA</td><td class="num org">-101</td><td class="num org">-190</td><td class="num">11.34h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
-          </tbody>
-        </table>
-
-        <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:8px 14px;margin-bottom:12px;font-size:12px;font-weight:600;color:#166534">
-          ✅ NHÓM 3: Thoát / Cải thiện trong W24 (6 trạm, có trong W23)
-        </div>
-        <table class="tbl" style="margin-bottom:16px">
-          <thead>
-            <tr>
-              <th>Trạm</th><th>Δ15C3D W23</th><th>Δ15C3D W24</th><th>Xu hướng</th>
-              <th>Δ REG W24</th><th>Cell*h W24</th><th>Mức độ</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td class="site">CAJ0263</td><td class="num red">-182</td><td class="num org">-100</td><td class="grn">↗ Cải thiện</td><td class="num org">-103</td><td class="num">142.51h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td></tr>
-            <tr><td class="site">CAJ0435</td><td class="num org">-140</td><td class="num org">-73</td><td class="grn">↗ Cải thiện</td><td class="num org">-133</td><td class="num">122.19h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td></tr>
-            <tr><td class="site">CAJ0207</td><td class="num org">-139</td><td class="num org">-73</td><td class="grn">↗ Cải thiện</td><td class="num org">-94</td><td class="num">89.82h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td></tr>
-            <tr><td class="site">CAJ0368</td><td class="num org">-132</td><td class="num org">-82</td><td class="grn">↗ Cải thiện</td><td class="num org">-103</td><td class="num">272.32h</td><td><span class="sev sev-c">🔴 Nghiêm trọng</span></td></tr>
-            <tr><td class="site">CAJ0388</td><td class="num org">-118</td><td class="num grn">+2</td><td class="grn">✅ Thoát danh sách</td><td class="num grn">+40</td><td class="num">123.96h</td><td><span class="sev sev-h">🟡 Cảnh báo cao</span></td></tr>
-            <tr><td class="site">CAJ0116</td><td class="num org">-116</td><td class="num org">-94</td><td class="grn">↗ Cải thiện</td><td class="num red">-161</td><td class="num">4.79h</td><td><span class="sev sev-a">🔵 Cảnh báo</span></td></tr>
-          </tbody>
-        </table>
-
-        <div style="background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:8px 14px;margin-bottom:12px;font-size:12px;font-weight:600;color:#475569">
-          📉 NHÓM 4: Chỉ giảm REG, không có trong 15C3D (14 trạm) — cần theo dõi
-        </div>
-        <p style="font-size:11px;color:var(--muted);padding:4px 0 8px">CAJ0183 (-182), CAJ0370 (-157), CAJ0108 (-145), CAJ0140 (-137), CAJ0374 (-136), CAJ0222 (-135, Callayuc), CAJ0079 (-134, Cachachi), CAJ0002B3U1 (-126), CAJ0007B4U2 (-123), CAJ0141 (-120), CAJ0023 (-113), CAJ0306 (-109), CAJ0046 (-107), CAJ0212 (-103, Querocotillo)</p>
-
-        <p class="tbl-footer">Tổng W24: <b>14 trạm 15C3D</b> (6 tiếp tục + 8 mới) &nbsp;|&nbsp; Δ15C3D nhóm chính: <b class="red">-2,304 TB</b> &nbsp;|&nbsp; REG-only: 14 trạm thêm &nbsp;|&nbsp; <b class="grn">6/12 trạm W23 đã cải thiện (50%)</b></p>
-      </div>
+      <!-- W24 — dynamic from CFG.stations.w24 -->
+      <div id="pane-w24" class="tab-pane"><!-- built by buildAlertPanes() --></div>
+      <!-- W25 — dynamic from CFG.stations.w25 -->
+      <div id="pane-w25" class="tab-pane"><!-- built by buildAlertPanes() --></div>
 
     </div>
   </div>
 
   <!-- ── SECTION 5: TIMELINE ── -->
   <div class="section">
-    <div class="section-head">📉 5. TRẠM GIẢM LIÊN TỤC / TENDENCIA CONTINUA — THEO DÕI / SEGUIMIENTO (W22 → W23 → W24)</div>
+    <div class="section-head">📉 5. TRẠM GIẢM LIÊN TỤC / TENDENCIA CONTINUA — THEO DÕI / SEGUIMIENTO (W22 → W23 → W24 → W25)</div>
     <div class="section-body">
       <table class="timeline-tbl">
         <thead>
@@ -683,81 +691,178 @@ const CFG = {
             <th>W22<br><span style="font-weight:400;text-transform:none">24–30/05</span></th>
             <th>W23<br><span style="font-weight:400;text-transform:none">01–08/06</span></th>
             <th>W24<br><span style="font-weight:400;text-transform:none">08–15/06</span></th>
-            <th>Số tuần / Semanas</th>
+            <th>W25<br><span style="font-weight:400;text-transform:none">15–22/06</span></th>
+            <th>Số tuần</th>
             <th style="text-align:left">Trạng thái / Estado</th>
           </tr>
         </thead>
         <tbody>
-          <!-- Giảm 3 tuần liên tiếp W22→W23→W24 -->
+          <!-- 4 tuần liên tiếp W22→W25 -->
           <tr class="persist">
-            <td>⚠ CAJ0112</td>
+            <td>🚨 CAJ0112</td>
             <td><div class="dot dot-org">🆕</div></td>
             <td><div class="dot dot-red">✗</div></td>
             <td><div class="dot dot-red">✗</div></td>
-            <td><span class="badge-weeks bw3" style="background:#fca5a5;color:#7f1d1d">3 tuần</span></td>
-            <td class="red"><b>🔴 Giảm liên tục 3 tuần (W22→W23→W24)</b></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><span class="badge-weeks bw3" style="background:#7f1d1d;color:#fff">4 tuần</span></td>
+            <td class="red"><b>🚨 Giảm liên tục 4 tuần (W22→W25) — LEO THANG</b></td>
           </tr>
           <tr class="persist">
-            <td>⚠ CAJ0588</td>
+            <td>🚨 CAJ0588</td>
             <td><div class="dot dot-org">🆕</div></td>
             <td><div class="dot dot-red">✗</div></td>
             <td><div class="dot dot-red">✗</div></td>
-            <td><span class="badge-weeks bw3" style="background:#fca5a5;color:#7f1d1d">3 tuần</span></td>
-            <td class="red"><b>🔴 Giảm liên tục 3 tuần (W22→W23→W24)</b></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><span class="badge-weeks bw3" style="background:#7f1d1d;color:#fff">4 tuần</span></td>
+            <td class="red"><b>🚨 Giảm liên tục 4 tuần (W22→W25) — LEO THANG</b></td>
           </tr>
-          <!-- Mới W23, tiếp tục W24 -->
+          <!-- 3 tuần W23→W25 -->
           <tr class="persist">
             <td>⚠ CAJ0193</td>
             <td><div class="dot dot-dim">—</div></td>
             <td><div class="dot dot-org">🆕</div></td>
             <td><div class="dot dot-red">✗</div></td>
-            <td><span class="badge-weeks bw2">2 tuần</span></td>
-            <td class="org"><b>⚠ Đang tiếp tục giảm (W23→W24)</b></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><span class="badge-weeks bw3" style="background:#fca5a5;color:#7f1d1d">3 tuần</span></td>
+            <td class="red"><b>🔴 3 tuần (W23→W25) — Cell*h 756h, cháy BTS</b></td>
           </tr>
           <tr class="persist">
             <td>⚠ CAJ0020B3U1</td>
             <td><div class="dot dot-dim">—</div></td>
             <td><div class="dot dot-org">🆕</div></td>
             <td><div class="dot dot-red">✗</div></td>
-            <td><span class="badge-weeks bw2">2 tuần</span></td>
-            <td class="org"><b>⚠ Đang tiếp tục giảm (W23→W24)</b></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><span class="badge-weeks bw3" style="background:#fca5a5;color:#7f1d1d">3 tuần</span></td>
+            <td class="red"><b>🔴 3 tuần (W23→W25) — VP Bitel chuyển địa điểm</b></td>
           </tr>
           <tr class="persist">
             <td>⚠ CAJ0023B3U2</td>
             <td><div class="dot dot-dim">—</div></td>
             <td><div class="dot dot-org">🆕</div></td>
             <td><div class="dot dot-red">✗</div></td>
-            <td><span class="badge-weeks bw2">2 tuần</span></td>
-            <td class="org"><b>⚠ Đang tiếp tục giảm (W23→W24)</b></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><span class="badge-weeks bw3" style="background:#fca5a5;color:#7f1d1d">3 tuần</span></td>
+            <td class="red"><b>🔴 3 tuần (W23→W25) — Ảnh hưởng VP Bitel</b></td>
           </tr>
+          <!-- CAJ0205 cải thiện W25 -->
+          <tr><td>CAJ0205</td><td><div class="dot dot-dim">—</div></td><td><div class="dot dot-org">🆕</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw1">1 tuần</span></td><td class="grn">✅ Cải thiện W25 (-113→-96)</td></tr>
+          <!-- Mới W24, tiếp tục W25 -->
           <tr class="persist">
-            <td>⚠ CAJ0205</td>
+            <td>⚠ CAJ0013</td>
+            <td><div class="dot dot-dim">—</div></td>
             <td><div class="dot dot-dim">—</div></td>
             <td><div class="dot dot-org">🆕</div></td>
             <td><div class="dot dot-red">✗</div></td>
             <td><span class="badge-weeks bw2">2 tuần</span></td>
-            <td class="org"><b>⚠ Đang tiếp tục giảm (W23→W24)</b></td>
+            <td class="org"><b>⚠ 2 tuần (W24→W25) — Cell*h 164h, baja tensión</b></td>
           </tr>
-          <!-- Cải thiện W23→W24 -->
-          <tr><td>CAJ0263</td><td><div class="dot dot-dim">—</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw1">1 tuần</span></td><td class="grn">✅ Cải thiện trong W24 (-182→-100)</td></tr>
-          <tr><td>CAJ0368</td><td><div class="dot dot-dim">—</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw1">1 tuần</span></td><td class="grn">✅ Cải thiện trong W24 (-132→-82)</td></tr>
-          <tr><td>CAJ0388</td><td><div class="dot dot-dim">—</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw1">1 tuần</span></td><td class="grn">✅ Thoát danh sách W24 (-118→+2)</td></tr>
-          <tr><td>CAJ0116</td><td><div class="dot dot-dim">—</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw1">1 tuần</span></td><td class="grn">✅ Cải thiện trong W24 (-116→-94)</td></tr>
+          <tr class="persist">
+            <td>⚠ CAJ0070</td>
+            <td><div class="dot dot-dim">—</div></td>
+            <td><div class="dot dot-dim">—</div></td>
+            <td><div class="dot dot-org">🆕</div></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><span class="badge-weeks bw2">2 tuần</span></td>
+            <td class="org"><b>⚠ 2 tuần (W24→W25) — Baja tensión</b></td>
+          </tr>
+          <tr class="persist">
+            <td>⚠ CAJ0110</td>
+            <td><div class="dot dot-dim">—</div></td>
+            <td><div class="dot dot-dim">—</div></td>
+            <td><div class="dot dot-org">🆕</div></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><span class="badge-weeks bw2">2 tuần</span></td>
+            <td class="org"><b>⚠ 2 tuần (W24→W25) — Thay thiết bị 5G</b></td>
+          </tr>
+          <tr class="persist">
+            <td>⚠ CAJ0113</td>
+            <td><div class="dot dot-dim">—</div></td>
+            <td><div class="dot dot-dim">—</div></td>
+            <td><div class="dot dot-org">🆕</div></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><span class="badge-weeks bw2">2 tuần</span></td>
+            <td class="org"><b>⚠ 2 tuần (W24→W25) — Cell*h 203h, cắt điện</b></td>
+          </tr>
+          <tr class="persist">
+            <td>⚠ CAJ0220</td>
+            <td><div class="dot dot-dim">—</div></td>
+            <td><div class="dot dot-dim">—</div></td>
+            <td><div class="dot dot-org">🆕</div></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><span class="badge-weeks bw2">2 tuần</span></td>
+            <td class="org"><b>⚠ 2 tuần (W24→W25) — Corte de energía</b></td>
+          </tr>
+          <tr class="persist">
+            <td>⚠ CAJ0252</td>
+            <td><div class="dot dot-dim">—</div></td>
+            <td><div class="dot dot-dim">—</div></td>
+            <td><div class="dot dot-org">🆕</div></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><span class="badge-weeks bw2">2 tuần</span></td>
+            <td class="org"><b>⚠ 2 tuần (W24→W25) — Cáp không phù hợp</b></td>
+          </tr>
+          <tr class="persist">
+            <td>⚠ CAJ0476</td>
+            <td><div class="dot dot-dim">—</div></td>
+            <td><div class="dot dot-dim">—</div></td>
+            <td><div class="dot dot-org">🆕</div></td>
+            <td><div class="dot dot-red">✗</div></td>
+            <td><span class="badge-weeks bw2">2 tuần</span></td>
+            <td class="org"><b>⚠ 2 tuần (W24→W25) — Cell*h 522h, đàm phán điện</b></td>
+          </tr>
+          <!-- CAJ0007 cải thiện W25 -->
+          <tr><td>CAJ0007</td><td><div class="dot dot-dim">—</div></td><td><div class="dot dot-dim">—</div></td><td><div class="dot dot-org">🆕</div></td><td><div class="dot dot-grn">✓</div></td><td><span class="badge-weeks bw1">1 tuần</span></td><td class="grn">✅ Cải thiện W25 (-106→-54)</td></tr>
+          <!-- Đã cải thiện từ W24 (không xuất hiện W25) -->
+          <tr><td>CAJ0263</td><td><div class="dot dot-dim">—</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><div class="dot dot-dim">—</div></td><td><span class="badge-weeks bw1">1 tuần</span></td><td class="grn">✅ Cải thiện W24, thoát W25 (-182→-100)</td></tr>
+          <tr><td>CAJ0368</td><td><div class="dot dot-dim">—</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><div class="dot dot-dim">—</div></td><td><span class="badge-weeks bw1">1 tuần</span></td><td class="grn">✅ Cải thiện W24, thoát W25 (-132→-82)</td></tr>
+          <tr><td>CAJ0388</td><td><div class="dot dot-dim">—</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><div class="dot dot-dim">—</div></td><td><span class="badge-weeks bw1">1 tuần</span></td><td class="grn">✅ Thoát hoàn toàn W24 (-118→+2)</td></tr>
+          <tr><td>CAJ0116</td><td><div class="dot dot-dim">—</div></td><td><div class="dot dot-red">✗</div></td><td><div class="dot dot-grn">✓</div></td><td><div class="dot dot-dim">—</div></td><td><span class="badge-weeks bw1">1 tuần</span></td><td class="grn">✅ Cải thiện W24, thoát W25 (-116→-94)</td></tr>
         </tbody>
       </table>
 
       <div class="legend" style="margin-top:14px">
         <div class="legend-item"><div class="dot dot-red" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">✗</div>&nbsp;Đang giảm 15C3D</div>
-        <div class="legend-item"><div class="dot dot-grn" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">✓</div>&nbsp;Đã cải thiện / thoát danh sách</div>
+        <div class="legend-item"><div class="dot dot-grn" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">✓</div>&nbsp;Cải thiện / thoát danh sách</div>
         <div class="legend-item"><div class="dot dot-org" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">🆕</div>&nbsp;Xuất hiện lần đầu tuần này</div>
         <div class="legend-item"><div class="dot dot-dim" style="width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center">—</div>&nbsp;Không trong danh sách tuần đó</div>
       </div>
 
       <div class="note">
-        🔴 <b>Cảnh báo ưu tiên cao:</b> <b>CAJ0112</b> và <b>CAJ0588</b> giảm <b>3 tuần liên tiếp</b> (W22→W23→W24). Cần leo thang xử lý ngay.<br><br>
-        ⚠️ <b>Cần theo dõi:</b> <b>CAJ0193</b>, <b>CAJ0020B3U1</b>, <b>CAJ0023B3U2</b>, <b>CAJ0205</b> — tiếp tục giảm 2 tuần (W23→W24). CAJ0193 có Cell*h 480h là trường hợp nghiêm trọng nhất.<br><br>
-        ✅ <b>Tín hiệu tích cực:</b> 6/12 trạm W23 đã cải thiện hoặc thoát danh sách trong W24 (50%). <b>CAJ0388</b> đã thoát hoàn toàn (+2 TB).
+        🚨 <b>KHẨN CẤP — Leo thang ngay:</b> <b>CAJ0112</b> và <b>CAJ0588</b> giảm <b>4 tuần liên tiếp</b> (W22→W23→W24→W25). Cần báo cáo lên cấp trên và xử lý khẩn cấp.<br><br>
+        🔴 <b>Ưu tiên cao:</b> <b>CAJ0193</b> (Cell*h 756h, cháy BTS), <b>CAJ0476</b> (Cell*h 522h), <b>CAJ0370</b> (Cell*h 705h mới W25) — 3 trạm cực kỳ nghiêm trọng cần xử lý kỹ thuật ngay.<br><br>
+        ⚠️ <b>Theo dõi:</b> <b>CAJ0020B3U1</b>, <b>CAJ0023B3U2</b> — 3 tuần liên tiếp do VP Bitel chuyển địa điểm. <b>CAJ0013</b>, <b>CAJ0113</b>, <b>CAJ0220</b>, <b>CAJ0252</b>, <b>CAJ0476</b>, <b>CAJ0070</b>, <b>CAJ0110</b> — mới 2 tuần W24→W25.<br><br>
+        ✅ <b>Tín hiệu tích cực:</b> <b>CAJ0205</b> và <b>CAJ0007</b> đã cải thiện trong W25. <b>CAJ0263</b>, <b>CAJ0368</b>, <b>CAJ0388</b>, <b>CAJ0116</b> đã thoát từ W24.
       </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 6: GIẢI PHÁP TUẦN ── -->
+  <div class="section">
+    <div class="section-head">🛠 6. GIẢI PHÁP TUẦN / PLAN DE ACCIÓN SEMANAL</div>
+    <div class="section-body">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center">
+        <span style="font-size:12px;color:var(--muted)">Lọc tuần:</span>
+        <button id="sol-btn-w24" onclick="filterSolution('w24')" class="sol-btn">W24 (08–15/06)</button>
+        <button id="sol-btn-w25" onclick="filterSolution('w25')" class="sol-btn sol-btn-active">🆕 W25 (15–22/06)</button>
+        <span style="font-size:12px;color:var(--muted);margin-left:8px">Lọc trạng thái:</span>
+        <button id="sol-est-all" onclick="filterEstado('all')" class="sol-btn sol-btn-active">Tất cả</button>
+        <button id="sol-est-pending" onclick="filterEstado('pending')" class="sol-btn">⏳ Chờ xử lý</button>
+        <button id="sol-est-inprogress" onclick="filterEstado('inprogress')" class="sol-btn">🔄 Đang xử lý</button>
+        <button id="sol-est-resolved" onclick="filterEstado('resolved')" class="sol-btn">✅ Đã xử lý</button>
+      </div>
+      <table class="tbl" id="solution-table">
+        <thead>
+          <tr>
+            <th>Trạm</th><th>BC</th><th>Zona</th>
+            <th>Nhóm</th><th>Δ15C3D</th><th>Cell*h</th>
+            <th>Nguyên nhân</th><th>Giải pháp</th>
+            <th>P.trách</th><th>Deadline</th>
+            <th>Trạng thái</th>
+          </tr>
+        </thead>
+        <tbody id="solutionTbody"><!-- built by buildSolutionTable() --></tbody>
+      </table>
+      <p class="tbl-footer" id="solution-footer"></p>
     </div>
   </div>
 
@@ -1391,6 +1496,169 @@ const CFG = {
       };
       el.appendChild(div);
     });
+  }
+
+  // ── SEV / TREND / ESTADO helpers ─────────────────────────
+  const SEV_HTML = {
+    xe: '<span class="sev sev-xe">🔴 Cực kỳ N.Trọng</span>',
+    c:  '<span class="sev sev-c">🔴 Nghiêm trọng</span>',
+    h:  '<span class="sev sev-h">🟡 Cảnh báo cao</span>',
+    a:  '<span class="sev sev-a">🔵 Cảnh báo</span>',
+    ok: '<span class="sev sev-ok">✅ Không cell down</span>',
+  };
+  const TREND_HTML = {
+    r: '<span class="grn">↗ Hồi phục</span>',
+    c: '<span class="red">↘ Tiếp tục</span>',
+    i: '<span class="grn">↗ Cải thiện</span>',
+    e: '<span class="grn">✅ Thoát DS</span>',
+  };
+  const ESTADO_HTML = {
+    pending:    '<span class="estado-pending">⏳ Chờ xử lý</span>',
+    inprogress: '<span class="estado-inprogress">🔄 Đang xử lý</span>',
+    resolved:   '<span class="estado-resolved">✅ Đã xử lý</span>',
+    noaction:   '<span class="estado-noaction">— Không hành động</span>',
+  };
+  const _numCell = v => v == null ? '<td class="num dim">—</td>'
+    : `<td class="num ${v < -200 ? 'red' : v < 0 ? 'org' : 'grn'}">${v.toLocaleString('vi-VN')}</td>`;
+  const _cellhCell = h => h == null ? '<td class="num">—</td>'
+    : `<td class="num ${h > 200 ? 'red' : h > 50 ? 'org' : ''}">${h.toFixed(2)}h</td>`;
+
+  // ── Build station alert panes (W24/W25 from CFG.stations) ─
+  (function buildAlertPanes() {
+    if (!CFG.stations) return;
+    Object.entries(CFG.stations).forEach(([wk, w]) => {
+      const pane = document.getElementById('pane-' + wk);
+      if (!pane) return;
+      const wNum = parseInt(wk.replace('w',''));
+      const prevLabel = 'W'+(wNum-1);
+
+      // Placeholder pane (W25 stub)
+      if (w.note) {
+        pane.innerHTML =
+          `<div style="background:#fefce8;border:1px solid #fde68a;border-radius:8px;padding:14px 18px;font-size:13px;color:#92400e">${w.note}</div>
+           <p class="tbl-footer">Tổng ${w.label}: Δ15C3D sơ bộ: <b class="red">${w.delta15.toLocaleString('vi-VN')} TB</b></p>`;
+        return;
+      }
+
+      let html = '';
+
+      if (w.ongoing.length) {
+        html += `<div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:6px;padding:8px 14px;margin-bottom:12px;font-size:12px;font-weight:600;color:#991b1b">
+          ↗ NHÓM 1: Tiếp tục giảm ${prevLabel}→${wk.toUpperCase()} (${w.ongoing.length} trạm)
+        </div>
+        <table class="tbl" style="margin-bottom:16px">
+          <thead><tr><th>#</th><th>Trạm</th><th>BC</th><th>Zona</th>
+            <th>Δ15C3D ${prevLabel}</th><th>Δ15C3D ${wk.toUpperCase()}</th><th>Xu hướng</th>
+            <th>Δ REG</th><th>Cell*h</th><th>Mức độ</th></tr></thead>
+          <tbody>${w.ongoing.map((s,i) => `<tr style="background:#fff8f8">
+            <td>${i+1}</td><td class="site">${s.id}</td><td>${s.bc}</td><td>${s.zona}</td>
+            ${_numCell(s.d15p)}${_numCell(s.d15)}
+            <td>${TREND_HTML[s.trend]||s.trend}</td>
+            ${_numCell(s.dReg)}${_cellhCell(s.cellh)}
+            <td>${SEV_HTML[s.sev]||s.sev}</td>
+          </tr>`).join('')}</tbody>
+        </table>`;
+      }
+
+      if (w.newW.length) {
+        html += `<div style="background:#fff7ed;border:1px solid #fcd34d;border-radius:6px;padding:8px 14px;margin-bottom:12px;font-size:12px;font-weight:600;color:#92400e">
+          🆕 NHÓM 2: Mới xuất hiện trong ${wk.toUpperCase()} (${w.newW.length} trạm)
+        </div>
+        <table class="tbl" style="margin-bottom:16px">
+          <thead><tr><th>#</th><th>Trạm</th><th>BC</th><th>Zona</th>
+            <th>Δ15C3D ${wk.toUpperCase()}</th><th>Δ REG</th><th>Cell*h</th><th>Mức độ</th></tr></thead>
+          <tbody>${w.newW.map((s,i) => `<tr>
+            <td>${i+1}</td><td class="site">${s.id}</td><td>${s.bc}</td><td>${s.zona}</td>
+            ${_numCell(s.d15)}${_numCell(s.dReg)}${_cellhCell(s.cellh)}
+            <td>${SEV_HTML[s.sev]||s.sev}</td>
+          </tr>`).join('')}</tbody>
+        </table>`;
+      }
+
+      if (w.improved && w.improved.length) {
+        html += `<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:8px 14px;margin-bottom:12px;font-size:12px;font-weight:600;color:#166534">
+          ✅ NHÓM 3: Thoát / Cải thiện trong ${wk.toUpperCase()} (${w.improved.length} trạm)
+        </div>
+        <table class="tbl" style="margin-bottom:16px">
+          <thead><tr><th>Trạm</th><th>Δ15C3D ${prevLabel}</th><th>Δ15C3D ${wk.toUpperCase()}</th>
+            <th>Xu hướng</th><th>Δ REG</th><th>Cell*h</th><th>Mức độ</th></tr></thead>
+          <tbody>${w.improved.map(s => `<tr>
+            <td class="site">${s.id}</td>
+            ${_numCell(s.d15p)}${_numCell(s.d15)}
+            <td>${TREND_HTML[s.trend]||s.trend}</td>
+            ${_numCell(s.dReg)}${_cellhCell(s.cellh)}
+            <td>${SEV_HTML[s.sev]||s.sev}</td>
+          </tr>`).join('')}</tbody>
+        </table>`;
+      }
+
+      if (w.regOnlyList) {
+        html += `<div style="background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:8px 14px;margin-bottom:12px;font-size:12px;font-weight:600;color:#475569">
+          📉 NHÓM 4: Chỉ giảm REG, không trong 15C3D (${w.regOnlyCount} trạm) — cần theo dõi
+        </div>
+        <p style="font-size:11px;color:var(--muted);padding:4px 0 8px">${w.regOnlyList}</p>`;
+      }
+
+      html += `<p class="tbl-footer">Tổng ${w.label}: <b>${w.count} trạm 15C3D</b> (${w.ongoing.length} tiếp tục + ${w.newW.length} mới) &nbsp;|&nbsp; Δ15C3D: <b class="red">${w.delta15.toLocaleString('vi-VN')} TB</b> &nbsp;|&nbsp; REG-only: ${w.regOnlyCount} trạm</p>`;
+      pane.innerHTML = html;
+    });
+  })();
+
+  // ── Solution table state & render ────────────────────────
+  let _solState = { week: 'w25', estado: 'all' };
+
+  function renderSolutionTable() {
+    const { week, estado } = _solState;
+    const w = CFG.stations && CFG.stations[week];
+    if (!w) return;
+    const all = [
+      ...(w.ongoing||[]).map(s => ({ ...s, grp:'Tiếp tục' })),
+      ...(w.newW||[]).map(s => ({ ...s, grp:'Mới xuất hiện' })),
+    ];
+    const rows = estado === 'all' ? all : all.filter(s => s.estado === estado);
+    const tbody = document.getElementById('solutionTbody');
+    const footer = document.getElementById('solution-footer');
+    if (!tbody) return;
+    if (!rows.length) {
+      tbody.innerHTML = `<tr><td colspan="11" style="text-align:center;color:var(--muted);padding:16px">Không có dữ liệu phù hợp</td></tr>`;
+      if (footer) footer.innerHTML = '0 trạm hiển thị';
+      return;
+    }
+    tbody.innerHTML = rows.map(s => `<tr>
+      <td class="site">${s.id}</td>
+      <td>${s.bc||'—'}</td>
+      <td style="font-size:11px">${s.zona||'—'}</td>
+      <td><span style="font-size:10px;font-weight:600;color:#475569">${s.grp}</span></td>
+      ${_numCell(s.d15)}
+      ${_cellhCell(s.cellh)}
+      <td style="font-size:11px;max-width:170px">${s.cause||'—'}</td>
+      <td style="font-size:11px;max-width:200px">${s.solution||'—'}</td>
+      <td style="font-size:11px">${s.responsible||'—'}</td>
+      <td style="font-size:11px">${s.deadline||'—'}</td>
+      <td>${ESTADO_HTML[s.estado]||s.estado||'—'}</td>
+    </tr>`).join('');
+    if (footer) {
+      const res  = rows.filter(s => s.estado === 'resolved').length;
+      const inp  = rows.filter(s => s.estado === 'inprogress').length;
+      const pend = rows.filter(s => s.estado === 'pending').length;
+      footer.innerHTML = `${w.label} — ${rows.length} trạm &nbsp;|&nbsp; ✅ Đã xử lý: <b class="grn">${res}</b> &nbsp;|&nbsp; 🔄 Đang xử lý: <b>${inp}</b> &nbsp;|&nbsp; ⏳ Chờ: <b class="red">${pend}</b>`;
+    }
+  }
+  (function buildSolutionTable() { renderSolutionTable(); })();
+
+  function filterSolution(week) {
+    _solState.week = week;
+    document.querySelectorAll('[id^="sol-btn-"]').forEach(b => b.classList.remove('sol-btn-active'));
+    const btn = document.getElementById('sol-btn-' + week);
+    if (btn) btn.classList.add('sol-btn-active');
+    renderSolutionTable();
+  }
+  function filterEstado(estado) {
+    _solState.estado = estado;
+    document.querySelectorAll('[id^="sol-est-"]').forEach(b => b.classList.remove('sol-btn-active'));
+    const btn = document.getElementById('sol-est-' + estado);
+    if (btn) btn.classList.add('sol-btn-active');
+    renderSolutionTable();
   }
 </script>
 
