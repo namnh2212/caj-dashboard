@@ -172,6 +172,84 @@ CFG.stations = {
     regOnlyList:'CAJ0374(-126,Chota,103h), CAJ0159(-122,Celendín,88h), CAJ0108(-121,Chota,4h), CAJ0116(-121,Santa Cruz,5h), CAJ0046(-110,Cutervo,251h🔴), CAJ0002B3U1(-106,0h), CAJ0306(-102,12h), CAJ0141(-101,3h)',
   },
 };
+const BCCH = {
+  "CAJBC01": [
+    {ch:'Promotores Channel',t5p:3944,t5pp:234,t6:4269,t6p:306},
+    {ch:'Point of Sales Channel',t5p:826,t5pp:84,t6:782,t6p:67},
+    {ch:'Store Channel',t5p:648,t5pp:470,t6:639,t6p:475},
+    {ch:'CAB Dealer',t5p:461,t5pp:237,t6:446,t6p:210},
+    {ch:'Small CAB',t5p:358,t5pp:271,t6:423,t6p:280},
+    {ch:'Islas BITEL',t5p:203,t5pp:136,t6:210,t6p:148},
+    {ch:'Dealer Autorizado',t5p:204,t5pp:163,t6:204,t6p:152},
+    {ch:'Dealer Channel',t5p:69,t5pp:69,t6:77,t6p:60},
+    {ch:'Bitel Staff',t5p:17,t5pp:2,t6:49,t6p:1},
+    {ch:'Retail Channel',t5p:96,t5pp:73,t6:46,t6p:35},
+    {ch:'Small Dealer',t5p:9,t5pp:9,t6:5,t6p:5},
+    {ch:'Business Center Channel',t5p:3,t5pp:0,t6:1,t6p:1},
+    {ch:'Promotores FTTH Channel',t5p:2,t5pp:2,t6:0,t6p:0},
+  ],
+  "CAJBC07": [
+    {ch:'Promotores Channel',t5p:2107,t5pp:294,t6:2087,t6p:273},
+    {ch:'Point of Sales Channel',t5p:1477,t5pp:170,t6:1662,t6p:189},
+    {ch:'Dealer Autorizado',t5p:394,t5pp:289,t6:485,t6p:362},
+    {ch:'CAB Dealer',t5p:372,t5pp:147,t6:407,t6p:194},
+    {ch:'Dealer Channel',t5p:16,t5pp:13,t6:20,t6p:16},
+    {ch:'Bitel Staff',t5p:14,t5pp:2,t6:6,t6p:1},
+    {ch:'Small Dealer',t5p:0,t5pp:0,t6:4,t6p:0},
+  ],
+  "CAJBC08": [
+    {ch:'Point of Sales Channel',t5p:1393,t5pp:216,t6:1363,t6p:222},
+    {ch:'Promotores Channel',t5p:1399,t5pp:46,t6:1133,t6p:35},
+    {ch:'Dealer Autorizado',t5p:309,t5pp:126,t6:345,t6p:131},
+    {ch:'Dealer Channel',t5p:255,t5pp:91,t6:218,t6p:83},
+    {ch:'CAB Dealer',t5p:137,t5pp:86,t6:123,t6p:69},
+    {ch:'Business Center Channel',t5p:7,t5pp:1,t6:6,t6p:0},
+    {ch:'Bitel Staff',t5p:7,t5pp:1,t6:3,t6p:0},
+  ],
+  "CAJBC05": [
+    {ch:'Promotores Channel',t5p:1382,t5pp:460,t6:1436,t6p:473},
+    {ch:'Point of Sales Channel',t5p:1228,t5pp:121,t6:1177,t6p:163},
+    {ch:'Dealer Autorizado',t5p:384,t5pp:182,t6:384,t6p:187},
+    {ch:'CAB Dealer',t5p:72,t5pp:64,t6:58,t6p:45},
+    {ch:'Dealer Channel',t5p:18,t5pp:4,t6:24,t6p:0},
+    {ch:'Mini Store Channel',t5p:0,t5pp:0,t6:7,t6p:3},
+    {ch:'Business Center Channel',t5p:6,t5pp:0,t6:3,t6p:0},
+    {ch:'Bitel Staff',t5p:2,t5pp:0,t6:3,t6p:1},
+    {ch:'Negocios BIPAY Channel',t5p:1,t5pp:0,t6:0,t6p:0},
+    {ch:'Agente BIPAY Channel',t5p:1,t5pp:0,t6:0,t6p:0},
+  ],
+  "CAJBC10": [
+    {ch:'Promotores Channel',t5p:1135,t5pp:67,t6:1028,t6p:50},
+    {ch:'Point of Sales Channel',t5p:435,t5pp:53,t6:448,t6p:50},
+    {ch:'Dealer Autorizado',t5p:222,t5pp:170,t6:248,t6p:149},
+    {ch:'Dealer Channel',t5p:132,t5pp:86,t6:92,t6p:62},
+    {ch:'CAB Dealer',t5p:60,t5pp:35,t6:51,t6p:27},
+    {ch:'Business Center Channel',t5p:7,t5pp:0,t6:4,t6p:0},
+    {ch:'Bitel Staff',t5p:4,t5pp:0,t6:3,t6p:1},
+  ],
+  "CAJBC14": [
+    {ch:'Promotores Channel',t5p:1127,t5pp:161,t6:948,t6p:122},
+    {ch:'Dealer Autorizado',t5p:163,t5pp:80,t6:209,t6p:108},
+    {ch:'Point of Sales Channel',t5p:131,t5pp:21,t6:160,t6p:15},
+    {ch:'Small CAB',t5p:126,t5pp:51,t6:152,t6p:44},
+    {ch:'Store Channel',t5p:99,t5pp:64,t6:112,t6p:75},
+    {ch:'Bitel Staff',t5p:1,t5pp:0,t6:3,t6p:0},
+  ],
+};
+
+const TOP10_STAFF = [
+  {bc:'CAJBC14',ch:'Promotores Channel',staff:'CAJPR03009',t5p:130,t6:0,delta:-130},
+  {bc:'CAJBC05',ch:'Promotores Channel',staff:'CAJPR03081',t5p:122,t6:0,delta:-122},
+  {bc:'CAJBC14',ch:'Promotores Channel',staff:'CAJPR03046',t5p:142,t6:62,delta:-80},
+  {bc:'CAJBC10',ch:'Promotores Channel',staff:'CAJPR01769',t5p:244,t6:165,delta:-79},
+  {bc:'CAJBC07',ch:'Promotores Channel',staff:'CAJPR02492',t5p:78,t6:0,delta:-78},
+  {bc:'CAJBC08',ch:'Promotores Channel',staff:'CAJPR03089',t5p:80,t6:3,delta:-77},
+  {bc:'CAJBC10',ch:'Promotores Channel',staff:'CAJPR02659',t5p:210,t6:134,delta:-76},
+  {bc:'CAJBC01',ch:'Promotores Channel',staff:'CAJPR02702',t5p:70,t6:1,delta:-69},
+  {bc:'CAJBC10',ch:'Promotores Channel',staff:'CAJPR02516',t5p:66,t6:0,delta:-66},
+  {bc:'CAJBC05',ch:'Promotores Channel',staff:'CAJPR03084',t5p:151,t6:90,delta:-61},
+];
+
 // ════════════════════════════════════════════════════════════════
 
 // ── BÁN HÀNG / VENTAS — Cập nhật hàng tuần ─────────────────
@@ -306,6 +384,35 @@ const SALES = {
         'Negocios BIPAY Channel': {t:0,    po:0,   pr:0},
       },
       mnp:{'Nueva Línea':17862,'MNP':2710,'Pre→Post CM':991},
+    },
+  },
+  // T5p: tháng 5 cùng kỳ ngày 1-23 (so sánh apples-to-apples với T6)
+  t5p: {
+    total:21463, post:4851, pre:16612,
+    bc:{
+      CAJBC01:{t:6840,po:1750,pr:5090},
+      CAJBC07:{t:4380,po:915, pr:3465},
+      CAJBC08:{t:3507,po:567, pr:2940},
+      CAJBC05:{t:3094,po:831, pr:2263},
+      CAJBC10:{t:1995,po:411, pr:1584},
+      CAJBC14:{t:1647,po:377, pr:1270},
+    },
+    ch:{
+      'Promotores Channel':     {t:11094,po:1262,pr:9832},
+      'Point of Sales Channel': {t:5490, po:665, pr:4825},
+      'Dealer Autorizado':      {t:1676, po:1010,pr:666},
+      'CAB Dealer':             {t:1102, po:569, pr:533},
+      'Store Channel':          {t:747,  po:534, pr:213},
+      'Small CAB':              {t:484,  po:322, pr:162},
+      'Dealer Channel':         {t:490,  po:263, pr:227},
+      'Islas BITEL':            {t:203,  po:136, pr:67},
+      'Retail Channel':         {t:96,   po:73,  pr:23},
+      'Bitel Staff':            {t:45,   po:5,   pr:40},
+      'Business Center Channel':{t:23,   po:1,   pr:22},
+      'Small Dealer':           {t:9,    po:9,   pr:0},
+      'Promotores FTTH Channel':{t:2,    po:2,   pr:0},
+      'Agente BIPAY Channel':   {t:1,    po:0,   pr:1},
+      'Negocios BIPAY Channel': {t:1,    po:0,   pr:1},
     },
   },
 };
@@ -1098,11 +1205,11 @@ const SALES = {
             <tr>
               <th style="text-align:left;padding:8px 10px">BC</th>
               <th class="num" style="padding:8px 6px">T4</th>
-              <th class="num" style="padding:8px 6px">T5</th>
+              <th class="num" style="padding:8px 6px">T5 CK<br><span style="font-size:9px;font-weight:400">(1-23/5)</span></th>
               <th class="num" style="padding:8px 6px">T6 MTD</th>
               <th class="num" style="padding:8px 6px;color:#7c3aed">Post T6</th>
               <th class="num" style="padding:8px 6px;color:#0891b2">Pre T6</th>
-              <th class="num" style="padding:8px 6px">Δ T5→T6</th>
+              <th class="num" style="padding:8px 6px">Δ cùng kỳ</th>
             </tr>
           </thead>
           <tbody id="salesBcTbody"></tbody>
@@ -1139,6 +1246,36 @@ const SALES = {
         </thead>
         <tbody id="salesChTbody"></tbody>
         <tfoot id="salesChFoot"></tfoot>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- BC x Channel breakdown -->
+  <div class="section">
+    <div class="section-head">📊 Kênh theo từng BC / Canal por BC — T6 vs T5 cùng kỳ (1-23)</div>
+    <div class="section-body" style="padding:10px 0">
+      <div id="salesBcChGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px"></div>
+    </div>
+  </div>
+
+  <!-- Top 10 declining staff -->
+  <div class="section">
+    <div class="section-head">⚠️ 10 Nhân viên Active suy giảm nhất / 10 Promotores con mayor caída (T6 vs T5 cùng kỳ 1-23)</div>
+    <div class="section-body" style="padding:0">
+      <table class="tbl" style="width:100%;font-size:12px">
+        <thead>
+          <tr>
+            <th style="text-align:left;padding:8px 8px">#</th>
+            <th style="text-align:left;padding:8px 8px">BC</th>
+            <th style="text-align:left;padding:8px 8px">Kênh</th>
+            <th style="text-align:left;padding:8px 8px">Nhân viên</th>
+            <th class="num" style="padding:8px 6px">T5 CK<br><span style="font-size:9px;font-weight:400">(1-23/5)</span></th>
+            <th class="num" style="padding:8px 6px">T6 MTD</th>
+            <th class="num" style="padding:8px 6px">Δ</th>
+          </tr>
+        </thead>
+        <tbody id="salesTop10Tbody"></tbody>
       </table>
     </div>
   </div>
@@ -2011,29 +2148,29 @@ const SALES = {
     const bcTbody = document.getElementById('salesBcTbody');
     bcTbody.innerHTML = S.bcOrder.map((bc, i) => {
       const d4 = M[4].bc[bc]||{t:0,po:0,pr:0};
-      const d5 = M[5].bc[bc]||{t:0,po:0,pr:0};
+      const d5p= S.t5p.bc[bc]||{t:0,po:0,pr:0};
       const d6 = M[6].bc[bc]||{t:0,po:0,pr:0};
-      const dv = d6.t - d5.t;
+      const dv = d6.t - d5p.t;
       const bg = i % 2 === 0 ? '' : 'style="background:#f8fafc"';
       return `<tr ${bg}>
         <td style="padding:7px 10px;font-weight:600;font-size:12px">${bc.replace('CAJBC','BC')}</td>
         <td class="num" style="padding:7px 6px;color:var(--muted)">${fmt(d4.t)}</td>
-        <td class="num" style="padding:7px 6px;color:var(--muted)">${fmt(d5.t)}</td>
+        <td class="num" style="padding:7px 6px;color:var(--muted)">${fmt(d5p.t)}</td>
         <td class="num" style="padding:7px 6px;font-weight:600">${fmt(d6.t)}</td>
         <td class="num" style="padding:7px 6px;color:#7c3aed">${fmt(d6.po)}</td>
         <td class="num" style="padding:7px 6px;color:#0891b2">${fmt(d6.pr)}</td>
-        <td class="num" style="padding:7px 6px;${deltaColor(dv,0)};font-weight:600">${delta(d6.t,d5.t)}</td>
+        <td class="num" style="padding:7px 6px;${deltaColor(dv,0)};font-weight:600">${delta(d6.t,d5p.t)}</td>
       </tr>`;
     }).join('');
     document.getElementById('salesBcFoot').innerHTML = `
       <tr style="background:#f1f5f9;font-weight:700;border-top:2px solid var(--border)">
         <td style="padding:7px 10px">TOTAL</td>
         <td class="num" style="padding:7px 6px;color:var(--muted)">${fmt(t4.total)}</td>
-        <td class="num" style="padding:7px 6px;color:var(--muted)">${fmt(t5.total)}</td>
+        <td class="num" style="padding:7px 6px;color:var(--muted)">${fmt(S.t5p.total)}</td>
         <td class="num" style="padding:7px 6px">${fmt(t6.total)}</td>
         <td class="num" style="padding:7px 6px;color:#7c3aed">${fmt(t6.post)}</td>
         <td class="num" style="padding:7px 6px;color:#0891b2">${fmt(t6.pre)}</td>
-        <td class="num" style="padding:7px 6px;${deltaColor(t6.total,t5.total)}">${delta(t6.total,t5.total)}</td>
+        <td class="num" style="padding:7px 6px;${deltaColor(t6.total,S.t5p.total)}">${delta(t6.total,S.t5p.total)}</td>
       </tr>`;
 
     // ── MNP Donut Chart (T6) ──────────────────────────
@@ -2065,19 +2202,19 @@ const SALES = {
     const chTbody = document.getElementById('salesChTbody');
     chTbody.innerHTML = S.chOrder.map((ch, i) => {
       const c4 = (M[4].ch[ch])||{t:0,po:0,pr:0};
-      const c5 = (M[5].ch[ch])||{t:0,po:0,pr:0};
+      const c5p= S.t5p.ch[ch]||{t:0,po:0,pr:0};
       const c6 = (M[6].ch[ch])||{t:0,po:0,pr:0};
-      if (c4.t===0 && c5.t===0 && c6.t===0) return '';
-      const dv = c6.t - c5.t;
+      if (c4.t===0 && c5p.t===0 && c6.t===0) return '';
+      const dv = c6.t - c5p.t;
       const bg = i % 2 === 0 ? '' : 'style="background:#f8fafc"';
       return `<tr ${bg}>
         <td style="padding:6px 10px;font-size:12px">${ch}</td>
         <td class="num" style="padding:6px 6px;color:var(--muted)">${fmt(c4.t)}</td>
-        <td class="num" style="padding:6px 6px;color:var(--muted)">${fmt(c5.t)}</td>
+        <td class="num" style="padding:6px 6px;color:var(--muted)">${fmt(c5p.t)}</td>
         <td class="num" style="padding:6px 6px;font-weight:600">${fmt(c6.t)}</td>
         <td class="num" style="padding:6px 6px;color:#7c3aed">${fmt(c6.po)}</td>
         <td class="num" style="padding:6px 6px;color:#0891b2">${fmt(c6.pr)}</td>
-        <td class="num" style="padding:6px 6px;${deltaColor(dv,0)};font-weight:600">${delta(c6.t,c5.t)}</td>
+        <td class="num" style="padding:6px 6px;${deltaColor(dv,0)};font-weight:600">${delta(c6.t,c5p.t)}</td>
       </tr>`;
     }).join('');
     document.getElementById('salesChFoot').innerHTML = `
@@ -2090,6 +2227,52 @@ const SALES = {
         <td class="num" style="padding:7px 6px;color:#0891b2">${fmt(t6.pre)}</td>
         <td class="num" style="padding:7px 6px;${deltaColor(t6.total,t5.total)}">${delta(t6.total,t5.total)}</td>
       </tr>`;
+    // ── BC × Channel Grid ────────────────────────────────
+    const bcChGrid = document.getElementById('salesBcChGrid');
+    bcChGrid.innerHTML = S.bcOrder.map(bc => {
+      const rows = (BCCH[bc] || []).map((r,i) => {
+        const dv = r.t6 - r.t5p;
+        const bg = i % 2 === 0 ? '' : 'background:#f8fafc;';
+        const dcolor = dv >= 0 ? '#16a34a' : '#dc2626';
+        return '<tr style="' + bg + '">' +
+          '<td style="padding:4px 7px;font-size:11px">' + r.ch.replace(' Channel','').replace(' Autorizado','Auto.') + '</td>' +
+          '<td class="num" style="padding:4px 5px;color:var(--muted);font-size:11px">' + fmt(r.t5p) + '</td>' +
+          '<td class="num" style="padding:4px 5px;font-weight:600;font-size:11px">' + fmt(r.t6) + '</td>' +
+          '<td class="num" style="padding:4px 5px;color:' + dcolor + ';font-weight:700;font-size:11px">' + (dv>=0?'+':'') + fmt(dv) + '</td>' +
+          '</tr>';
+      }).join('');
+      const bc6  = M[6].bc[bc]||{t:0};
+      const bc5p = S.t5p.bc[bc]||{t:0};
+      const tot_dv = bc6.t - bc5p.t;
+      const tot_color = tot_dv >= 0 ? '#16a34a' : '#dc2626';
+      return '<div class="section" style="margin-bottom:0;overflow:hidden">' +
+        '<div class="section-head" style="font-size:12px;padding:7px 10px">\u{1F3E2} ' + bc.replace('CAJBC','BC') +
+          '<span style="float:right;color:' + tot_color + ';font-weight:700">' + (tot_dv>=0?'+':'') + fmt(tot_dv) + '</span></div>' +
+        '<table class="tbl" style="width:100%;font-size:11px">' +
+          '<thead><tr>' +
+            '<th style="text-align:left;padding:5px 7px">K\u00eAnh</th>' +
+            '<th class="num" style="padding:5px 5px">T5 CK</th>' +
+            '<th class="num" style="padding:5px 5px">T6</th>' +
+            '<th class="num" style="padding:5px 5px">\u0394</th>' +
+          '</tr></thead>' +
+          '<tbody>' + rows + '</tbody>' +
+        '</table></div>';
+    }).join('');
+
+    // ── Top 10 Declining Staff ────────────────────────────
+    document.getElementById('salesTop10Tbody').innerHTML = TOP10_STAFF.map(function(r,i) {
+      const bg = i % 2 === 0 ? '' : 'style="background:#f8fafc"';
+      return '<tr ' + bg + '>' +
+        '<td style="padding:6px 8px;color:var(--muted)">' + (i+1) + '</td>' +
+        '<td style="padding:6px 8px;font-weight:600;font-size:11px">' + r.bc.replace('CAJBC','BC') + '</td>' +
+        '<td style="padding:6px 8px;font-size:11px">' + r.ch.replace(' Channel','') + '</td>' +
+        '<td style="padding:6px 8px;font-family:monospace;font-size:11px">' + r.staff + '</td>' +
+        '<td class="num" style="padding:6px 6px;color:var(--muted)">' + r.t5p + '</td>' +
+        '<td class="num" style="padding:6px 6px;font-weight:600">' + r.t6 + '</td>' +
+        '<td class="num" style="padding:6px 6px;color:#dc2626;font-weight:700">' + r.delta + '</td>' +
+        '</tr>';
+    }).join('');
+
   }
 
 </script>
