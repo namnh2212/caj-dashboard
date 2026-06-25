@@ -1203,7 +1203,7 @@ const SALES = {
         <table class="tbl" id="salesBcTable" style="width:100%;font-size:12px;table-layout:fixed">
           <colgroup>
             <col style="width:12%"><col style="width:11%"><col style="width:13%">
-            <col style="width:11%"><col style="width:13%"><col style="width:11%"><col style="width:10%">
+            <col style="width:12%"><col style="width:13%"><col style="width:11%"><col style="width:10%">
           </colgroup>
           <thead>
             <tr>
@@ -1271,11 +1271,7 @@ const SALES = {
   <div class="section">
     <div class="section-head">⚠️ 10 Nhân viên Active suy giảm nhất / 10 Promotores con mayor caída (T6 vs T5 cùng kỳ 1-23)</div>
     <div class="section-body" style="padding:0">
-      <table class="tbl" style="width:100%;font-size:12px;table-layout:fixed">
-        <colgroup>
-          <col style="width:4%"><col style="width:8%"><col style="width:24%">
-          <col style="width:16%"><col style="width:14%"><col style="width:12%"><col style="width:10%">
-        </colgroup>
+      <table class="tbl" style="width:100%;font-size:12px">
         <thead>
           <tr>
             <th style="text-align:left;padding:8px 8px">#</th>
@@ -2276,4 +2272,18 @@ const SALES = {
       const bg = i % 2 === 0 ? '' : 'style="background:#f8fafc"';
       return '<tr ' + bg + '>' +
         '<td style="padding:6px 8px;color:var(--muted)">' + (i+1) + '</td>' +
-        '<td s
+        '<td style="padding:6px 8px;font-weight:600;font-size:11px">' + r.bc.replace('CAJBC','BC') + '</td>' +
+        '<td style="padding:6px 8px;font-size:11px">' + r.ch.replace(' Channel','') + '</td>' +
+        '<td style="padding:6px 8px;font-family:monospace;font-size:11px">' + r.staff + '</td>' +
+        '<td class="num" style="padding:6px 6px;color:var(--muted)">' + r.t5p + '</td>' +
+        '<td class="num" style="padding:6px 6px;font-weight:600">' + r.t6 + '</td>' +
+        '<td class="num" style="padding:6px 6px;color:#dc2626;font-weight:700">' + r.delta + '</td>' +
+        '</tr>';
+    }).join('');
+
+  }
+
+</script>
+
+</body>
+</html>
