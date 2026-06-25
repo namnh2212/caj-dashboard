@@ -1207,13 +1207,13 @@ const SALES = {
           </colgroup>
           <thead>
             <tr>
-              <th style="text-align:left;padding:8px 10px">BC</th>
-              <th class="num" style="padding:8px 6px">T4</th>
-              <th class="num" style="padding:8px 6px">T5 CK (1-23/5)</th>
-              <th class="num" style="padding:8px 6px">T6 MTD</th>
-              <th class="num" style="padding:8px 6px;color:#7c3aed">Post T6</th>
-              <th class="num" style="padding:8px 6px;color:#0891b2">Pre T6</th>
-              <th class="num" style="padding:8px 6px">Δ cùng kỳ</th>
+              <th style="text-align:left;padding:8px 10px;width:10%">BC</th>
+              <th class="num" style="padding:8px 6px;width:11%">T4</th>
+              <th class="num" style="padding:8px 6px;width:14%">T5 CK (1-23/5)</th>
+              <th class="num" style="padding:8px 6px;width:11%">T6 MTD</th>
+              <th class="num" style="padding:8px 6px;color:#7c3aed;width:12%">Post T6</th>
+              <th class="num" style="padding:8px 6px;color:#0891b2;width:11%">Pre T6</th>
+              <th class="num" style="padding:8px 6px;width:11%">Δ cùng kỳ</th>
             </tr>
           </thead>
           <tbody id="salesBcTbody"></tbody>
@@ -1243,13 +1243,13 @@ const SALES = {
         </colgroup>
         <thead>
           <tr>
-            <th style="text-align:left;padding:8px 10px">Canal</th>
-            <th class="num" style="padding:8px 6px">T4</th>
-            <th class="num" style="padding:8px 6px">T5 CK (1-23/5)</th>
-            <th class="num" style="padding:8px 6px">T6 MTD</th>
-            <th class="num" style="padding:8px 6px;color:#7c3aed">Post T6</th>
-            <th class="num" style="padding:8px 6px;color:#0891b2">Pre T6</th>
-            <th class="num" style="padding:8px 6px">Δ cùng kỳ</th>
+            <th style="text-align:left;padding:8px 10px;width:28%">Canal</th>
+            <th class="num" style="padding:8px 6px;width:10%">T4</th>
+            <th class="num" style="padding:8px 6px;width:14%">T5 CK (1-23/5)</th>
+            <th class="num" style="padding:8px 6px;width:10%">T6 MTD</th>
+            <th class="num" style="padding:8px 6px;color:#7c3aed;width:11%">Post T6</th>
+            <th class="num" style="padding:8px 6px;color:#0891b2;width:11%">Pre T6</th>
+            <th class="num" style="padding:8px 6px;width:10%">Δ cùng kỳ</th>
           </tr>
         </thead>
         <tbody id="salesChTbody"></tbody>
@@ -2161,13 +2161,13 @@ const SALES = {
       const dv = d6.t - d5p.t;
       const bg = i % 2 === 0 ? '' : 'style="background:#f8fafc"';
       return `<tr ${bg}>
-        <td style="padding:7px 10px;font-weight:600;font-size:12px">${bc.replace('CAJBC','BC')}</td>
-        <td class="num" style="padding:7px 6px;color:var(--muted)">${fmt(d4.t)}</td>
-        <td class="num" style="padding:7px 6px;color:var(--muted)">${fmt(d5p.t)}</td>
-        <td class="num" style="padding:7px 6px;font-weight:600">${fmt(d6.t)}</td>
-        <td class="num" style="padding:7px 6px;color:#7c3aed">${fmt(d6.po)}</td>
-        <td class="num" style="padding:7px 6px;color:#0891b2">${fmt(d6.pr)}</td>
-        <td class="num" style="padding:7px 6px;${deltaColor(dv,0)};font-weight:600">${delta(d6.t,d5p.t)}</td>
+        <td style="padding:7px 10px;font-weight:600;font-size:12px;width:10%">${bc.replace('CAJBC','BC')}</td>
+        <td class="num" style="padding:7px 6px;color:var(--muted);width:11%">${fmt(d4.t)}</td>
+        <td class="num" style="padding:7px 6px;color:var(--muted);width:14%">${fmt(d5p.t)}</td>
+        <td class="num" style="padding:7px 6px;font-weight:600;width:11%">${fmt(d6.t)}</td>
+        <td class="num" style="padding:7px 6px;color:#7c3aed;width:12%">${fmt(d6.po)}</td>
+        <td class="num" style="padding:7px 6px;color:#0891b2;width:11%">${fmt(d6.pr)}</td>
+        <td class="num" style="padding:7px 6px;${deltaColor(dv,0)};font-weight:600;width:11%">${delta(d6.t,d5p.t)}</td>
       </tr>`;
     }).join('');
     document.getElementById('salesBcFoot').innerHTML = `
