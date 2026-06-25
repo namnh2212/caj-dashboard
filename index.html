@@ -1200,12 +1200,16 @@ const SALES = {
     <div class="section" style="margin-bottom:0">
       <div class="section-head">🏢 Kết quả Active theo BC / Por BC</div>
       <div class="section-body" style="padding:0">
-        <table class="tbl" id="salesBcTable" style="width:100%;font-size:12px">
+        <table class="tbl" id="salesBcTable" style="width:100%;font-size:12px;table-layout:fixed">
+          <colgroup>
+            <col style="width:12%"><col style="width:11%"><col style="width:13%">
+            <col style="width:11%"><col style="width:13%"><col style="width:11%"><col style="width:10%">
+          </colgroup>
           <thead>
             <tr>
               <th style="text-align:left;padding:8px 10px">BC</th>
               <th class="num" style="padding:8px 6px">T4</th>
-              <th class="num" style="padding:8px 6px">T5 CK<br><span style="font-size:9px;font-weight:400">(1-23/5)</span></th>
+              <th class="num" style="padding:8px 6px">T5 CK (1-23/5)</th>
               <th class="num" style="padding:8px 6px">T6 MTD</th>
               <th class="num" style="padding:8px 6px;color:#7c3aed">Post T6</th>
               <th class="num" style="padding:8px 6px;color:#0891b2">Pre T6</th>
@@ -1232,16 +1236,20 @@ const SALES = {
   <div class="section">
     <div class="section-head">📡 Kết quả Active theo Kênh / Activaciones por Canal</div>
     <div class="section-body" style="padding:0">
-      <table class="tbl" style="width:100%;font-size:12px">
+      <table class="tbl" style="width:100%;font-size:12px;table-layout:fixed">
+        <colgroup>
+          <col style="width:30%"><col style="width:10%"><col style="width:13%">
+          <col style="width:10%"><col style="width:11%"><col style="width:11%"><col style="width:10%">
+        </colgroup>
         <thead>
           <tr>
             <th style="text-align:left;padding:8px 10px">Canal</th>
             <th class="num" style="padding:8px 6px">T4</th>
-            <th class="num" style="padding:8px 6px">T5</th>
+            <th class="num" style="padding:8px 6px">T5 CK (1-23/5)</th>
             <th class="num" style="padding:8px 6px">T6 MTD</th>
             <th class="num" style="padding:8px 6px;color:#7c3aed">Post T6</th>
             <th class="num" style="padding:8px 6px;color:#0891b2">Pre T6</th>
-            <th class="num" style="padding:8px 6px">Δ T5→T6</th>
+            <th class="num" style="padding:8px 6px">Δ cùng kỳ</th>
           </tr>
         </thead>
         <tbody id="salesChTbody"></tbody>
@@ -1263,14 +1271,18 @@ const SALES = {
   <div class="section">
     <div class="section-head">⚠️ 10 Nhân viên Active suy giảm nhất / 10 Promotores con mayor caída (T6 vs T5 cùng kỳ 1-23)</div>
     <div class="section-body" style="padding:0">
-      <table class="tbl" style="width:100%;font-size:12px">
+      <table class="tbl" style="width:100%;font-size:12px;table-layout:fixed">
+        <colgroup>
+          <col style="width:4%"><col style="width:8%"><col style="width:24%">
+          <col style="width:16%"><col style="width:14%"><col style="width:12%"><col style="width:10%">
+        </colgroup>
         <thead>
           <tr>
             <th style="text-align:left;padding:8px 8px">#</th>
             <th style="text-align:left;padding:8px 8px">BC</th>
             <th style="text-align:left;padding:8px 8px">Kênh</th>
             <th style="text-align:left;padding:8px 8px">Nhân viên</th>
-            <th class="num" style="padding:8px 6px">T5 CK<br><span style="font-size:9px;font-weight:400">(1-23/5)</span></th>
+            <th class="num" style="padding:8px 6px">T5 CK (1-23/5)</th>
             <th class="num" style="padding:8px 6px">T6 MTD</th>
             <th class="num" style="padding:8px 6px">Δ</th>
           </tr>
@@ -2264,18 +2276,4 @@ const SALES = {
       const bg = i % 2 === 0 ? '' : 'style="background:#f8fafc"';
       return '<tr ' + bg + '>' +
         '<td style="padding:6px 8px;color:var(--muted)">' + (i+1) + '</td>' +
-        '<td style="padding:6px 8px;font-weight:600;font-size:11px">' + r.bc.replace('CAJBC','BC') + '</td>' +
-        '<td style="padding:6px 8px;font-size:11px">' + r.ch.replace(' Channel','') + '</td>' +
-        '<td style="padding:6px 8px;font-family:monospace;font-size:11px">' + r.staff + '</td>' +
-        '<td class="num" style="padding:6px 6px;color:var(--muted)">' + r.t5p + '</td>' +
-        '<td class="num" style="padding:6px 6px;font-weight:600">' + r.t6 + '</td>' +
-        '<td class="num" style="padding:6px 6px;color:#dc2626;font-weight:700">' + r.delta + '</td>' +
-        '</tr>';
-    }).join('');
-
-  }
-
-</script>
-
-</body>
-</html>
+        '<td s
