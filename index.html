@@ -1300,32 +1300,36 @@ const SALES = {
     </div>
   </div>
 
-  <!-- Top 10 declining staff -->
+  <!-- Declining staff by channel tabs -->
   <div class="section">
-    <div class="section-head">⚠️ 10 Nhân viên Active suy giảm nhất / 10 Promotores con mayor caída (T6 vs T5 cùng kỳ 1-23)</div>
-    <div class="section-body" style="padding:0">
-      <table class="tbl" style="width:100%;font-size:12px">
-        <thead>
-          <tr>
+    <div class="section-head">⚠️ Nhân viên Active suy giảm theo kênh / Caída por Canal (T6 vs T5 cùng kỳ 1-23)</div>
+    <div class="section-body" style="padding:12px 14px">
+      <div class="tabs" id="staffDeclineTabs">
+        <div class="tab active" onclick="switchStaffTab('promotores',this)">📣 Promotores</div>
+        <div class="tab" onclick="switchStaffTab('pos',this)">🏪 Point of Sales</div>
+        <div class="tab" onclick="switchStaffTab('cab',this)">🤝 CAB Dealer</div>
+        <div class="tab" onclick="switchStaffTab('dealer',this)">🚗 Dealer Channel</div>
+        <div class="tab" onclick="switchStaffTab('da',this)">⭐ Dealer Autorizado</div>
+      </div>
+      <!-- Promotores pane -->
+      <div id="staff-pane-promotores" class="tab-pane active">
+        <table class="tbl" style="width:100%;font-size:12px">
+          <thead><tr>
             <th style="text-align:left;padding:8px 8px">#</th>
             <th style="text-align:left;padding:8px 8px">BC</th>
-            <th style="text-align:left;padding:8px 8px">Kênh</th>
             <th style="text-align:left;padding:8px 8px">Nhân viên</th>
             <th class="num" style="padding:8px 6px">T5 CK (1-23/5)</th>
             <th class="num" style="padding:8px 6px">T6 MTD</th>
             <th class="num" style="padding:8px 6px">Δ</th>
-          </tr>
-        </thead>
-        <tbody id="salesTop10Tbody"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Declining staff by other channels -->
-  <div class="section">
-    <div class="section-head">📉 Nhân viên suy giảm theo kênh khác / Por Canal (T6 vs T5 cùng kỳ 1-23)</div>
-    <div class="section-body" style="padding:10px 0">
-      <div id="salesChDeclineGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px"></div>
+          </tr></thead>
+          <tbody id="salesTop10Tbody"></tbody>
+        </table>
+      </div>
+      <!-- Other channel panes (rendered by JS) -->
+      <div id="staff-pane-pos"    class="tab-pane"></div>
+      <div id="staff-pane-cab"    class="tab-pane"></div>
+      <div id="staff-pane-dealer" class="tab-pane"></div>
+      <div id="staff-pane-da"     class="tab-pane"></div>
     </div>
   </div>
 
@@ -1335,6 +1339,13 @@ const SALES = {
 <script>
   // ── Page-level tab switching ──
   let leafletMap = null;
+  function switchStaffTab(id, el) {
+    document.querySelectorAll('#staffDeclineTabs .tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('[id^="staff-pane-"]').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('staff-pane-' + id).classList.add('active');
+  }
+
   function switchPage(id, el) {
     document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.page-pane').forEach(p => p.classList.remove('active'));
@@ -2309,46 +2320,43 @@ const SALES = {
     }).join('');
 
     // ── Top 10 Declining Staff ────────────────────────────
-    // ── Other Channel Decline Grid ──────────────────────────────────────
-    const chDeclineGrid = document.getElementById('salesChDeclineGrid');
-    if (chDeclineGrid) {
-      chDeclineGrid.innerHTML = TOP_DECLINE_CH.map(function(grp) {
-        const rows = grp.rows.map(function(r,i) {
+    // ── Per-channel pane builder ─────────────────────────────────────────
+    const CH_PANE_IDS = ['pos','cab','dealer','da'];
+    TOP_DECLINE_CH.forEach(function(grp, gi) {
+      const pane = document.getElementById('staff-pane-' + CH_PANE_IDS[gi]);
+      if (!pane) return;
+      pane.innerHTML = '<table class="tbl" style="width:100%;font-size:12px">' +
+        '<thead><tr>' +
+          '<th style="text-align:left;padding:8px 8px">BC</th>' +
+          '<th style="text-align:left;padding:8px 8px">Nhân viên</th>' +
+          '<th class="num" style="padding:8px 6px">T5 CK (1-23/5)</th>' +
+          '<th class="num" style="padding:8px 6px">T6 MTD</th>' +
+          '<th class="num" style="padding:8px 6px">Δ</th>' +
+        '</tr></thead>' +
+        '<tbody>' + grp.rows.map(function(r,i) {
           const bg = i%2===0?'':'background:#f8fafc;';
+          const dStyle = r.delta < 0 ? 'color:#dc2626;font-weight:700' : 'color:#16a34a;font-weight:700';
           return '<tr style="'+bg+'">' +
-            '<td style="padding:4px 7px;font-size:11px">'+r.bc.replace('CAJBC','BC')+'</td>' +
-            '<td style="padding:4px 7px;font-size:11px;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+r.staff+'</td>' +
-            '<td class="num" style="padding:4px 5px;font-size:11px;color:var(--muted)">'+fmt(r.t5p)+'</td>' +
-            '<td class="num" style="padding:4px 5px;font-size:11px">'+fmt(r.t6)+'</td>' +
-            '<td class="num" style="padding:4px 5px;font-size:11px;color:#dc2626;font-weight:700">'+r.delta+'</td>' +
+            '<td style="padding:7px 8px">'+r.bc.replace('CAJBC','BC')+'</td>' +
+            '<td style="padding:7px 8px">'+r.staff+'</td>' +
+            '<td class="num" style="padding:7px 6px;color:var(--muted)">'+fmt(r.t5p)+'</td>' +
+            '<td class="num" style="padding:7px 6px">'+fmt(r.t6)+'</td>' +
+            '<td class="num" style="padding:7px 6px;'+dStyle+'">'+r.delta+'</td>' +
             '</tr>';
-        }).join('');
-        return '<div style="border:1px solid var(--border);border-radius:6px;overflow:hidden">' +
-          '<div style="background:var(--primary);color:#fff;padding:6px 10px;font-size:11px;font-weight:700">📡 '+grp.ch+'</div>' +
-          '<table class="tbl" style="width:100%;font-size:11px;table-layout:fixed">' +
-            '<colgroup><col style="width:12%"><col style="width:38%"><col style="width:16%"><col style="width:14%"><col style="width:12%"></colgroup>' +
-            '<thead><tr>' +
-              '<th style="padding:5px 7px;text-align:left">BC</th>' +
-              '<th style="padding:5px 7px;text-align:left">Nhân viên</th>' +
-              '<th class="num" style="padding:5px 5px">T5 CK*</th>' +
-              '<th class="num" style="padding:5px 5px">T6</th>' +
-              '<th class="num" style="padding:5px 5px">Δ</th>' +
-            '</tr></thead>' +
-            '<tbody>'+rows+'</tbody>' +
-          '</table></div>';
-      }).join('');
-    }
+        }).join('') +
+        '</tbody></table>';
+    });
 
     document.getElementById('salesTop10Tbody').innerHTML = TOP10_STAFF.map(function(r,i) {
       const bg = i % 2 === 0 ? '' : 'style="background:#f8fafc"';
+      const dStyle = r.delta < -50 ? 'color:#dc2626;font-weight:700' : r.delta < -20 ? 'color:#ea580c;font-weight:600' : 'color:#ca8a04;font-weight:600';
       return '<tr ' + bg + '>' +
-        '<td style="padding:6px 8px;color:var(--muted)">' + (i+1) + '</td>' +
-        '<td style="padding:6px 8px;font-weight:600;font-size:11px">' + r.bc.replace('CAJBC','BC') + '</td>' +
-        '<td style="padding:6px 8px;font-size:11px">' + r.ch.replace(' Channel','') + '</td>' +
-        '<td style="padding:6px 8px;font-family:monospace;font-size:11px">' + r.staff + '</td>' +
-        '<td class="num" style="padding:6px 6px;color:var(--muted)">' + r.t5p + '</td>' +
-        '<td class="num" style="padding:6px 6px;font-weight:600">' + r.t6 + '</td>' +
-        '<td class="num" style="padding:6px 6px;color:#dc2626;font-weight:700">' + r.delta + '</td>' +
+        '<td style="padding:7px 8px;color:var(--muted)">' + (i+1) + '</td>' +
+        '<td style="padding:7px 8px;font-weight:600;font-size:11px">' + r.bc.replace('CAJBC','BC') + '</td>' +
+        '<td style="padding:7px 8px;font-family:monospace;font-size:11px">' + r.staff + '</td>' +
+        '<td class="num" style="padding:7px 6px;color:var(--muted)">' + r.t5p + '</td>' +
+        '<td class="num" style="padding:7px 6px;font-weight:600">' + r.t6 + '</td>' +
+        '<td class="num" style="padding:7px 6px;' + dStyle + '">' + r.delta + '</td>' +
         '</tr>';
     }).join('');
 
