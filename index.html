@@ -544,6 +544,7 @@ const SALES = {
       font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
       color: var(--muted); border-bottom: 2px solid var(--border); white-space: nowrap;
     }
+    #salesBcTable th, table.tbl[style*="table-layout"] th { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .tbl td { padding: 7px 10px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
     .tbl tr:last-child td { border-bottom: none; }
     .tbl tr:hover td { background: #fafbfc; }
@@ -1207,13 +1208,13 @@ const SALES = {
           </colgroup>
           <thead>
             <tr>
-              <th style="text-align:left;padding:8px 10px;width:10%">BC</th>
-              <th class="num" style="padding:8px 6px;width:11%">T4</th>
-              <th class="num" style="padding:8px 6px;width:14%">T5 CK (1-23/5)</th>
-              <th class="num" style="padding:8px 6px;width:11%">T6 MTD</th>
-              <th class="num" style="padding:8px 6px;color:#7c3aed;width:12%">Post T6</th>
-              <th class="num" style="padding:8px 6px;color:#0891b2;width:11%">Pre T6</th>
-              <th class="num" style="padding:8px 6px;width:11%">Δ cùng kỳ</th>
+              <th style="text-align:left;padding:8px 10px;width:10%;overflow:hidden">BC</th>
+              <th class="num" style="padding:8px 6px;width:11%;overflow:hidden">T4</th>
+              <th class="num" style="padding:8px 6px;width:14%;overflow:hidden" title="T5 cùng kỳ 1-23/5">T5 CK*</th>
+              <th class="num" style="padding:8px 6px;width:11%;overflow:hidden">T6 MTD</th>
+              <th class="num" style="padding:8px 6px;color:#7c3aed;width:12%;overflow:hidden">Post T6</th>
+              <th class="num" style="padding:8px 6px;color:#0891b2;width:11%;overflow:hidden">Pre T6</th>
+              <th class="num" style="padding:8px 6px;width:11%;overflow:hidden">Δ cùng kỳ</th>
             </tr>
           </thead>
           <tbody id="salesBcTbody"></tbody>
@@ -1243,13 +1244,13 @@ const SALES = {
         </colgroup>
         <thead>
           <tr>
-            <th style="text-align:left;padding:8px 10px;width:28%">Canal</th>
-            <th class="num" style="padding:8px 6px;width:10%">T4</th>
-            <th class="num" style="padding:8px 6px;width:14%">T5 CK (1-23/5)</th>
-            <th class="num" style="padding:8px 6px;width:10%">T6 MTD</th>
-            <th class="num" style="padding:8px 6px;color:#7c3aed;width:11%">Post T6</th>
-            <th class="num" style="padding:8px 6px;color:#0891b2;width:11%">Pre T6</th>
-            <th class="num" style="padding:8px 6px;width:10%">Δ cùng kỳ</th>
+            <th style="text-align:left;padding:8px 10px;width:28%;overflow:hidden">Canal</th>
+            <th class="num" style="padding:8px 6px;width:10%;overflow:hidden">T4</th>
+            <th class="num" style="padding:8px 6px;width:14%;overflow:hidden" title="T5 cùng kỳ 1-23/5">T5 CK*</th>
+            <th class="num" style="padding:8px 6px;width:10%;overflow:hidden">T6 MTD</th>
+            <th class="num" style="padding:8px 6px;color:#7c3aed;width:11%;overflow:hidden">Post T6</th>
+            <th class="num" style="padding:8px 6px;color:#0891b2;width:11%;overflow:hidden">Pre T6</th>
+            <th class="num" style="padding:8px 6px;width:10%;overflow:hidden">Δ cùng kỳ</th>
           </tr>
         </thead>
         <tbody id="salesChTbody"></tbody>
