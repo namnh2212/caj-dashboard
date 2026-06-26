@@ -1,4 +1,4 @@
-<!DOCTYPE html><!-- v20260626-155453 -->
+<!DOCTYPE html><!-- v20260626-160131 -->
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
@@ -240,32 +240,32 @@ const BCCH = {
 
 const TOP_DECLINE_CH = [
   { ch:'Point of Sales Channel', rows:[
-    {bc:'CAJBC05',staff:'CAJPS10772',t5p:41, t6:6,  delta:-35},
-    {bc:'CAJBC05',staff:'CAJPS10907',t5p:64, t6:44, delta:-20},
-    {bc:'CAJBC05',staff:'CAJPS12850',t5p:37, t6:17, delta:-20},
-    {bc:'CAJBC08',staff:'CAJPS00495',t5p:56, t6:37, delta:-19},
-    {bc:'CAJBC10',staff:'CAJPS14644',t5p:40, t6:21, delta:-19},
+    {bc:'CAJBC05',shop:'CAJBC05',staff:'CAJPS10772',t5p:41, t6:6,  delta:-35},
+    {bc:'CAJBC05',shop:'CAJBC05',staff:'CAJPS10907',t5p:64, t6:44, delta:-20},
+    {bc:'CAJBC05',shop:'CAJBC05',staff:'CAJPS12850',t5p:37, t6:17, delta:-20},
+    {bc:'CAJBC08',shop:'CAJBC08',staff:'CAJPS00495',t5p:56, t6:37, delta:-19},
+    {bc:'CAJBC10',shop:'CAJBC10',staff:'CAJPS14644',t5p:40, t6:21, delta:-19},
   ]},
   { ch:'CAB Dealer', rows:[
-    {bc:'CAJBC08',staff:'GABRIELALJ_CAJ', t5p:59,  t6:24,  delta:-35},
-    {bc:'CAJBC01',staff:'ROSMERICN_CAJ',  t5p:143, t6:112, delta:-31},
-    {bc:'CAJBC01',staff:'OCTAVIOVP_CAJ',  t5p:182, t6:154, delta:-28},
-    {bc:'CAJBC01',staff:'YAQUELINMM_CAJ', t5p:129, t6:106, delta:-23},
-    {bc:'CAJBC07',staff:'YONYBR_CAJ',     t5p:105, t6:87,  delta:-18},
+    {bc:'CAJBC08',shop:'CAJCD07',staff:'GABRIELALJ_CAJ', t5p:59,  t6:24,  delta:-35},
+    {bc:'CAJBC01',shop:'CAJCD02',staff:'ROSMERICN_CAJ',  t5p:143, t6:112, delta:-31},
+    {bc:'CAJBC01',shop:'CAJCD02',staff:'OCTAVIOVP_CAJ',  t5p:182, t6:154, delta:-28},
+    {bc:'CAJBC01',shop:'CAJCD02',staff:'YAQUELINMM_CAJ', t5p:129, t6:106, delta:-23},
+    {bc:'CAJBC07',shop:'CAJCD03',staff:'YONYBR_CAJ',     t5p:105, t6:87,  delta:-18},
   ]},
   { ch:'Dealer Channel', rows:[
-    {bc:'CAJBC10',staff:'ALBERTOSC2_CAJ', t5p:70,  t6:44, delta:-26},
-    {bc:'CAJBC08',staff:'ANGHIJV_CAJ',    t5p:104, t6:89, delta:-15},
-    {bc:'CAJBC08',staff:'JOSEAF2_CAJ',    t5p:20,  t6:6,  delta:-14},
-    {bc:'CAJBC10',staff:'ROSMERYML2_CAJ', t5p:62,  t6:48, delta:-14},
-    {bc:'CAJBC05',staff:'MARCIART_CAJ',   t5p:9,   t6:0,  delta:-9},
+    {bc:'CAJBC10',shop:'CAJDL05',staff:'ALBERTOSC2_CAJ', t5p:70,  t6:44, delta:-26},
+    {bc:'CAJBC08',shop:'CAJDL02',staff:'ANGHIJV_CAJ',    t5p:104, t6:89, delta:-15},
+    {bc:'CAJBC08',shop:'CAJDL02',staff:'JOSEAF2_CAJ',    t5p:20,  t6:6,  delta:-14},
+    {bc:'CAJBC10',shop:'CAJDL05',staff:'ROSMERYML2_CAJ', t5p:62,  t6:48, delta:-14},
+    {bc:'CAJBC05',shop:'CAJDL27',staff:'MARCIART_CAJ',   t5p:9,   t6:0,  delta:-9},
   ]},
   { ch:'Dealer Autorizado', rows:[
-    {bc:'CAJBC07',staff:'DA_WILSERRF_CAJ',t5p:33, t6:0,  delta:-33},
-    {bc:'CAJBC14',staff:'DA_LUISYB_CAJ',  t5p:38, t6:8,  delta:-30},
-    {bc:'CAJBC07',staff:'DA_BRAYANRC_CAJ',t5p:30, t6:0,  delta:-30},
-    {bc:'CAJBC08',staff:'DA_DIANACS_CAJ', t5p:25, t6:0,  delta:-25},
-    {bc:'CAJBC05',staff:'KEYLERGS_CAJ',   t5p:42, t6:19, delta:-23},
+    {bc:'CAJBC07',shop:'CAJDA70',staff:'DA_WILSERRF_CAJ',t5p:33, t6:0,  delta:-33},
+    {bc:'CAJBC14',shop:'CAJDA59',staff:'DA_LUISYB_CAJ',  t5p:38, t6:8,  delta:-30},
+    {bc:'CAJBC07',shop:'CAJDA47',staff:'DA_BRAYANRC_CAJ',t5p:30, t6:0,  delta:-30},
+    {bc:'CAJBC08',shop:'CAJDA87',staff:'DA_DIANACS_CAJ', t5p:25, t6:0,  delta:-25},
+    {bc:'CAJBC05',shop:'CAJDA67',staff:'KEYLERGS_CAJ',   t5p:42, t6:19, delta:-23},
   ]},
 ];
 const TOP10_STAFF = [
@@ -2328,6 +2328,7 @@ const SALES = {
       pane.innerHTML = '<table class="tbl" style="width:100%;font-size:12px">' +
         '<thead><tr>' +
           '<th style="text-align:left;padding:8px 8px">BC</th>' +
+          '<th style="text-align:left;padding:8px 8px">Shop</th>' +
           '<th style="text-align:left;padding:8px 8px">Nhân viên</th>' +
           '<th class="num" style="padding:8px 6px">T5 CK (1-23/5)</th>' +
           '<th class="num" style="padding:8px 6px">T6 MTD</th>' +
@@ -2338,6 +2339,7 @@ const SALES = {
           const dStyle = r.delta < 0 ? 'color:#dc2626;font-weight:700' : 'color:#16a34a;font-weight:700';
           return '<tr style="'+bg+'">' +
             '<td style="padding:7px 8px">'+r.bc.replace('CAJBC','BC')+'</td>' +
+            '<td style="padding:7px 8px;font-size:11px;color:var(--muted)">'+r.shop+'</td>' +
             '<td style="padding:7px 8px">'+r.staff+'</td>' +
             '<td class="num" style="padding:7px 6px;color:var(--muted)">'+fmt(r.t5p)+'</td>' +
             '<td class="num" style="padding:7px 6px">'+fmt(r.t6)+'</td>' +
