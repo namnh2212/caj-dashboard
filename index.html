@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard điều hành / Gestión - Chi nhánh Cajamarca / Sucursal Cajamarca</title>
+  <link rel="icon" type="image/png" href="https://bitel.com.pe/upload/2005922/20250710/Bitel_azul_2__1__79885_2cd99.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -479,7 +480,8 @@ const SALES = {
       gap: 16px;
       border-bottom: 3px solid #e85d04;
     }
-    .header-icon { font-size: 28px; }
+    .header-icon { display:flex; align-items:center; background:#fff; border-radius:8px; padding:4px 10px; flex-shrink:0; }
+    .header-icon img { height:34px; display:block; }
     .header-title { font-size: 15px; font-weight: 700; letter-spacing: 0.3px; }
     .header-sub { font-size: 11px; opacity: 0.75; margin-top: 2px; }
     .header-badge {
@@ -730,12 +732,12 @@ const SALES = {
 <body>
 
 <div class="header">
-  <div class="header-icon">📊</div>
+  <div class="header-icon"><img src="https://bitel.com.pe/upload/2005922/20250710/Bitel_azul_2__1__79885_2cd99.png" alt="Bitel"></div>
   <div>
     <div class="header-title">Dashboard điều hành / Gestión · Chi nhánh Cajamarca / Sucursal Cajamarca</div>
     <div class="header-sub">Báo cáo kinh doanh hàng tuần / Informe semanal de negocio · Nguồn / Fuente: Báo cáo tuần &amp; Cảnh báo thuê bao giảm / Alertas de bajas</div>
   </div>
-  <div class="header-badge">📅 Dữ liệu đến W24 — 15/06/2026</div>
+  <div class="header-badge">📅 Dữ liệu đến W25 — 22/06/2026</div>
 </div>
 
 <div class="page-tabs">
@@ -2355,16 +2357,4 @@ const SALES = {
       return '<tr ' + bg + '>' +
         '<td style="padding:7px 8px;color:var(--muted)">' + (i+1) + '</td>' +
         '<td style="padding:7px 8px;font-weight:600;font-size:11px">' + r.bc.replace('CAJBC','BC') + '</td>' +
-        '<td style="padding:7px 8px;font-family:monospace;font-size:11px">' + r.staff + '</td>' +
-        '<td class="num" style="padding:7px 6px;color:var(--muted)">' + r.t5p + '</td>' +
-        '<td class="num" style="padding:7px 6px;font-weight:600">' + r.t6 + '</td>' +
-        '<td class="num" style="padding:7px 6px;' + dStyle + '">' + r.delta + '</td>' +
-        '</tr>';
-    }).join('');
-
-  }
-
-</script>
-
-</body>
-</html>
+        '<td style="padding:7px 8px;font-family:monospace;font-size:11
