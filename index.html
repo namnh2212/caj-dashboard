@@ -727,6 +727,82 @@ const SALES = {
     .lpu-alert { margin-top:7px;padding:7px 9px;background:#fff8f8;border:1px solid #fecaca;
                  border-radius:6px;font-size:11px; }
     .lpu-alert-title { font-size:9px;font-weight:700;text-transform:uppercase;color:#dc2626;margin-bottom:4px; }
+
+    /* ═══════════════════════════════════════════════════════════════
+       RESPONSIVE — THIẾT BỊ DI ĐỘNG / MOBILE
+       breakpoint 768px (tablet/phone) + 480px (small phone)
+    ════════════════════════════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      /* Header */
+      .header { padding: 8px 12px; gap: 10px; flex-wrap: wrap; }
+      .header-icon { padding: 3px 7px; }
+      .header-icon img { height: 26px; }
+      .header-title { font-size: 12px; line-height: 1.3; }
+      .header-sub { display: none; }
+      .header-badge { margin-left: auto; font-size: 10px; padding: 3px 10px; }
+
+      /* Container */
+      .container { padding: 8px; }
+
+      /* KPI cards: 2 cột */
+      .kpi-row { grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 10px; }
+      .kpi-card { padding: 11px 12px; }
+      .kpi-value { font-size: 22px; }
+      .kpi-sub { font-size: 10px; }
+
+      /* Chart section: stack dọc */
+      .chart-wrap { grid-template-columns: 1fr; gap: 12px; }
+      .chart-box { height: 210px; }
+      .info-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+
+      /* Page-level tabs: cuộn ngang */
+      .page-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
+      .page-tab { padding: 8px 14px; font-size: 11px; white-space: nowrap; }
+
+      /* Inner tabs: cuộn ngang */
+      .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; gap: 0; }
+      .tab { padding: 7px 12px; font-size: 11px; white-space: nowrap; flex-shrink: 0; }
+
+      /* Section: cho phép overflow để bảng cuộn được */
+      .section { overflow: visible; }
+      .section-body { padding: 10px 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+      /* Tables: min-width để cột không bị ép quá nhỏ */
+      .tbl { min-width: 480px; font-size: 11px; }
+      .tbl th { padding: 7px 8px; }
+      .tbl td { padding: 6px 8px; }
+      .timeline-tbl { min-width: 560px; font-size: 11px; }
+      #solution-table { min-width: 680px; }
+      #salesBcTable { min-width: 520px; }
+
+      /* Note & legend */
+      .legend { gap: 8px; }
+      .note { font-size: 11px; padding: 10px 12px; }
+      .sol-btn { font-size: 10px; padding: 4px 8px; }
+
+      /* Map page: sidebar trên — map dưới */
+      #page-map { flex-direction: column !important; height: auto !important; min-height: calc(100vh - 80px); }
+      .map-sidebar { width: 100% !important; max-height: 220px; border-right: none !important; border-bottom: 1px solid #e2e8f0; }
+      .mlist { max-height: 100px; overflow-y: auto; }
+      #leaflet-map { height: 52vh; flex: none !important; width: 100%; }
+      .mkpi-grid { grid-template-columns: repeat(4, 1fr); gap: 4px; }
+      .mkpi-val { font-size: 16px; }
+      .msec { padding: 8px 10px; }
+    }
+
+    @media (max-width: 480px) {
+      .header-badge { display: none; }
+      .header-title { font-size: 11px; }
+      .kpi-value { font-size: 18px; }
+      .kpi-label { font-size: 9px; }
+      .page-tab { padding: 8px 10px; font-size: 10px; }
+      .chart-box { height: 190px; }
+      .info-panel { grid-template-columns: 1fr; }
+      #leaflet-map { height: 45vh; }
+      .tbl { font-size: 10.5px; }
+      .timeline-tbl { font-size: 10.5px; }
+    }
+
   </style>
 </head>
 <body>
