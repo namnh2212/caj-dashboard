@@ -1,4 +1,4 @@
-<!DOCTYPE html><!-- v20260626-160131 -->
+<!DOCTYPE html><!-- v20260627-040724 -->
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
@@ -48,7 +48,7 @@ const CFG = {
 
   // ── DOANH THU HÀNG THÁNG (triệu PEN) ────────────────────────
   rev: {
-    actual  : [6274.2, 6217.2, 6546.8, 6497.1, 6611.5, 4166.4], // ← T6 cập nhật
+    actual  : [6274.2, 6217.2, 6546.8, 6497.1, 6611.5, 4450.7], // ← T6 cập nhật
     plan    : [6194.8, 6177.9, 6281.5, 6398.2, 6489.3, 6586.7],
     t6Note  : 'W1+W2+W3 (01–22/06/2026)', // ← cập nhật kỳ dữ liệu T6
     ytdMonths: 5,                        // số tháng hoàn chỉnh (T1–T5)
@@ -60,9 +60,9 @@ const CFG = {
   reg: {
     base      : 297941,         // base T0 = 31/12/2025 — CỐ ĐỊNH
     planMonth : 3500,           // KH tăng ròng/tháng — CỐ ĐỊNH
-    absActual : [302501, 309449, 312744, 316358, 317463, 319980], // ← T6 cập nhật
+    absActual : [302501, 309449, 312744, 316358, 317463, 320256], // ← T6 cập nhật
     absPlan   : [301441, 304941, 308441, 311941, 315441, 318941], // CỐ ĐỊNH cả năm
-    t6Note    : 'đến 14/06/2026', // ← cập nhật ngày REG
+    t6Note    : 'đến 21/06/2026', // ← cập nhật ngày REG
   },
 
 };
@@ -790,7 +790,7 @@ const SALES = {
           <div class="chart-box" style="height:280px">
             <canvas id="regChart"></canvas>
           </div>
-          <p class="caption" id="regCaption">* Fuente / Nguồn: Reg 1506 site.xlsx — fila / dòng 4 (Totals). Línea TH / Đường TH = tổng thuê bao REG tuyệt đối / suscriptores REG totales. KH / Plan = base 297.941 + N×3.500 TB/mes. Barras / Cột = tăng trưởng ròng từng tháng / crecimiento neto mensual (eje der. / thang đo phải). T6 (đến 14/06/2026): +2.517 TB, lũy kế YTD: 22.039 TB.</p>
+          <p class="caption" id="regCaption">* Fuente / Nguồn: Reg 2206 site.xlsx — fila / dòng 4 (Totals). Línea TH / Đường TH = tổng thuê bao REG tuyệt đối / suscriptores REG totales. KH / Plan = base 297.941 + N×3.500 TB/mes. Barras / Cột = tăng trưởng ròng từng tháng / crecimiento neto mensual (eje der. / thang đo phải). T6 (đến 21/06/2026): +2.793 TB, lũy kế YTD: 22.315 TB.</p>
         </div>
         <div class="info-panel">
           <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:6px">THUÊ BAO REG / SUSCRIPTORES REG (TB)</div>
