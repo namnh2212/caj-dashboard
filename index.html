@@ -740,46 +740,50 @@ const SALES = {
       .header-title { font-size: 12px; line-height: 1.3; }
       .header-sub { display: none; }
       .header-badge { margin-left: auto; font-size: 10px; padding: 3px 10px; }
-
       /* Container */
       .container { padding: 8px; }
-
       /* KPI cards: 2 cột */
       .kpi-row { grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 10px; }
       .kpi-card { padding: 11px 12px; }
       .kpi-value { font-size: 22px; }
       .kpi-sub { font-size: 10px; }
-
       /* Chart section: stack dọc */
       .chart-wrap { grid-template-columns: 1fr; gap: 12px; }
       .chart-box { height: 210px; }
       .info-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-
       /* Page-level tabs: cuộn ngang */
       .page-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
       .page-tab { padding: 8px 14px; font-size: 11px; white-space: nowrap; }
-
       /* Inner tabs: cuộn ngang */
       .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; gap: 0; }
       .tab { padding: 7px 12px; font-size: 11px; white-space: nowrap; flex-shrink: 0; }
-
-      /* Section: cho phép overflow để bảng cuộn được */
+      /* Section overflow */
       .section { overflow: visible; }
-      .section-body { padding: 10px 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-
-      /* Tables: min-width để cột không bị ép quá nhỏ */
+      /* !important để override inline style="padding:..." */
+      .section-body { padding: 10px 8px !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+      /* Tables */
       .tbl { min-width: 480px; font-size: 11px; }
       .tbl th { padding: 7px 8px; }
       .tbl td { padding: 6px 8px; }
       .timeline-tbl { min-width: 560px; font-size: 11px; }
       #solution-table { min-width: 680px; }
       #salesBcTable { min-width: 520px; }
-
       /* Note & legend */
       .legend { gap: 8px; }
-      .note { font-size: 11px; padding: 10px 12px; }
+      .note { font-size: 11px; padding: 10px 12px !important; }
       .sol-btn { font-size: 10px; padding: 4px 8px; }
-
+      /* ── TAB BÁN HÀNG — override inline grid styles ── */
+      /* BC + MNP row: stack dọc */
+      #salesBcMnpRow { grid-template-columns: 1fr !important; }
+      /* BC x Channel grid: 1 cột */
+      #salesBcChGrid { grid-template-columns: 1fr !important; gap: 8px !important; }
+      #salesBcChSection { overflow-x: visible !important; }
+      /* Staff decline section */
+      #staffSectionBody { padding: 10px 8px !important; }
+      #staffDeclineTabs .tab-pane { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      #staffDeclineTabs .tbl { min-width: 360px; }
+      #staffDeclineTabs .tbl th,
+      #staffDeclineTabs .tbl td { padding: 6px 6px; font-size: 11px; }
       /* Map page: sidebar trên — map dưới */
       #page-map { flex-direction: column !important; height: auto !important; min-height: calc(100vh - 80px); }
       .map-sidebar { width: 100% !important; max-height: 220px; border-right: none !important; border-bottom: 1px solid #e2e8f0; }
@@ -789,7 +793,6 @@ const SALES = {
       .mkpi-val { font-size: 16px; }
       .msec { padding: 8px 10px; }
     }
-
     @media (max-width: 480px) {
       .header-badge { display: none; }
       .header-title { font-size: 11px; }
@@ -801,8 +804,9 @@ const SALES = {
       #leaflet-map { height: 45vh; }
       .tbl { font-size: 10.5px; }
       .timeline-tbl { font-size: 10.5px; }
+      #salesBcChGrid { grid-template-columns: 1fr !important; }
+      #staffDeclineTabs .tbl { min-width: 320px; }
     }
-
   </style>
 </head>
 <body>
@@ -1306,7 +1310,7 @@ const SALES = {
   </div>
 
   <!-- Two-column: BC table + MNP donut -->
-  <div style="display:grid;grid-template-columns:1fr 340px;gap:14px;margin-bottom:14px">
+  <div id="salesBcMnpRow" style="display:grid;grid-template-columns:1fr 340px;gap:14px;margin-bottom:14px">
     <!-- Por BC -->
     <div class="section" style="margin-bottom:0">
       <div class="section-head">🏢 Kết quả Active theo BC / Por BC</div>
@@ -1373,7 +1377,7 @@ const SALES = {
   <!-- BC x Channel breakdown -->
   <div class="section">
     <div class="section-head">📊 Kênh theo từng BC / Canal por BC — T6 vs T5 cùng kỳ (1-23)</div>
-    <div class="section-body" style="padding:10px 0">
+    <div id="salesBcChSection" class="section-body" style="padding:10px 0">
       <div id="salesBcChGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px"></div>
     </div>
   </div>
@@ -1381,7 +1385,7 @@ const SALES = {
   <!-- Declining staff by channel tabs -->
   <div class="section">
     <div class="section-head">⚠️ Nhân viên Active suy giảm theo kênh / Caída por Canal (T6 vs T5 cùng kỳ 1-23)</div>
-    <div class="section-body" style="padding:12px 14px">
+    <div id="staffSectionBody" class="section-body" style="padding:12px 14px">
       <div class="tabs" id="staffDeclineTabs">
         <div class="tab active" onclick="switchStaffTab('promotores',this)">📣 Promotores</div>
         <div class="tab" onclick="switchStaffTab('pos',this)">🏪 Point of Sales</div>
