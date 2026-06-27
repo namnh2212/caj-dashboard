@@ -777,7 +777,6 @@ const SALES = {
       #salesBcMnpRow { grid-template-columns: 1fr !important; }
       /* BC x Channel grid: 1 cột */
       #salesBcChGrid { grid-template-columns: 1fr !important; gap: 8px !important; }
-      #salesBcChSection { overflow-x: visible !important; }
       /* Staff decline section */
       #staffSectionBody { padding: 10px 8px !important; }
       #staffDeclineTabs .tab-pane { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -1395,7 +1394,8 @@ const SALES = {
       </div>
       <!-- Promotores pane -->
       <div id="staff-pane-promotores" class="tab-pane active">
-        <table class="tbl" style="width:100%;font-size:12px">
+        <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+        <table class="tbl" style="width:100%;min-width:380px;font-size:12px">
           <thead><tr>
             <th style="text-align:left;padding:8px 8px">#</th>
             <th style="text-align:left;padding:8px 8px">BC</th>
@@ -1406,6 +1406,7 @@ const SALES = {
           </tr></thead>
           <tbody id="salesTop10Tbody"></tbody>
         </table>
+        </div>
       </div>
       <!-- Other channel panes (rendered by JS) -->
       <div id="staff-pane-pos"    class="tab-pane"></div>
@@ -2390,7 +2391,8 @@ const SALES = {
       return '<div class="section" style="margin-bottom:0;overflow:hidden">' +
         '<div class="section-head" style="font-size:12px;padding:7px 10px">\u{1F3E2} ' + bc.replace('CAJBC','BC') +
           '<span style="float:right;color:' + tot_color + ';font-weight:700">' + (tot_dv>=0?'+':'') + fmt(tot_dv) + '</span></div>' +
-        '<table class="tbl" style="width:100%;font-size:11px">' +
+        '<div style="overflow-x:auto;-webkit-overflow-scrolling:touch">' +
+        '<table class="tbl" style="width:100%;min-width:260px;font-size:11px">' +
           '<thead><tr>' +
             '<th style="text-align:left;padding:5px 7px">K\u00eAnh</th>' +
             '<th class="num" style="padding:5px 5px">T5 CK</th>' +
@@ -2398,7 +2400,7 @@ const SALES = {
             '<th class="num" style="padding:5px 5px">\u0394</th>' +
           '</tr></thead>' +
           '<tbody>' + rows + '</tbody>' +
-        '</table></div>';
+        '</table></div></div>';
     }).join('');
 
     // ── Top 10 Declining Staff ────────────────────────────
@@ -2407,7 +2409,8 @@ const SALES = {
     TOP_DECLINE_CH.forEach(function(grp, gi) {
       const pane = document.getElementById('staff-pane-' + CH_PANE_IDS[gi]);
       if (!pane) return;
-      pane.innerHTML = '<table class="tbl" style="width:100%;font-size:12px">' +
+      pane.innerHTML = '<div style="overflow-x:auto;-webkit-overflow-scrolling:touch">' +
+        '<table class="tbl" style="width:100%;min-width:420px;font-size:12px">' +
         '<thead><tr>' +
           '<th style="text-align:left;padding:8px 8px">BC</th>' +
           '<th style="text-align:left;padding:8px 8px">Shop</th>' +
@@ -2428,7 +2431,7 @@ const SALES = {
             '<td class="num" style="padding:7px 6px;'+dStyle+'">'+r.delta+'</td>' +
             '</tr>';
         }).join('') +
-        '</tbody></table>';
+        '</tbody></table></div>';
     });
 
     document.getElementById('salesTop10Tbody').innerHTML = TOP10_STAFF.map(function(r,i) {
