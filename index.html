@@ -1950,7 +1950,7 @@ const SALES = {
     });
 
     setTimeout(() => leafletMap.invalidateSize(), 100);
-    buildMlist('all');
+    buildMlist(Object.values(allMarkers).filter(mk => mk.isAlert));
   }
 
   function buildPopup(id, s, weeks) {
@@ -2036,9 +2036,21 @@ const SALES = {
   function buildMlist(mkList) {
     const el = document.getElementById('mlist');
     if (!el) return;
+    const weekScore = ws => {
+      if (ws.includes('W25')) return 0;
+      if (ws.includes('W24')) return 1;
+      if (ws.includes('W23')) return 2;
+      if (ws.includes('W22')) return 3;
+      if (ws.includes('W21')) return 4;
+      return 5;
+    };
     const sorted = [...mkList].sort((a, b) => {
-      const aw = a.weeks.includes('W25') ? 0 : 1;
-      const bw = b.weeks.includes('W25') ? 0 : 1;
+      if (curSearch) {
+        const ae = a.id === curSearch ? 0 : 1;
+        const be = b.id === curSearch ? 0 : 1;
+        if (ae !== be) return ae - be;
+      }
+      const aw = weekScore(a.weeks), bw = weekScore(b.weeks);
       if (aw !== bw) return aw - bw;
       return ((a.s.c||[0,0,0])[2]) - ((b.s.c||[0,0,0])[2]);
     });
@@ -2064,6 +2076,15 @@ const SALES = {
       div.onclick = () => { leafletMap.setView([s.lat, s.lon], 13); mk.m.openPopup(); };
       el.appendChild(div);
     });
+    if (!curSearch && curFilter === 'all') {
+      const nonAlertCnt = Object.values(allMarkers).filter(mk => !mk.isAlert).length;
+      if (nonAlertCnt > 0) {
+        const nd = document.createElement('div');
+        nd.style.cssText = 'padding:8px 12px;color:#94a3b8;font-size:10px;text-align:center;border-top:1px solid #1e293b;margin-top:4px';
+        nd.textContent = `+ ${nonAlertCnt} trạm không cảnh báo trên bản đồ`;
+        el.appendChild(nd);
+      }
+    }
   }
 
   // ── SEV / TREND / ESTADO helpers
