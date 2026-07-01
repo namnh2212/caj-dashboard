@@ -2525,7 +2525,7 @@ function buildKenhCatalog() {
     {label:'Phát sinh T6', val:mPsAll, sub:`/${mAll} = ${pct}%`, color:pct>=70?'var(--success)':'var(--warning)'},
     {label:'Chưa phát sinh', val:mAll-mPsAll, sub:'kênh Mobile không Active', color:'var(--danger)'},
     {label:'💻 Kênh Digital', val:dAll, sub:'BIPAY + Tusami', color:'#6d28d9'},
-    {label:'📶 Kênh FTTH', val:fAll, sub:'chỉ thống kê DM', color:'#0891b2'},
+    {label:'Tỉ lệ PS', val:pct+'%', sub:'kênh Mobile có Active', color:pct>=70?'var(--success)':'var(--warning)'},
     {label:'Tổng danh mục', val:totalAll, sub:'tất cả nhóm kênh', color:'var(--text)'}
   ].map(s=>`<div style="background:var(--bg);border-radius:8px;padding:10px 12px;border:1px solid var(--border)">
     <div style="font-size:10px;color:var(--muted);margin-bottom:2px">${s.label}</div>
@@ -2573,7 +2573,7 @@ function buildKenhCatalog() {
     </tr>
   </thead><tbody>`;
 
-  ['mobile','digital','ftth'].forEach(grp => {
+  ['mobile','digital'].forEach(grp => {
     const types = groupTypes[grp];
     if (!types.length) return;
     const isFtth = grp === 'ftth';
