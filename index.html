@@ -1387,8 +1387,7 @@ const SALES = {
       if (!leafletMap) initLeafletMap();
       else setTimeout(() => leafletMap.invalidateSize(), 50);
     }
-    if (id === 'sales') buildSalesTab()
-  buildKenhCatalog();;
+    if (id === 'sales') { buildSalesTab(); buildKenhCatalog(); }
   }
 
   // ── Station tab switching (W21/W22/W23) ──
@@ -1403,77 +1402,6 @@ const SALES = {
 
   // ── KPI Cards (dynamic from CFG.kpi) ────────────────────────
   (
-// ── Channel Catalog (Danh mục kênh) ─────────────────────────────────────
-function buildKenhCatalog() {
-  if (typeof KENH === 'undefined') return;
-  const bc_order = ['CAJBC01','CAJBC07','CAJBC08','CAJBC05','CAJBC10','CAJBC14'];
-  const bc_label = {CAJBC01:'BC01',CAJBC07:'BC07',CAJBC08:'BC08',CAJBC05:'BC05',CAJBC10:'BC10',CAJBC14:'BC14'};
-  const bipay = new Set(['Agente BIPAY Channel','Negocios BIPAY Channel']);
-  const CH_ICON = {
-    'Promotores Channel':'📣','Point of Sales Channel':'🏪','Dealer Autorizado':'⭐',
-    'CAB Dealer':'🤝','Dealer Channel':'🚗','Small CAB':'🏬','Small Dealer':'🔑',
-    'Agente BIPAY Channel':'💳','Negocios BIPAY Channel':'💼',
-    'Promotores FTTH Channel':'📶','Dealer Online Channel':'🌐','Embajadores Tusami':'🤖'
-  };
-
-  // ── Summary bar ─────────────────────────────────────────────────────────
-  const bar = document.getElementById('kenhSummaryBar');
-  if (!bar) return;
-  let totalAll=0, mainAll=0, psAll=0, mainPsAll=0;
-  bc_order.forEach(bc => {
-    const d = KENH[bc];
-    totalAll += d.total; mainAll += d.mainTotal;
-    psAll += d.ps; mainPsAll += d.mainPs;
-  });
-  bar.innerHTML = [
-    {label:'Tổng danh mục*', val:totalAll, sub:'tất cả loại kênh', color:'#1e293b'},
-    {label:'Kênh chính', val:mainAll, sub:'không tính BIPAY/FTTH', color:'#0f4c81'},
-    {label:'Phát sinh T6', val:psAll, sub:'trên tổng danh mục', color:'#16a34a'},
-    {label:'Kênh chính PS', val:mainPsAll, sub:`/ ${mainAll} = ${Math.round(mainPsAll/mainAll*100)}%`, color:'#16a34a'},
-    {label:'Chưa phát sinh', val:mainAll-mainPsAll, sub:`/ ${mainAll} kênh chính`, color:'#dc2626'},
-    {label:'Tỉ lệ PS', val:Math.round(mainPsAll/mainAll*100)+'%', sub:'kênh chính có Active', color:'#d97706'}
-  ].map(s => `<div style="background:var(--bg);border-radius:8px;padding:10px 12px;border:1px solid var(--border)">
-    <div style="font-size:10px;color:var(--muted);margin-bottom:2px">${s.label}</div>
-    <div style="font-size:20px;font-weight:700;color:${s.color}">${s.val}</div>
-    <div style="font-size:10px;color:var(--muted)">${s.sub}</div>
-  </div>`).join('');
-
-  // ── Detail grid ─────────────────────────────────────────────────────────
-  const grid = document.getElementById('kenhDetailGrid');
-  if (!grid) return;
-  grid.innerHTML = bc_order.map(bc => {
-    const d = KENH[bc];
-    const pct = d.mainTotal ? Math.round(d.mainPs / d.mainTotal * 100) : 0;
-    const pctColor = pct >= 70 ? '#16a34a' : pct >= 50 ? '#d97706' : '#dc2626';
-    const rows = d.rows.map(r => {
-      const isBipay = bipay.has(r.ch);
-      const rPct = r.total ? Math.round(r.ps/r.total*100) : 0;
-      const rColor = isBipay ? '#94a3b8' : rPct>=70?'#16a34a':rPct>=50?'#d97706':'#dc2626';
-      return `<tr style="${isBipay?'color:#94a3b8;':''}">
-        <td style="padding:3px 6px;font-size:11px">${CH_ICON[r.ch]||''} ${r.ch.replace(' Channel','')}</td>
-        <td class="num" style="padding:3px 4px;font-size:11px">${r.total}</td>
-        <td class="num" style="padding:3px 4px;font-size:11px;color:${rColor}">${r.ps}</td>
-        <td class="num" style="padding:3px 4px;font-size:11px;color:${rColor}">${r.total?rPct+'%':'-'}</td>
-      </tr>`;
-    }).join('');
-    return `<div style="border:1px solid var(--border);border-radius:8px;overflow:hidden">
-      <div style="background:var(--primary);color:#fff;padding:6px 10px;display:flex;justify-content:space-between;align-items:center">
-        <b>${bc_label[bc]}</b>
-        <span style="font-size:11px">Chính: <b>${d.mainPs}/${d.mainTotal}</b> <span style="color:${pctColor==='#16a34a'?'#86efac':pctColor==='#d97706'?'#fde68a':'#fca5a5'}">${pct}%</span></span>
-      </div>
-      <table style="width:100%;border-collapse:collapse">
-        <thead><tr style="background:var(--bg);font-size:10px;color:var(--muted)">
-          <th style="padding:3px 6px;text-align:left">Kênh</th>
-          <th style="padding:3px 4px;text-align:right">DM</th>
-          <th style="padding:3px 4px;text-align:right">PS</th>
-          <th style="padding:3px 4px;text-align:right">%</th>
-        </tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>`;
-  }).join('');
-}
-
 function buildKPICards() {
     const k = CFG.kpi;
     const ch = k.c15T6Change;
@@ -2545,6 +2473,77 @@ function buildKPICards() {
     }).join('');
 
   }
+
+// ── Channel Catalog (Danh mục kênh) ─────────────────────────────────────
+function buildKenhCatalog() {
+  if (typeof KENH === 'undefined') return;
+  const bc_order = ['CAJBC01','CAJBC07','CAJBC08','CAJBC05','CAJBC10','CAJBC14'];
+  const bc_label = {CAJBC01:'BC01',CAJBC07:'BC07',CAJBC08:'BC08',CAJBC05:'BC05',CAJBC10:'BC10',CAJBC14:'BC14'};
+  const bipay = new Set(['Agente BIPAY Channel','Negocios BIPAY Channel']);
+  const CH_ICON = {
+    'Promotores Channel':'📣','Point of Sales Channel':'🏪','Dealer Autorizado':'⭐',
+    'CAB Dealer':'🤝','Dealer Channel':'🚗','Small CAB':'🏬','Small Dealer':'🔑',
+    'Agente BIPAY Channel':'💳','Negocios BIPAY Channel':'💼',
+    'Promotores FTTH Channel':'📶','Dealer Online Channel':'🌐','Embajadores Tusami':'🤖'
+  };
+
+  // ── Summary bar ─────────────────────────────────────────────────────────
+  const bar = document.getElementById('kenhSummaryBar');
+  if (!bar) return;
+  let totalAll=0, mainAll=0, psAll=0, mainPsAll=0;
+  bc_order.forEach(bc => {
+    const d = KENH[bc];
+    totalAll += d.total; mainAll += d.mainTotal;
+    psAll += d.ps; mainPsAll += d.mainPs;
+  });
+  bar.innerHTML = [
+    {label:'Tổng danh mục*', val:totalAll, sub:'tất cả loại kênh', color:'#1e293b'},
+    {label:'Kênh chính', val:mainAll, sub:'không tính BIPAY/FTTH', color:'#0f4c81'},
+    {label:'Phát sinh T6', val:psAll, sub:'trên tổng danh mục', color:'#16a34a'},
+    {label:'Kênh chính PS', val:mainPsAll, sub:`/ ${mainAll} = ${Math.round(mainPsAll/mainAll*100)}%`, color:'#16a34a'},
+    {label:'Chưa phát sinh', val:mainAll-mainPsAll, sub:`/ ${mainAll} kênh chính`, color:'#dc2626'},
+    {label:'Tỉ lệ PS', val:Math.round(mainPsAll/mainAll*100)+'%', sub:'kênh chính có Active', color:'#d97706'}
+  ].map(s => `<div style="background:var(--bg);border-radius:8px;padding:10px 12px;border:1px solid var(--border)">
+    <div style="font-size:10px;color:var(--muted);margin-bottom:2px">${s.label}</div>
+    <div style="font-size:20px;font-weight:700;color:${s.color}">${s.val}</div>
+    <div style="font-size:10px;color:var(--muted)">${s.sub}</div>
+  </div>`).join('');
+
+  // ── Detail grid ─────────────────────────────────────────────────────────
+  const grid = document.getElementById('kenhDetailGrid');
+  if (!grid) return;
+  grid.innerHTML = bc_order.map(bc => {
+    const d = KENH[bc];
+    const pct = d.mainTotal ? Math.round(d.mainPs / d.mainTotal * 100) : 0;
+    const pctColor = pct >= 70 ? '#16a34a' : pct >= 50 ? '#d97706' : '#dc2626';
+    const rows = d.rows.map(r => {
+      const isBipay = bipay.has(r.ch);
+      const rPct = r.total ? Math.round(r.ps/r.total*100) : 0;
+      const rColor = isBipay ? '#94a3b8' : rPct>=70?'#16a34a':rPct>=50?'#d97706':'#dc2626';
+      return `<tr style="${isBipay?'color:#94a3b8;':''}">
+        <td style="padding:3px 6px;font-size:11px">${CH_ICON[r.ch]||''} ${r.ch.replace(' Channel','')}</td>
+        <td class="num" style="padding:3px 4px;font-size:11px">${r.total}</td>
+        <td class="num" style="padding:3px 4px;font-size:11px;color:${rColor}">${r.ps}</td>
+        <td class="num" style="padding:3px 4px;font-size:11px;color:${rColor}">${r.total?rPct+'%':'-'}</td>
+      </tr>`;
+    }).join('');
+    return `<div style="border:1px solid var(--border);border-radius:8px;overflow:hidden">
+      <div style="background:var(--primary);color:#fff;padding:6px 10px;display:flex;justify-content:space-between;align-items:center">
+        <b>${bc_label[bc]}</b>
+        <span style="font-size:11px">Chính: <b>${d.mainPs}/${d.mainTotal}</b> <span style="color:${pctColor==='#16a34a'?'#86efac':pctColor==='#d97706'?'#fde68a':'#fca5a5'}">${pct}%</span></span>
+      </div>
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr style="background:var(--bg);font-size:10px;color:var(--muted)">
+          <th style="padding:3px 6px;text-align:left">Kênh</th>
+          <th style="padding:3px 4px;text-align:right">DM</th>
+          <th style="padding:3px 4px;text-align:right">PS</th>
+          <th style="padding:3px 4px;text-align:right">%</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  }).join('');
+}
 
 </script>
 
