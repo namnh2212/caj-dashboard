@@ -2388,7 +2388,8 @@ function buildKPICards() {
 
     // ── Por Canal Table (T4 / T5 / T6 / Δ) ──────────────
     const chTbody = document.getElementById('salesChTbody');
-    chTbody.innerHTML = S.chOrder.map((ch, i) => {
+    const EXCL_CH = new Set(['Promotores FTTH Channel','Agente BIPAY Channel','Negocios BIPAY Channel','Embajadores Tusami']);
+    chTbody.innerHTML = S.chOrder.filter(ch=>!EXCL_CH.has(ch)).map((ch, i) => {
       const c4 = (M[4].ch[ch])||{t:0,po:0,pr:0};
       const c5p= S.t5p.ch[ch]||{t:0,po:0,pr:0};
       const c6 = (M[6].ch[ch])||{t:0,po:0,pr:0};
@@ -2418,7 +2419,8 @@ function buildKPICards() {
     // ── BC × Channel Grid ────────────────────────────────
     const bcChGrid = document.getElementById('salesBcChGrid');
     bcChGrid.innerHTML = S.bcOrder.map(bc => {
-      const rows = (BCCH[bc] || []).map((r,i) => {
+      const EXCL_BC = new Set(['Promotores FTTH Channel','Agente BIPAY Channel','Negocios BIPAY Channel','Embajadores Tusami']);
+      const rows = (BCCH[bc] || []).filter(r=>!EXCL_BC.has(r.ch)).map((r,i) => {
         const dv = r.t6 - r.t5p;
         const bg = i % 2 === 0 ? '' : 'background:#f8fafc;';
         const dcolor = dv >= 0 ? '#16a34a' : '#dc2626';
