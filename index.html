@@ -1221,10 +1221,10 @@ const SALES = {
   <div class="section">
     <div class="section-head">🏢 3c. ACTIVE THEO TỪNG BC / ACTIVACIONES POR BC — THEO THÁNG / POR MES</div>
     <div class="section-body">
-      <div class="chart-box" style="height:300px">
+      <div class="chart-box" style="height:340px">
         <canvas id="activeBCChart"></canvas>
       </div>
-      <p class="caption">Nguồn: file Active hàng tháng · T7 là MTD (1-02/07/2026). Đơn vị: thuê bao Active / Suscriptores activos.</p>
+      <p class="caption">Nguồn: SALES_DATA · T4–T6 đầy đủ. T7 MTD (2 ngày) bị loại để không làm lệch xu thế. ▲/▼ = so sánh T6 vs T5.</p>
     </div>
   </div>
 
@@ -1927,52 +1927,83 @@ function buildKPICards() {
     });
   })();
 
-  // ── Active by BC by Month chart (bar + line mixed) ──
+  // ── Active by BC by Month trend chart (pure line) ──
   try {
     (function() {
       var fmt = function(v){ return v.toLocaleString('de-DE'); };
-      var labels = ['T4/2026','T5/2026','T6/2026','T7 MTD*'];
-      var bcData = {
-        BC01:[9375,9124,9316,574], BC07:[5754,5995,6423,367],
-        BC08:[4615,4764,4281,175], BC05:[3785,4210,4058,217],
-        BC10:[3145,2743,2513,145], BC14:[2398,2361,2177,138],
-      };
-      var colors = {BC01:'#1e40af',BC07:'#0d9488',BC08:'#7c3aed',
-                    BC05:'#dc2626',BC10:'#d97706',BC14:'#059669'};
-      var datasets = [];
-      Object.keys(bcData).forEach(function(bc) {
-        var c = colors[bc];
-        datasets.push({ type:'bar', label:bc, data:bcData[bc],
-          backgroundColor:c+'33', borderColor:c, borderWidth:1, borderRadius:3 });
-        datasets.push({ type:'line', label:bc+'_line', data:bcData[bc],
-          borderColor:c, backgroundColor:'transparent',
-          borderWidth:2, pointRadius:4, pointBackgroundColor:c, tension:0.3 });
+      // T4, T5, T6 only — T7 MTD (2 days) skipped to avoid distortion
+      var labels = ['T4/2026 (tháng 4)','T5/2026 (tháng 5)','T6/2026 (tháng 6)'];
+      var bcData = [
+        {bc:'BC01', data:[9375,9124,9316], color:'#1d4ed8'},
+        {bc:'BC07', data:[5754,5995,6423], color:'#0891b2'},
+        {bc:'BC08', data:[4615,4764,4281], color:'#7c3aed'},
+        {bc:'BC05', data:[3785,4210,4058], color:'#dc2626'},
+        {bc:'BC10', data:[3145,2743,2513], color:'#d97706'},
+        {bc:'BC14', data:[2398,2361,2177], color:'#059669'},
+      ];
+      var datasets = bcData.map(function(d) {
+        var last = d.data[d.data.length-1], prev = d.data[d.data.length-2];
+        var arrow = last >= prev ? ' ▲' : ' ▼';
+        return {
+          label: d.bc + arrow,
+          data: d.data,
+          borderColor: d.color,
+          backgroundColor: d.color + '18',
+          borderWidth: 2.5,
+          pointRadius: 6,
+          pointHoverRadius: 8,
+          pointBackgroundColor: d.color,
+          pointBorderColor: '#fff',
+          pointBorderWidth: 2,
+          tension: 0.2,
+          fill: false,
+          datalabels: { color: d.color }
+        };
       });
       var ctx = document.getElementById('activeBCChart');
       if (!ctx) return;
       new Chart(ctx.getContext('2d'), {
-        type:'bar',
-        data:{ labels:labels, datasets:datasets },
-        options:{
-          responsive:true, maintainAspectRatio:false,
-          interaction:{ mode:'index', intersect:false },
-          plugins:{
-            legend:{ position:'top',
-              labels:{ font:{size:11}, boxWidth:14,
-                filter:function(item){ return !item.text.includes('_line'); } } },
-            tooltip:{ callbacks:{
-              label:function(c){ if(c.dataset.label.includes('_line')) return null;
-                return ' '+c.dataset.label+': '+fmt(c.raw); },
-              afterBody:function(items){
-                return items[0]&&items[0].label==='T7 MTD*'?['* MTD 1-02/07 (2 ngày)']:[];
+        type: 'line',
+        data: { labels: labels, datasets: datasets },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode:'index', intersect:false },
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: { font:{size:12}, boxWidth:16, padding:12,
+                generateLabels: function(chart) {
+                  return chart.data.datasets.map(function(ds,i) {
+                    var last = ds.data[2], prev = ds.data[1];
+                    var delta = last - prev;
+                    var sign  = delta >= 0 ? '+' : '';
+                    return { text: ds.label + '  (' + sign + fmt(delta) + ')',
+                      fillStyle: ds.borderColor, strokeStyle: ds.borderColor,
+                      lineWidth: 2, hidden: false, index: i,
+                      datasetIndex: i };
+                  });
+                }
               }
-            }}
+            },
+            tooltip: {
+              callbacks: {
+                label: function(c) {
+                  var delta = c.dataIndex > 0 ? c.raw - c.dataset.data[c.dataIndex-1] : null;
+                  var dStr  = delta !== null ? ' (' + (delta>=0?'+':'') + fmt(delta) + ')' : '';
+                  return '  ' + c.dataset.label.split(' ')[0] + ': ' + fmt(c.raw) + dStr;
+                }
+              }
+            }
           },
-          scales:{
-            x:{ ticks:{font:{size:11}}, grid:{display:false} },
-            y:{ beginAtZero:true,
-              ticks:{font:{size:11},callback:function(v){return v>=1000?(v/1000).toFixed(0)+'k':v;}},
-              grid:{color:'rgba(0,0,0,.05)'} }
+          scales: {
+            x: { grid:{display:false}, ticks:{font:{size:11}} },
+            y: {
+              beginAtZero: false,
+              ticks: { font:{size:11},
+                callback: function(v){ return v>=1000?(v/1000).toFixed(0)+'k':v; }
+              },
+              grid: { color:'rgba(0,0,0,.05)' }
+            }
           }
         }
       });
