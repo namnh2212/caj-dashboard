@@ -87,9 +87,9 @@ const CFG = {
   const ytdT5 = c15.ytd[last - 1], ytdT6 = c15.ytd[last];
 
   CFG.kpi = {
-    c15YtdActual : ytdT5,
-    c15YtdPlan   : c15.ytdPlan[last - 1],
-    c15YtdPct    : +(ytdT5 / c15.ytdPlan[last - 1] * 100).toFixed(1),
+    c15YtdActual : ytdT6,
+    c15YtdPlan   : c15.ytdPlan[last],
+    c15YtdPct    : +(ytdT6 / c15.ytdPlan[last] * 100).toFixed(1),
     c15AnnualKh  : c15.annualKh,
     c15AnnualPct : +(ytdT6 / c15.annualKh * 100).toFixed(1),
     c15T6Actual  : ytdT6,
@@ -1587,15 +1587,15 @@ function buildKPICards() {
     const ch = k.c15T6Change;
     const chFmt = (ch < 0 ? '' : '+') + ch.toLocaleString('vi-VN');
     document.getElementById('kpiCards').innerHTML =
-      `<div class="kpi-card ok">
-        <div class="kpi-label">15C3D Lũy kế YTD / Acumulado — T1–T5</div>
+      `<div class="kpi-card ${k.c15YtdPct >= 100 ? 'ok' : 'warn'}">
+        <div class="kpi-label">15C3D Lũy kế YTD / Acumulado — T1–T6</div>
         <div class="kpi-value">${k.c15YtdActual.toLocaleString('vi-VN')}</div>
-        <div class="kpi-sub">KH/Plan YTD T5: ${k.c15YtdPlan.toLocaleString('vi-VN')} &nbsp; <span class="kpi-pct ok">${k.c15YtdPct}%</span></div>
+        <div class="kpi-sub">KH/Plan YTD T6: ${k.c15YtdPlan.toLocaleString('vi-VN')} &nbsp; <span class="kpi-pct ${k.c15YtdPct >= 100 ? 'ok' : 'warn'}">${k.c15YtdPct}%</span></div>
       </div>
       <div class="kpi-card warn">
         <div class="kpi-label">vs KH Năm / Plan Anual (${k.c15AnnualKh.toLocaleString('vi-VN')} TB)</div>
         <div class="kpi-value">${k.c15AnnualPct}%</div>
-        <div class="kpi-sub">T6 (W1+W2): ${chFmt} &nbsp;|&nbsp; Lũy kế / Acum.: ${k.c15T6Actual.toLocaleString('vi-VN')} TB</div>
+        <div class="kpi-sub">T6 (${CFG.rev.t6Note.split(' ')[0]}): ${chFmt} &nbsp;|&nbsp; Lũy kế / Acum.: ${k.c15T6Actual.toLocaleString('vi-VN')} TB</div>
       </div>
       <div class="kpi-card danger">
         <div class="kpi-label">Trạm cảnh báo / Estaciones Alerta — ${k.alertWeek}</div>
@@ -1603,7 +1603,7 @@ function buildKPICards() {
         <div class="kpi-sub">${k.alertOngoing} tiếp tục / continúa + ${k.alertNew} mới / nuevas &nbsp;|&nbsp; REG-only: ${k.alertRegOnly}</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-label">Doanh thu / Ingresos YTD — T1–T5</div>
+        <div class="kpi-label">Doanh thu / Ingresos YTD — T1–T6</div>
         <div class="kpi-value" style="font-size:20px;color:var(--success)">${k.revYtdActual.toLocaleString('vi-VN')} tr.</div>
         <div class="kpi-sub">KH/Plan YTD: ${k.revYtdPlan.toLocaleString('vi-VN')} tr. &nbsp; <span class="kpi-pct ok">${k.revYtdPct}%</span></div>
       </div>`;
@@ -1632,13 +1632,13 @@ function buildKPICards() {
     const note = document.getElementById('c15Note');
     if (note) note.innerHTML =
       `📊 <b>KH Năm: ${k.c15AnnualKh.toLocaleString('vi-VN')} TB</b><br>
-      Đạt YTD T5: <b class="grn">${k.c15YtdPct}%</b> KH lũy kế<br>
-      vs KH Năm (T6 W1+W2): <b style="color:var(--warning)">${k.c15AnnualPct}%</b><br><br>
-      ⚠️ T6 giảm ${ch.toLocaleString('vi-VN')} TB (W1+W2), ảnh hưởng lũy kế xuống ${k.c15T6Actual.toLocaleString('vi-VN')} TB.<br>
+      Lũy kế YTD T6: <b style="color:${k.c15YtdPct >= 100 ? 'var(--success)' : 'var(--warning)'}">${k.c15YtdActual.toLocaleString('vi-VN')} TB — ${k.c15YtdPct}% KH</b><br>
+      vs KH Năm: <b style="color:var(--warning)">${k.c15AnnualPct}%</b><br><br>
+      T6 (${CFG.rev.t6Note.split(' ')[0]}): ${chFmt} TB<br>
       ℹ️ T2 có KH âm (${CFG.c15.plan[1].toLocaleString('vi-VN')}) do kế hoạch thị trường dự kiến giảm theo mùa.`;
     const cap = document.getElementById('c15Caption');
     if (cap) cap.textContent =
-      `* Tháng 6 có dữ liệu ${CFG.rev.t6Note}, lũy kế tháng = ${ch.toLocaleString('vi-VN')} TB. ` +
+      `* Tháng 6 (${CFG.rev.t6Note}): thay đổi ${ch.toLocaleString('vi-VN')} TB, lũy kế YTD = ${k.c15T6Actual.toLocaleString('vi-VN')} TB. ` +
       `Đường lũy kế (phải) bao gồm KH tháng âm ở T2 (kế hoạch đã dự kiến giảm thị trường). ` +
       `Nguồn: file 15c3d 5 thang dau nam.xlsx + Báo cáo tuần ${CFG.header.week}.`;
   })();
@@ -1670,12 +1670,12 @@ function buildKPICards() {
     const k = CFG.kpi;
     const note = document.getElementById('revNote');
     if (note) note.innerHTML =
-      `📊 <b>YTD T1–T5: ${k.revYtdActual.toLocaleString('vi-VN')} tr. PEN</b><br>
+      `📊 <b>YTD T1–T6: ${k.revYtdActual.toLocaleString('vi-VN')} tr. PEN</b><br>
       KH YTD: ${k.revYtdPlan.toLocaleString('vi-VN')} tr. &nbsp; <b class="grn">${k.revYtdPct}%</b><br><br>
-      ✅ Doanh thu 5 tháng đầu năm đều vượt kế hoạch tháng.`;
+      ✅ Doanh thu 6 tháng đầu năm đều vượt kế hoạch tháng.`;
     const cap = document.getElementById('revCaption');
     if (cap) cap.textContent =
-      `* Đơn vị: triệu PEN. T6 có dữ liệu ${CFG.rev.t6Note}, chưa đầy đủ tháng. % không hiển thị cho T6 do dữ liệu chưa đầy đủ.`;
+      `* Đơn vị: triệu PEN. T6 (${CFG.rev.t6Note}) số liệu đã hoàn chỉnh. Nguồn: Báo cáo tuần ${CFG.header.week}.`;
   })();
 
   // ── 15C3D data ──
