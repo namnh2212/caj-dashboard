@@ -1927,21 +1927,27 @@ function buildKPICards() {
     });
   })();
 
-  // ── Active by BC by Month chart ──
+  // ── Active by BC by Month chart (bar + line mixed) ──
   try {
     (function() {
-      var labels  = ['BC01','BC07','BC08','BC05','BC10','BC14'];
       var fmt = function(v){ return v.toLocaleString('de-DE'); };
-      var datasets = [
-        { label:'T4/2026', backgroundColor:'#cbd5e1', borderRadius:3,
-          data:[9375,5754,4615,3785,3145,2398] },
-        { label:'T5/2026', backgroundColor:'#93c5fd', borderRadius:3,
-          data:[9124,5995,4764,4210,2743,2361] },
-        { label:'T6/2026', backgroundColor:'#2563eb', borderRadius:3,
-          data:[9316,6423,4281,4058,2513,2177] },
-        { label:'T7 MTD',  backgroundColor:'#e85d04', borderRadius:3,
-          data:[574,367,175,217,145,138] },
-      ];
+      var labels = ['T4/2026','T5/2026','T6/2026','T7 MTD*'];
+      var bcData = {
+        BC01:[9375,9124,9316,574], BC07:[5754,5995,6423,367],
+        BC08:[4615,4764,4281,175], BC05:[3785,4210,4058,217],
+        BC10:[3145,2743,2513,145], BC14:[2398,2361,2177,138],
+      };
+      var colors = {BC01:'#1e40af',BC07:'#0d9488',BC08:'#7c3aed',
+                    BC05:'#dc2626',BC10:'#d97706',BC14:'#059669'};
+      var datasets = [];
+      Object.keys(bcData).forEach(function(bc) {
+        var c = colors[bc];
+        datasets.push({ type:'bar', label:bc, data:bcData[bc],
+          backgroundColor:c+'33', borderColor:c, borderWidth:1, borderRadius:3 });
+        datasets.push({ type:'line', label:bc+'_line', data:bcData[bc],
+          borderColor:c, backgroundColor:'transparent',
+          borderWidth:2, pointRadius:4, pointBackgroundColor:c, tension:0.3 });
+      });
       var ctx = document.getElementById('activeBCChart');
       if (!ctx) return;
       new Chart(ctx.getContext('2d'), {
@@ -1949,15 +1955,24 @@ function buildKPICards() {
         data:{ labels:labels, datasets:datasets },
         options:{
           responsive:true, maintainAspectRatio:false,
+          interaction:{ mode:'index', intersect:false },
           plugins:{
-            legend:{ position:'top', labels:{ font:{size:11}, boxWidth:14 } },
-            tooltip:{ callbacks:{ label:function(c){ return ' '+c.dataset.label+': '+fmt(c.raw); } } }
+            legend:{ position:'top',
+              labels:{ font:{size:11}, boxWidth:14,
+                filter:function(item){ return !item.text.includes('_line'); } } },
+            tooltip:{ callbacks:{
+              label:function(c){ if(c.dataset.label.includes('_line')) return null;
+                return ' '+c.dataset.label+': '+fmt(c.raw); },
+              afterBody:function(items){
+                return items[0]&&items[0].label==='T7 MTD*'?['* MTD 1-02/07 (2 ngày)']:[];
+              }
+            }}
           },
           scales:{
             x:{ ticks:{font:{size:11}}, grid:{display:false} },
             y:{ beginAtZero:true,
-                ticks:{font:{size:11}, callback:function(v){ return v>=1000?(v/1000).toFixed(0)+'k':v; }},
-                grid:{color:'rgba(0,0,0,.05)'} }
+              ticks:{font:{size:11},callback:function(v){return v>=1000?(v/1000).toFixed(0)+'k':v;}},
+              grid:{color:'rgba(0,0,0,.05)'} }
           }
         }
       });
