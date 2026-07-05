@@ -508,9 +508,9 @@ const SALES_DATA = {
 };
 
 const SALES = {
-  month:6, year:2026, mtdDate:'28/06/2026',
+  month:6, year:2026, mtdDate:'30/06/2026',
   // T6 June MTD (days 1-28)
-  total:27126, totPost:6088, totPre:21038,
+  total:28768, totPost:26054, totPre:2714,
   bcOrder:['CAJBC01','CAJBC07','CAJBC08','CAJBC05','CAJBC10','CAJBC14'],
   bc:{
     CAJBC01:{t:8700,po:2119,pr:6581},
@@ -542,9 +542,9 @@ const SALES = {
     'Agente BIPAY':   {t:0,    po:0,   pr:0},
     'Negocios BIPAY': {t:0,    po:0,   pr:0},
   },
-  mnp:{'Nueva Línea':22634,'MNP':3277,'Pre→Post CM':1215},
-  days:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28],
-  byDay:[876,867,714,903,982,922,1703,948,746,789,958,910,799,1301,871,975,765,778,914,962,1133,992,778,1115,1054,1073,905,1393],
+  mnp:{'Nueva Línea':24004,'MNP':3475,'Pre→Post CM':1289},
+  days:[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+  byDay:[875, 865, 714, 903, 981, 921, 1701, 946, 745, 788, 957, 910, 799, 1301, 870, 974, 765, 777, 914, 958, 1133, 991, 777, 1114, 1054, 1073, 905, 1392, 867, 798],
   // Multi-month comparison data
   byMonth:{
     4:{
@@ -608,36 +608,33 @@ const SALES = {
       mnp:{'Nueva Línea':24192,'MNP':3651,'Pre→Post CM':1354},
     },
     6:{
-      total:27126, post:6088, pre:21038,
+      total:28768, post:26054, pre:2714,
       bc:{
-        CAJBC01:{t:8700,po:2119,pr:6581},
-        CAJBC07:{t:6133,po:1289,pr:4844},
-        CAJBC08:{t:4051,po:677,pr:3374},
-        CAJBC05:{t:3838,po:1060,pr:2778},
-        CAJBC10:{t:2308,po:449,pr:1859},
-        CAJBC14:{t:2072,po:488,pr:1584},
+        CAJBC01:{t:9316,po:8708,pr:608},
+        CAJBC07:{t:6423,po:5772,pr:651},
+        CAJBC08:{t:4281,po:3768,pr:513},
+        CAJBC05:{t:4058,po:3836,pr:222},
+        CAJBC10:{t:2513,po:2304,pr:209},
+        CAJBC14:{t:2177,po:1666,pr:511},
       },
       ch:{
-        'Promotores': {t:14014, po:1556, pr:12458},
-        'POS': {t:6874, po:848, pr:6026},
-        'Dealer Autorizado': {t:2366, po:1428, pr:938},
-        'CAB Dealer': {t:1314, po:677, pr:637},
-        'Store': {t:910, po:677, pr:233},
-        'Small CAB': {t:675, po:387, pr:288},
-        'Dealer': {t:535, po:278, pr:257},
-        'Islas BITEL': {t:245, po:173, pr:72},
-        'Retail': {t:59, po:44, pr:15},
-        'Bitel Staff': {t:75, po:4, pr:71},
-        'Business Center': {t:19, po:1, pr:18},
-        'Small Dealer': {t:10, po:6, pr:4},
-        'Mini Store': {t:7, po:3, pr:4},
-        'FTTH': {t:0, po:0, pr:0},
-        'Agente BIPAY': {t:0, po:0, pr:0},
-        'Negocios BIPAY': {t:0, po:0, pr:0},
+        'Promotores':{t:14749,po:12850,pr:1899},
+        'POS':{t:7256,po:6795,pr:461},
+        'Dealer Autorizado':{t:2676,po:2496,pr:180},
+        'CAB Dealer':{t:1384,po:1344,pr:40},
+        'Store':{t:980,po:940,pr:40},
+        'Small CAB':{t:716,po:663,pr:53},
+        'Dealer':{t:570,po:548,pr:22},
+        'Islas BITEL':{t:257,po:246,pr:11},
+        'Retail':{t:66,po:63,pr:3},
+        'Bitel Staff':{t:76,po:72,pr:4},
+        'Business Center':{t:19,po:19,pr:0},
+        'Small Dealer':{t:10,po:10,pr:0},
+        'Mini Store':{t:9,po:8,pr:1},
       },
-      mnp:{'Nueva Línea':17862,'MNP':2710,'Pre→Post CM':991},
+      mnp:{'Nueva Línea':23993,'MNP':3481,'Pre→Post CM':1294},
     },
-  },
+  }
   // T5p: tháng 5 cùng kỳ ngày 1-28 (so sánh apples-to-apples với T6)
   t5p: {
     total:26266, post:6025, pre:20241,
@@ -1366,7 +1363,7 @@ const SALES = {
 
   <!-- BC x Channel breakdown -->
   <div class="section">
-    <div class="section-head">📊 Kênh theo từng BC / Canal por BC — T6 vs T5 cùng kỳ (1-23)</div>
+    <div class="section-head">📊 Kênh theo từng BC / Canal por BC — T6 vs T5 cùng kỳ (1-31/05)</div>
     <div id="salesBcChSection" class="section-body" style="padding:10px 0">
       <div id="salesBcChGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px"></div>
     </div>
@@ -1374,7 +1371,7 @@ const SALES = {
 
   <!-- Declining staff by channel tabs -->
   <div class="section">
-    <div class="section-head">⚠️ Nhân viên Active suy giảm theo kênh / Caída por Canal (T6 vs T5 cùng kỳ 1-23)</div>
+    <div class="section-head">⚠️ Nhân viên Active suy giảm theo kênh / Caída por Canal (T6 vs T5 cùng kỳ 1-31/05)</div>
     <div id="staffSectionBody" class="section-body" style="padding:12px 14px">
       <div class="tabs" id="staffDeclineTabs">
         <div class="tab active" onclick="switchStaffTab('promotores',this)">📣 Promotores</div>
@@ -1391,7 +1388,7 @@ const SALES = {
             <th style="text-align:left;padding:8px 8px">#</th>
             <th style="text-align:left;padding:8px 8px">BC</th>
             <th style="text-align:left;padding:8px 8px">Nhân viên</th>
-            <th class="num" style="padding:8px 6px">T5 CK (1-23/5)</th>
+            <th class="num" style="padding:8px 6px">T5 (1-31/05)</th>
             <th class="num" style="padding:8px 6px">T6 MTD</th>
             <th class="num" style="padding:8px 6px">Δ</th>
           </tr></thead>
