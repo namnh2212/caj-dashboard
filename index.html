@@ -1928,53 +1928,41 @@ function buildKPICards() {
   })();
 
   // ── Active by BC by Month chart ──
-  (function buildActiveBCChart() {
-    var BC = ['CAJBC01','CAJBC07','CAJBC08','CAJBC05','CAJBC10','CAJBC14'];
-    var BL = {CAJBC01:'BC01',CAJBC07:'BC07',CAJBC08:'BC08',CAJBC05:'BC05',CAJBC10:'BC10',CAJBC14:'BC14'};
-    var labels = BC.map(function(b){ return BL[b]; });
-    var fmt = function(v){ return v.toLocaleString('de-DE'); };
-
-    var D6 = SALES_DATA[6], D7 = SALES_DATA[7];
-    var m4 = D6.byMonth[4].bc, m5 = D6.byMonth[5].bc;
-    var m6 = D6.byBC, m7 = D7.byBC;
-
-    var datasets = [
-      { label:'T4/2026', data: BC.map(function(b){ return m4[b]?m4[b].t:0; }),
-        backgroundColor:'#cbd5e1', borderRadius:3 },
-      { label:'T5/2026', data: BC.map(function(b){ return m5[b]?m5[b].t:0; }),
-        backgroundColor:'#93c5fd', borderRadius:3 },
-      { label:'T6/2026', data: BC.map(function(b){ return m6[b]?m6[b].t:0; }),
-        backgroundColor:'#2563eb', borderRadius:3 },
-      { label:'T7 MTD',  data: BC.map(function(b){ return m7[b]?m7[b].t:0; }),
-        backgroundColor:'#e85d04', borderRadius:3 },
-    ];
-
-    var ctx = document.getElementById('activeBCChart');
-    if (!ctx) return;
-    new Chart(ctx.getContext('2d'), {
-      type: 'bar',
-      data: { labels: labels, datasets: datasets },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: {
-          legend: { position:'top', labels:{ font:{size:11}, boxWidth:14 } },
-          tooltip: {
-            callbacks: {
-              label: function(ctx){ return ' ' + ctx.dataset.label + ': ' + fmt(ctx.raw); }
-            }
-          }
-        },
-        scales: {
-          x: { ticks:{ font:{size:11} }, grid:{display:false} },
-          y: {
-            beginAtZero: true,
-            ticks:{ font:{size:11}, callback: function(v){ return v>=1000?(v/1000).toFixed(0)+'k':v; } },
-            grid:{ color:'rgba(0,0,0,.05)' }
+  try {
+    (function() {
+      var labels  = ['BC01','BC07','BC08','BC05','BC10','BC14'];
+      var fmt = function(v){ return v.toLocaleString('de-DE'); };
+      var datasets = [
+        { label:'T4/2026', backgroundColor:'#cbd5e1', borderRadius:3,
+          data:[9375,5754,4615,3785,3145,2398] },
+        { label:'T5/2026', backgroundColor:'#93c5fd', borderRadius:3,
+          data:[8388,5404,4131,3794,2413,2107] },
+        { label:'T6/2026', backgroundColor:'#2563eb', borderRadius:3,
+          data:[9316,6423,4281,4058,2513,2177] },
+        { label:'T7 MTD',  backgroundColor:'#e85d04', borderRadius:3,
+          data:[574,367,175,217,145,138] },
+      ];
+      var ctx = document.getElementById('activeBCChart');
+      if (!ctx) return;
+      new Chart(ctx.getContext('2d'), {
+        type:'bar',
+        data:{ labels:labels, datasets:datasets },
+        options:{
+          responsive:true, maintainAspectRatio:false,
+          plugins:{
+            legend:{ position:'top', labels:{ font:{size:11}, boxWidth:14 } },
+            tooltip:{ callbacks:{ label:function(c){ return ' '+c.dataset.label+': '+fmt(c.raw); } } }
+          },
+          scales:{
+            x:{ ticks:{font:{size:11}}, grid:{display:false} },
+            y:{ beginAtZero:true,
+                ticks:{font:{size:11}, callback:function(v){ return v>=1000?(v/1000).toFixed(0)+'k':v; }},
+                grid:{color:'rgba(0,0,0,.05)'} }
           }
         }
-      }
-    });
-  })();
+      });
+    })();
+  } catch(e){ console.error('[buildActiveBCChart]', e); }
 
 
   // ── REG Sidebar Table + Caption (dynamic from CFG) ──────────
