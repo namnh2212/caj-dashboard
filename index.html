@@ -1087,6 +1087,7 @@ const SALES = {
   <div class="page-tab active" onclick="switchPage('dashboard',this)">📊 Dashboard KPI</div>
   <div class="page-tab" onclick="switchPage('map',this)">🗺️ Bản đồ / Mapa</div>
   <div class="page-tab" onclick="switchPage('sales',this)">🛒 Bán hàng / Ventas</div>
+  <div class="page-tab" onclick="switchPage('kythuat',this)">🔧 Kỹ thuật</div>
 </div>
 
 <div id="page-dashboard" class="page-pane active">
@@ -1216,7 +1217,15 @@ const SALES = {
     </div>
   </div>
 
-  <!-- ── SECTION 4: WEEKLY STATION ALERTS ── -->
+</div><!-- /container -->
+</div><!-- /page-dashboard -->
+
+<!-- ══════════════════════════════════════════════
+     KỸ THUẬT PAGE
+════════════════════════════════════════════════ -->
+<div id="page-kythuat" class="page-pane">
+<div class="container">
+<!-- ── SECTION 4: WEEKLY STATION ALERTS ── -->
   <div class="section">
     <div class="section-head">⚠️ 4. TRẠM GIẢM THUÊ BAO 15C3D / ESTACIONES CON BAJAS — THEO TỪNG TUẦN / POR SEMANA</div>
     <div class="section-body">
@@ -1286,7 +1295,7 @@ const SALES = {
   </div>
 
 </div><!-- /container -->
-</div><!-- /page-dashboard -->
+</div><!-- /page-kythuat -->
 
 <!-- ══════════════════════════════════════════════
      MAP PAGE
