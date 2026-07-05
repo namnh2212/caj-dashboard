@@ -2474,7 +2474,8 @@ function updateStaffSection(m) {
   if (!SD) {
     // T5: no comparison
     if (staffNote) staffNote.textContent = 'T5 — không có dữ liệu cùng kỳ';
-    document.getElementById('salesTop10Tbody').innerHTML =
+    const top10El0 = document.getElementById('salesTop10Tbody');
+    if (top10El0) top10El0.innerHTML =
       '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">Không có dữ liệu so sánh cho T5</td></tr>';
     ['pos','cab','dealer','promotores'].forEach(g => {
       const p = document.getElementById('staff-pane-'+g);
@@ -2486,7 +2487,8 @@ function updateStaffSection(m) {
   if (staffNote) staffNote.textContent = SD.curLabel+' vs '+SD.ckLabel;
 
   // Top 10
-  document.getElementById('salesTop10Tbody').innerHTML = SD.top10.map(function(r,i) {
+  const top10El = document.getElementById('salesTop10Tbody');
+  if (top10El) top10El.innerHTML = SD.top10.map(function(r,i) {
     const bg = i%2===0?'':' style="background:#f8fafc"';
     const dStyle = r.delta<-50?'color:#dc2626;font-weight:700':r.delta<-20?'color:#ea580c;font-weight:600':'color:#ca8a04;font-weight:600';
     return '<tr'+bg+'><td style="padding:7px 8px;color:var(--muted)">'+(i+1)+'</td>'+
