@@ -1086,7 +1086,8 @@ const SALES = {
 <div class="page-tabs">
   <div class="page-tab active" onclick="switchPage('dashboard',this)">📊 Dashboard KPI</div>
   <div class="page-tab" onclick="switchPage('map',this)">🗺️ Bản đồ / Mapa</div>
-  <div class="page-tab" onclick="switchPage('sales',this)">🛒 Bán hàng / Ventas</div>
+  <div class="page-tab" onclick="switchPage('sales',this)">📱 Mobile</div>
+  <div class="page-tab" onclick="switchPage('digital',this)">💻 Digital</div>
   <div class="page-tab" onclick="switchPage('kythuat',this)">🔧 Kỹ thuật</div>
 </div>
 
@@ -1372,7 +1373,7 @@ const SALES = {
     <div class="section-head"><span id="kenhCatalogTitle">🗂️ Danh mục kênh / Catálogo de Canales — T6 — 01-30/06/2026</span></div>
     <div class="section-body" style="padding:10px 14px">
       <!-- Summary bar -->
-      <div id="kenhSummaryBar" style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:14px"></div>
+      <div id="kenhSummaryBar" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px"></div>
       <!-- Detail table: channel types × BCs -->
       <div style="overflow-x:auto">
         <table class="tbl" id="kenhDetailTable" style="width:100%;font-size:12px;table-layout:fixed;border-collapse:collapse"></table>
@@ -1500,6 +1501,33 @@ const SALES = {
 
 </div><!-- /container -->
 </div><!-- /page-sales -->
+<div id="page-digital" class="page-pane">
+  <div class="container">
+    <div style="display:flex;gap:10px;padding:12px 14px 0;align-items:center;flex-wrap:wrap">
+      <label style="font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap">📅 Tháng:</label>
+      <select id="digitalMonthSelect" onchange="switchSalesMonth(+this.value)"
+        style="font-size:12px;padding:4px 8px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text)">
+        <option value="5">T5/2026</option>
+        <option value="6" selected>T6/2026</option>
+        <option value="7">T7/2026 (MTD)</option>
+      </select>
+    </div>
+    <div class="section" id="digitalCatalogSection">
+      <div class="section-head"><span id="digitalCatalogTitle">💻 Kênh Digital / Canales Digitales — T6 — 01-30/06/2026</span></div>
+      <div class="section-body" style="padding:10px 14px">
+        <div id="digitalSummaryBar" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px"></div>
+        <div style="overflow-x:auto">
+          <table class="tbl" id="digitalDetailTable" style="width:100%;font-size:12px;table-layout:fixed;border-collapse:collapse"></table>
+        </div>
+        <p style="font-size:11px;color:var(--muted);margin-top:8px" id="digitalFootnote">
+          * Kênh BIPAY (Agente/Negocios) và Tusami không phát sinh Active thông thường qua hệ thống.
+          DM = số điểm trong danh mục kênh.
+        </p>
+      </div>
+    </div>
+  </div>
+</div><!-- /page-digital -->
+
 
 <script>
   // ── Page-level tab switching ──
@@ -1521,6 +1549,7 @@ const SALES = {
       else setTimeout(() => leafletMap.invalidateSize(), 50);
     }
     if (id === 'sales') { buildSalesTab(); buildKenhCatalog(_salesMonth||6); }
+    if (id === 'digital') { buildDigitalPage(_salesMonth||6); }
   }
 
   // ── Station tab switching (W21/W22/W23) ──
@@ -2582,6 +2611,8 @@ function switchSalesMonth(m) {
   _salesMonth = m;
   const sel = document.getElementById('salesMonthSelect');
   if (sel && +sel.value !== m) sel.value = m;
+  const digSel = document.getElementById('digitalMonthSelect');
+  if (digSel && +digSel.value !== m) digSel.value = m;
 
   // ── Headers always update FIRST ──
   const _ckL = {5:'—',6:'T5 cùng kỳ (1-31/05)',7:'T6 cùng kỳ (1-02/06)'};
@@ -2599,6 +2630,7 @@ function switchSalesMonth(m) {
   try { updateStaffSection(m); }   catch(e){ console.error('[updateStaffSection]',e); }
   try { buildKenhCatalog(m); }     catch(e){ console.error('[buildKenhCatalog]',e); }
   try { updateMnpChart(m); }       catch(e){ console.error('[updateMnpChart]',e); }
+  try { buildDigitalPage(m); }      catch(e){ console.error('[buildDigitalPage]',e); }
 }
 
 function updateDailyChart(m) {
@@ -2946,12 +2978,10 @@ function buildKenhCatalog(m) {
   var mLbl = {5:'T5',6:'T6',7:'T7'}[m] || '';
   var pctColor = pct>=70 ? 'var(--success)' : 'var(--warning)';
   var cards = [
-    {label:'📱 Kênh Mobile (DM)', val:mAll,       sub:'trong danh mục',          color:'var(--primary)'},
-    {label:'Phát sinh '+mLbl,     val:mPsAll,      sub:'/'+mAll+' = '+pct+'%',   color:pctColor},
-    {label:'Chưa phát sinh',      val:mAll-mPsAll, sub:'kênh Mobile không Active',color:'var(--danger)'},
-    {label:'💻 Kênh Digital',     val:dAll,        sub:'BIPAY + Tusami',           color:'#6d28d9'},
-    {label:'Tỉ lệ PS',            val:pct+'%',     sub:'kênh Mobile có Active',   color:pctColor},
-    {label:'Tổng danh mục',       val:totalAll,    sub:'tất cả nhóm kênh',        color:'var(--text)'}
+    {label:'📱 Kênh Mobile (DM)', val:mAll,       sub:'trong danh mục',           color:'var(--primary)'},
+    {label:'Phát sinh '+mLbl,     val:mPsAll,      sub:'/'+mAll+' = '+pct+'%',    color:pctColor},
+    {label:'Chưa phát sinh',      val:mAll-mPsAll, sub:'kênh Mobile chưa Active', color:'var(--danger)'},
+    {label:'Tỉ lệ PS',            val:pct+'%',     sub:'kênh có Active '+mLbl,    color:pctColor},
   ];
   var barHtml = '';
   cards.forEach(function(s) {
@@ -3022,7 +3052,7 @@ function buildKenhCatalog(m) {
       '<th style="padding:3px 4px;text-align:center;opacity:.8">DM / PS</th>'+ths2+'</tr>'+
     '</thead><tbody>';
 
-  ['mobile','digital'].forEach(function(grp) {
+  ['mobile'].forEach(function(grp) {
     var types = groupTypes[grp];
     if (!types.length) return;
     var isDig = (grp === 'digital');
@@ -3077,6 +3107,93 @@ function buildKenhCatalog(m) {
         '<td style="padding:6px 4px;text-align:center;font-size:12px;color:'+gc+';background:rgba(0,0,0,.04)">'+totDig+'</td>'+digC+'</tr>';
     }
   });
+
+  h += '</tbody>';
+  tbl.innerHTML = h;
+}
+
+
+function buildDigitalPage(m) {
+  m = m || _salesMonth || 6;
+  if (typeof KENH === 'undefined') return;
+  var BC = ['CAJBC01','CAJBC07','CAJBC08','CAJBC05','CAJBC10','CAJBC14'];
+  var BL = {CAJBC01:'BC01',CAJBC07:'BC07',CAJBC08:'BC08',CAJBC05:'BC05',CAJBC10:'BC10',CAJBC14:'BC14'};
+  var ICON = {'Agente BIPAY':'💳','Negocios BIPAY':'💼','Tusami':'🤖'};
+  var gc = '#6d28d9';
+  var mLbl = {5:'T5/2026',6:'T6/2026',7:'T7/2026 (MTD)'}[m] || 'T'+m;
+  var dtRange = {5:'01-31/05/2026',6:'01-30/06/2026',7:'01-02/07/2026'}[m] || '';
+
+  // Update title
+  var titleEl = document.getElementById('digitalCatalogTitle');
+  if (titleEl) titleEl.textContent = '💻 Kênh Digital / Canales Digitales — '+mLbl+' — '+dtRange;
+
+  // ── Summary bar ──────────────────────────────────────────────────────────
+  var bar = document.getElementById('digitalSummaryBar');
+  if (!bar) return;
+  var dAll=0;
+  BC.forEach(function(bc){ dAll += KENH[bc].digitalTotal; });
+  var bcCards = [];
+  BC.forEach(function(bc){ bcCards.push({label:BL[bc], val:KENH[bc].digitalTotal, sub:'kênh digital', color:gc}); });
+  var summaryCards = [{label:'💻 Tổng Kênh Digital', val:dAll, sub:'toàn Cajamarca', color:gc}].concat(bcCards);
+  // show 4 cols: total + 3 BCs then second row
+  var barHtml = '';
+  summaryCards.slice(0,4).forEach(function(s) {
+    barHtml += '<div style="background:var(--bg);border-radius:8px;padding:10px 12px;border:1px solid var(--border)">' +
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:2px">'+s.label+'</div>' +
+      '<div style="font-size:20px;font-weight:700;color:'+s.color+'">'+s.val+'</div>' +
+      '<div style="font-size:10px;color:var(--muted)">'+s.sub+'</div></div>';
+  });
+  bar.innerHTML = barHtml;
+
+  // ── Collect digital channel types ────────────────────────────────────────
+  var digTypes = []; var seen = {};
+  BC.forEach(function(bc) {
+    KENH[bc].rows.forEach(function(r) {
+      if (r.group === 'digital' && !seen[r.ch]) { seen[r.ch]=1; digTypes.push(r.ch); }
+    });
+  });
+
+  // ── Build table ──────────────────────────────────────────────────────────
+  var tbl = document.getElementById('digitalDetailTable');
+  if (!tbl) return;
+  var colg = '<col style="width:24%"><col style="width:11%">';
+  BC.forEach(function(){ colg += '<col style="width:10.8%">'; });
+  var ths = '';
+  BC.forEach(function(bc){ ths += '<th style="padding:8px 4px;text-align:center;font-size:12px">'+BL[bc]+'</th>'; });
+  var h = '<colgroup>'+colg+'</colgroup><thead>'+
+    '<tr style="background:'+gc+';color:#fff">'+
+      '<th style="padding:8px 10px;text-align:left;font-size:12px">Loại kênh / Canal</th>'+
+      '<th style="padding:8px 4px;text-align:center;font-size:12px">Tổng</th>'+ths+'</tr>'+
+    '</thead><tbody>';
+
+  h += '<tr style="background:'+gc+';color:#fff">'+
+    '<td colspan="'+(BC.length+2)+'" style="padding:5px 10px;font-size:11px;font-weight:700">💻 Kênh Digital</td></tr>';
+
+  digTypes.forEach(function(type, idx) {
+    var bg = idx%2===0 ? 'background:var(--bg)' : 'background:#fff';
+    var totDM = 0;
+    var bccells = '';
+    BC.forEach(function(bc) {
+      var r = KENH[bc].rows.find(function(x){return x.ch===type;});
+      var v = (r && r.total>0) ? r.total : 0;
+      totDM += v;
+      bccells += v>0
+        ? '<td style="padding:5px 6px;text-align:center;font-size:12px;color:var(--muted)">'+v+'</td>'
+        : '<td style="padding:5px 6px;text-align:center;color:var(--border)">—</td>';
+    });
+    h += '<tr style="'+bg+'">'+
+      '<td style="padding:5px 10px;font-size:12px;color:var(--muted)">'+(ICON[type]||'')+' '+type+'</td>'+
+      '<td style="padding:5px 6px;text-align:center;font-size:12px;font-weight:700;color:var(--muted)">'+totDM+'</td>'+
+      bccells+'</tr>';
+  });
+
+  // Total row
+  var digTotCells = '';
+  BC.forEach(function(bc){ digTotCells += '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700;color:'+gc+'">'+KENH[bc].digitalTotal+'</td>'; });
+  h += '<tr style="background:'+gc+'22;font-weight:700">'+
+    '<td style="padding:6px 10px;font-size:12px;color:'+gc+'">Tổng Kênh Digital</td>'+
+    '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700;color:'+gc+';background:rgba(0,0,0,.04)">'+dAll+'</td>'+
+    digTotCells+'</tr>';
 
   h += '</tbody>';
   tbl.innerHTML = h;
