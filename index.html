@@ -1221,33 +1221,10 @@ const SALES = {
   <div class="section">
     <div class="section-head">🏢 3c. ACTIVE THEO TỪNG BC / ACTIVACIONES POR BC — THEO THÁNG / POR MES</div>
     <div class="section-body">
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-        <div class="chart-box" style="height:180px;padding:6px">
-          <div style="font-size:10px;font-weight:700;text-align:center;color:#1d4ed8;margin-bottom:2px">BC01</div>
-          <canvas id="bcChart_BC01"></canvas>
-        </div>
-        <div class="chart-box" style="height:180px;padding:6px">
-          <div style="font-size:10px;font-weight:700;text-align:center;color:#0891b2;margin-bottom:2px">BC07</div>
-          <canvas id="bcChart_BC07"></canvas>
-        </div>
-        <div class="chart-box" style="height:180px;padding:6px">
-          <div style="font-size:10px;font-weight:700;text-align:center;color:#7c3aed;margin-bottom:2px">BC08</div>
-          <canvas id="bcChart_BC08"></canvas>
-        </div>
-        <div class="chart-box" style="height:180px;padding:6px">
-          <div style="font-size:10px;font-weight:700;text-align:center;color:#dc2626;margin-bottom:2px">BC05</div>
-          <canvas id="bcChart_BC05"></canvas>
-        </div>
-        <div class="chart-box" style="height:180px;padding:6px">
-          <div style="font-size:10px;font-weight:700;text-align:center;color:#d97706;margin-bottom:2px">BC10</div>
-          <canvas id="bcChart_BC10"></canvas>
-        </div>
-        <div class="chart-box" style="height:180px;padding:6px">
-          <div style="font-size:10px;font-weight:700;text-align:center;color:#059669;margin-bottom:2px">BC14</div>
-          <canvas id="bcChart_BC14"></canvas>
-        </div>
+      <div class="chart-box" style="height:340px">
+        <canvas id="activeBCChart"></canvas>
       </div>
-      <p class="caption">T4–T6 full month. Cột = Active tháng; đường = xu thế. ▲ T6&gt;T5 · ▼ T6&lt;T5 &nbsp;|&nbsp; T7 MTD không đưa vào do chỉ 2 ngày.</p>
+      <p class="caption">T4–T6 full month. Cột nhóm = Active từng BC theo tháng; đường nối = xu thế của từng BC. T7 MTD (2 ngày) không hiển thị.</p>
     </div>
   </div>
 
@@ -1950,11 +1927,12 @@ function buildKPICards() {
     });
   })();
 
-  // ── Active by BC – 6 mini charts (bar + line per BC) ──
+  // ── Active by BC by Month – grouped bars + trend lines (single chart) ──
   try {
     (function() {
       var fmt = function(v){ return v.toLocaleString('de-DE'); };
-      var labels = ['T4/26','T5/26','T6/26'];
+      // X = tháng (3 điểm), mỗi BC = 1 cặp bar + line
+      var labels = ['T4/2026','T5/2026','T6/2026'];
       var BCS = [
         {id:'BC01', data:[9375,9124,9316], color:'#1d4ed8'},
         {id:'BC07', data:[5754,5995,6423], color:'#0891b2'},
@@ -1963,59 +1941,64 @@ function buildKPICards() {
         {id:'BC10', data:[3145,2743,2513], color:'#d97706'},
         {id:'BC14', data:[2398,2361,2177], color:'#059669'},
       ];
+      var datasets = [];
       BCS.forEach(function(bc) {
-        var ctx = document.getElementById('bcChart_'+bc.id);
-        if (!ctx) return;
         var delta = bc.data[2] - bc.data[1];
-        var arrow = delta >= 0 ? '▲' : '▼';
-        var arrowColor = delta >= 0 ? '#16a34a' : '#dc2626';
-        new Chart(ctx.getContext('2d'), {
-          type: 'bar',
-          data: {
-            labels: labels,
-            datasets: [
-              { type:'bar', label:bc.id,
-                data: bc.data,
-                backgroundColor: [bc.color+'55',bc.color+'55',bc.color+'99'],
-                borderColor: bc.color, borderWidth:1.5, borderRadius:3 },
-              { type:'line', label:'trend',
-                data: bc.data,
-                borderColor: bc.color, borderWidth:2,
-                pointRadius:4, pointBackgroundColor:'#fff',
-                pointBorderColor:bc.color, pointBorderWidth:2,
-                tension:0.2, fill:false }
-            ]
-          },
-          options: {
-            responsive:true, maintainAspectRatio:false,
-            plugins: {
-              legend: {display:false},
-              tooltip: {
-                callbacks: {
-                  title: function(items){ return bc.id+' – '+items[0].label; },
-                  label: function(c){
-                    if(c.datasetIndex===1) return null;
-                    var d = c.dataIndex>0 ? c.raw-bc.data[c.dataIndex-1] : null;
-                    var dStr = d!==null?' ('+(d>=0?'+':'')+fmt(d)+')':'';
-                    return ' '+fmt(c.raw)+dStr;
-                  },
-                  afterTitle: function(items){
-                    var i=items[0].dataIndex;
-                    if(i===2) return [arrow+' T6 vs T5: '+(delta>=0?'+':'')+fmt(delta)];
-                    return [];
-                  }
-                }
+        var arrow = delta >= 0 ? ' ▲' : ' ▼';
+        // Bar
+        datasets.push({
+          type:'bar', label: bc.id + arrow,
+          data: bc.data,
+          backgroundColor: bc.color+'55',
+          borderColor: bc.color, borderWidth:2, borderRadius:4,
+          order: 2
+        });
+        // Line (trend) — hidden from legend
+        datasets.push({
+          type:'line', label: bc.id+'_line',
+          data: bc.data,
+          borderColor: bc.color, borderWidth:2.5,
+          pointRadius:5, pointBackgroundColor:'#fff',
+          pointBorderColor: bc.color, pointBorderWidth:2.5,
+          tension:0.2, fill:false, order:1
+        });
+      });
+      var ctx = document.getElementById('activeBCChart');
+      if (!ctx) return;
+      new Chart(ctx.getContext('2d'), {
+        type:'bar',
+        data:{ labels:labels, datasets:datasets },
+        options:{
+          responsive:true, maintainAspectRatio:false,
+          interaction:{ mode:'index', intersect:false },
+          plugins:{
+            legend:{
+              position:'top',
+              labels:{ font:{size:11}, boxWidth:14, padding:10,
+                filter:function(item){ return !item.text.includes('_line'); }
               }
             },
-            scales: {
-              x: { ticks:{font:{size:10}}, grid:{display:false} },
-              y: { display:true, beginAtZero:false,
-                   ticks:{font:{size:9}, maxTicksLimit:4,
-                     callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v;}},
-                   grid:{color:'rgba(0,0,0,.04)'} }
+            tooltip:{
+              callbacks:{
+                label:function(c){
+                  if(c.dataset.label.includes('_line')) return null;
+                  var bc = BCS[Math.floor(c.datasetIndex/2)];
+                  var d = c.dataIndex>0 ? c.raw - bc.data[c.dataIndex-1] : null;
+                  var dStr = d!==null?' ('+(d>=0?'+':'')+fmt(d)+')':'';
+                  return '  '+bc.id+': '+fmt(c.raw)+dStr;
+                }
+              }
             }
+          },
+          scales:{
+            x:{ ticks:{font:{size:12},color:'#1e293b'},
+                grid:{display:false} },
+            y:{ beginAtZero:false,
+                ticks:{font:{size:11}, callback:function(v){
+                  return v>=1000?(v/1000).toFixed(0)+'k':v; }},
+                grid:{color:'rgba(0,0,0,.05)'} }
           }
-        });
+        }
       });
     })();
   } catch(e){ console.error('[buildActiveBCChart]', e); }
