@@ -1375,7 +1375,7 @@ const SALES = {
     style="padding:5px 10px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;
            background:#fff;cursor:pointer;outline:none;min-width:180px;color:var(--text)">
     <option value="5">T5/2026 — 01-31/05</option>
-    <option value="6" selected>T6/2026 — 01-30/06</option>
+    <option value="6">T6/2026 — 01-30/06</option>
     <option value="7">T7/2026 — 01-02/07</option>
   </select>
   <span id="salesSelectedNote" style="font-size:11px;color:var(--muted)"></span>
@@ -1523,7 +1523,7 @@ const SALES = {
       <select id="digitalMonthSelect" onchange="switchSalesMonth(+this.value)"
         style="font-size:12px;padding:4px 8px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text)">
         <option value="5">T5/2026</option>
-        <option value="6" selected>T6/2026</option>
+        <option value="6">T6/2026</option>
         <option value="7">T7/2026 (MTD)</option>
       </select>
     </div>
@@ -1563,8 +1563,8 @@ const SALES = {
       if (!leafletMap) initLeafletMap();
       else setTimeout(() => leafletMap.invalidateSize(), 50);
     }
-    if (id === 'sales') { buildSalesTab(); buildKenhCatalog(_salesMonth||6); }
-    if (id === 'digital') { buildDigitalPage(_salesMonth||6); }
+    if (id === 'sales') { buildSalesTab(); switchSalesMonth(_salesMonth); }
+    if (id === 'digital') { var ds=document.getElementById('digitalMonthSelect'); if(ds) ds.value=_salesMonth; buildDigitalPage(_salesMonth); }
   }
 
   // ── Station tab switching (W21/W22/W23) ──
@@ -2617,7 +2617,7 @@ function buildKPICards() {
   // ══════════════════════════════════════════════
   //  TAB BÁN HÀNG / VENTAS
   // ══════════════════════════════════════════════
-  let _salesMonth = 6;
+  let _salesMonth = (function(){ var m=new Date().getMonth()+1; return [5,6,7].indexOf(m)>=0?m:7; })();
 let salesBuilt = false;
 let _salesDailyChart = null;
 let _salesMnpChart = null;
