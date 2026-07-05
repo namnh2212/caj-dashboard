@@ -1976,6 +1976,8 @@ function buildKPICards() {
 
       var ctx = document.getElementById('activeBCChart');
       if (!ctx) return;
+      var existingChart = Chart.getChart(ctx);
+      if (existingChart) existingChart.destroy();
       new Chart(ctx.getContext('2d'), {
         type: 'bar',
         plugins: [trendPlugin],
