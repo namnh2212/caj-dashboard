@@ -2737,177 +2737,171 @@ function buildSalesTab() {
 function buildKenhCatalog(m) {
   m = m || _salesMonth || 6;
   if (typeof KENH === 'undefined') return;
-  const BC = ['CAJBC01','CAJBC07','CAJBC08','CAJBC05','CAJBC10','CAJBC14'];
-  const BL = {CAJBC01:'BC01',CAJBC07:'BC07',CAJBC08:'BC08',CAJBC05:'BC05',CAJBC10:'BC10',CAJBC14:'BC14'};
-  const ICON = {
-    'Promotores':'📣','POS':'🏪','Dealer Autorizado':'⭐',
-    'CAB Dealer':'🤝','Store':'🏬','Dealer':'🚗','Small CAB':'🏘',
-    'Small Dealer':'🔑','Islas BITEL':'🏝','Retail':'🛍','Mini Store':'🛒',
-    'Dealer Online':'🌐','Agente BIPAY':'💳','Negocios BIPAY':'💼',
-    'Tusami':'🤖','FTTH':'📶'
-  };
-  const GROUP_LABEL = {mobile:'📱 Kênh Mobile', digital:'💻 Kênh Digital', ftth:'📶 Kênh FTTH'};
-  const GROUP_COLOR = {mobile:'#0f4c81', digital:'#6d28d9', ftth:'#0891b2'};
-  const MOBILE_GRP = new Set(['mobile']);
+  var BC = ['CAJBC01','CAJBC07','CAJBC08','CAJBC05','CAJBC10','CAJBC14'];
+  var BL = {CAJBC01:'BC01',CAJBC07:'BC07',CAJBC08:'BC08',CAJBC05:'BC05',CAJBC10:'BC10',CAJBC14:'BC14'};
+  var ICON = {'Promotores':'📣','POS':'🏪','Dealer Autorizado':'⭐','CAB Dealer':'🤝','Store':'🏬',
+    'Dealer':'🚗','Small CAB':'🏘','Small Dealer':'🔑','Islas BITEL':'🏝','Retail':'🛍',
+    'Mini Store':'🛒','Dealer Online':'🌐','Agente BIPAY':'💳','Negocios BIPAY':'💼','Tusami':'🤖','FTTH':'📶'};
+  var GROUP_LABEL = {mobile:'📱 Kênh Mobile', digital:'💻 Kênh Digital'};
+  var GROUP_COLOR = {mobile:'#0f4c81', digital:'#6d28d9'};
 
-  // Helper: get PS for a given month/bc/channel
   function getPs(bc, ch) {
-    const mps = KENH_PS[m];
+    var mps = KENH_PS[m];
     if (mps && mps[bc] && mps[bc][ch] !== undefined) return mps[bc][ch];
-    // fallback to stored ps in KENH row
-    const r = KENH[bc].rows.find(x=>x.ch===ch);
-    return r ? (r.ps || 0) : 0;
+    var row = KENH[bc].rows.find(function(x){return x.ch===ch;});
+    return row ? (row.ps || 0) : 0;
   }
 
-  // ── Summary bar ──────────────────────────────────────────────────────────
-  const bar = document.getElementById('kenhSummaryBar');
+  // ── Summary bar ─────────────────────────────────────────────────────────
+  var bar = document.getElementById('kenhSummaryBar');
   if (!bar) return;
-  let mAll=0,mPsAll=0,dAll=0,fAll=0;
-  BC.forEach(bc=>{
-    const d=KENH[bc];
-    mAll+=d.mobileTotal; dAll+=d.digitalTotal; fAll+=d.ftthTotal;
-    d.rows.forEach(r=>{ if(r.group==='mobile') mPsAll += getPs(bc,r.ch); });
+  var mAll=0, mPsAll=0, dAll=0, fAll=0;
+  BC.forEach(function(bc) {
+    var d = KENH[bc];
+    mAll += d.mobileTotal; dAll += d.digitalTotal; fAll += d.ftthTotal;
+    d.rows.forEach(function(r){ if(r.group==='mobile') mPsAll += getPs(bc, r.ch); });
   });
-  const totalAll=mAll+dAll+fAll;
-  const pct=Math.round(mPsAll/mAll*100);
-  const mLabel = {5:'T5',6:'T6',7:'T7'}[m]||'';
-  bar.innerHTML = [
-    {label:'📱 Kênh Mobile (DM)', val:mAll, sub:'trong danh mục', color:'var(--primary)'},
-    {label:'Phát sinh '+mLabel, val:mPsAll, sub:`/${mAll} = ${pct}%`, color:pct>=70?'var(--success)':'var(--warning)'},
-    {label:'Chưa phát sinh', val:mAll-mPsAll, sub:'kênh Mobile không Active', color:'var(--danger)'},
-    {label:'💻 Kênh Digital', val:dAll, sub:'BIPAY + Tusami', color:'#6d28d9'},
-    {label:'Tỉ lệ PS', val:pct+'%', sub:'kênh Mobile có Active', color:pct>=70?'var(--success)':'var(--warning)'},
-    {label:'Tổng danh mục', val:totalAll, sub:'tất cả nhóm kênh', color:'var(--text)'}
-  ].map(s=>`<div style="background:var(--bg);border-radius:8px;padding:10px 12px;border:1px solid var(--border)">
-    <div style="font-size:10px;color:var(--muted);margin-bottom:2px">${s.label}</div>
-    <div style="font-size:20px;font-weight:700;color:${s.color}">${s.val}</div>
-    <div style="font-size:10px;color:var(--muted)">${s.sub}</div>
-  </div>`).join('');
+  var totalAll = mAll + dAll + fAll;
+  var pct = mAll ? Math.round(mPsAll/mAll*100) : 0;
+  var mLbl = {5:'T5',6:'T6',7:'T7'}[m] || '';
+  var pctColor = pct>=70 ? 'var(--success)' : 'var(--warning)';
+  var cards = [
+    {label:'📱 Kênh Mobile (DM)', val:mAll,       sub:'trong danh mục',          color:'var(--primary)'},
+    {label:'Phát sinh '+mLbl,     val:mPsAll,      sub:'/'+mAll+' = '+pct+'%',   color:pctColor},
+    {label:'Chưa phát sinh',      val:mAll-mPsAll, sub:'kênh Mobile không Active',color:'var(--danger)'},
+    {label:'💻 Kênh Digital',     val:dAll,        sub:'BIPAY + Tusami',           color:'#6d28d9'},
+    {label:'Tỉ lệ PS',            val:pct+'%',     sub:'kênh Mobile có Active',   color:pctColor},
+    {label:'Tổng danh mục',       val:totalAll,    sub:'tất cả nhóm kênh',        color:'var(--text)'}
+  ];
+  var barHtml = '';
+  cards.forEach(function(s) {
+    barHtml += '<div style="background:var(--bg);border-radius:8px;padding:10px 12px;border:1px solid var(--border)">' +
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:2px">'+s.label+'</div>' +
+      '<div style="font-size:20px;font-weight:700;color:'+s.color+'">'+s.val+'</div>' +
+      '<div style="font-size:10px;color:var(--muted)">'+s.sub+'</div>' +
+      '</div>';
+  });
+  bar.innerHTML = barHtml;
 
-  // Update footnote
-  const mnLabels={5:'T5 1-31/05',6:'T6 1-30/06',7:'T7 1-02/07'};
-  const fnEl = document.getElementById('kenhFootnote');
-  if(fnEl) fnEl.innerHTML = `* Không tính <em>Staff in Point Of Sale channel</em>. DM = số kênh trong danh mục. PS = kênh có phát sinh Active ${mnLabels[m]||''}.<br>Kênh BIPAY (Agente/Negocios) không phát sinh Active thông thường — hiển thị mờ.`;
+  // Footnote
+  var mnL = {5:'T5 1-31/05',6:'T6 1-30/06',7:'T7 1-02/07'};
+  var fnEl = document.getElementById('kenhFootnote');
+  if (fnEl) fnEl.innerHTML = '* Không tính <em>Staff in Point Of Sale channel</em>. DM = số kênh trong danh mục. PS = kênh có phát sinh Active '+(mnL[m]||'')+'.<br>Kênh BIPAY (Agente/Negocios) không phát sinh Active thông thường.';
 
-  // ── Collect ordered channel types by group ──────────────────────────────
-  const groupTypes={mobile:[],digital:[],ftth:[]};
-  const seen={mobile:new Set(),digital:new Set(),ftth:new Set()};
-  BC.forEach(bc=>{
-    KENH[bc].rows.forEach(r=>{
-      if(!seen[r.group].has(r.ch)){seen[r.group].add(r.ch); groupTypes[r.group].push(r.ch);}
+  // ── Collect channel types by group ──────────────────────────────────────
+  var groupTypes = {mobile:[], digital:[]};
+  var seen = {mobile:{}, digital:{}};
+  BC.forEach(function(bc) {
+    KENH[bc].rows.forEach(function(r) {
+      if (r.group === 'mobile' || r.group === 'digital') {
+        if (!seen[r.group][r.ch]) { seen[r.group][r.ch]=1; groupTypes[r.group].push(r.ch); }
+      }
     });
   });
 
   // ── Build table ──────────────────────────────────────────────────────────
-  const tbl=document.getElementById('kenhDetailTable');
-  if(!tbl) return;
+  var tbl = document.getElementById('kenhDetailTable');
+  if (!tbl) return;
 
-  function cell(r, isFtth, bc) {
-    if(!r) return `<td style="padding:5px 6px;text-align:center;color:var(--border)">—</td>`;
-    if(isFtth) return `<td style="padding:5px 6px;text-align:center;font-size:12px">
-      <span style="font-weight:600">${r.total}</span><span style="font-size:10px;color:var(--muted)"> DM</span></td>`;
-    const ps = getPs(bc, r.ch);
-    if(r.ps===null && ps===0 && !(KENH_PS[m]&&KENH_PS[m][bc]&&KENH_PS[m][bc][r.ch]!==undefined))
-      return `<td style="padding:5px 6px;text-align:center;color:var(--muted)">—</td>`;
-    const pct2=r.total?Math.round(ps/r.total*100):0;
-    const pc=pct2>=70?'var(--success)':pct2>=50?'var(--warning)':'var(--danger)';
-    const aoMark=r.ao?'<sup style="color:var(--muted)" title="Nguồn: file Active">*</sup>':'';
-    return `<td style="padding:5px 6px;text-align:center;font-size:12px">
-      <span style="font-weight:600">${r.total}${aoMark}</span>/<span style="color:${pc};font-weight:600">${ps}</span>
-      <span style="font-size:10px;color:${pc}"> ${pct2}%</span></td>`;
+  function makeCell(r, bc) {
+    if (!r || r.total === 0) return '<td style="padding:5px 6px;text-align:center;color:var(--border)">—</td>';
+    var ps = getPs(bc, r.ch);
+    var pct2 = r.total ? Math.round(ps/r.total*100) : 0;
+    var pc = pct2>=70?'var(--success)':pct2>=50?'var(--warning)':'var(--danger)';
+    return '<td style="padding:5px 6px;text-align:center;font-size:12px">'+
+      '<span style="font-weight:600">'+r.total+'</span>'+
+      '/<span style="color:'+pc+';font-weight:600">'+ps+'</span>'+
+      '<span style="font-size:10px;color:'+pc+'"> '+pct2+'%</span></td>';
   }
 
-  function totalCell(type, isFtth, isDig) {
-    let dm=0,ps=0;
-    BC.forEach(bc=>{const r=KENH[bc].rows.find(x=>x.ch===type); if(r){dm+=r.total; ps+=getPs(bc,type);}});
-    if(!dm) return `<td style="padding:5px 6px;text-align:center;color:var(--border)">—</td>`;
-    if(isFtth) return `<td style="padding:5px 6px;text-align:center;font-size:12px;font-weight:700">${dm}<span style="font-size:10px;color:var(--muted)"> DM</span></td>`;
-    if(isDig)  return `<td style="padding:5px 6px;text-align:center;font-size:12px;font-weight:700;color:var(--muted)">${dm}</td>`;
-    const pct2=dm?Math.round(ps/dm*100):0;
-    const pc=pct2>=70?'var(--success)':pct2>=50?'var(--warning)':'var(--danger)';
-    return `<td style="padding:5px 6px;text-align:center;font-size:12px;background:rgba(0,0,0,.03);font-weight:700">
-      ${dm}/<span style="color:${pc}">${ps}</span><span style="font-size:10px;color:${pc}"> ${pct2}%</span></td>`;
+  function makeTotalCell(type, isDig) {
+    var dm=0, ps=0;
+    BC.forEach(function(bc){ var r=KENH[bc].rows.find(function(x){return x.ch===type;}); if(r){dm+=r.total; ps+=getPs(bc,type);} });
+    if (!dm) return '<td style="padding:5px 6px;text-align:center;color:var(--border)">—</td>';
+    if (isDig) return '<td style="padding:5px 6px;text-align:center;font-size:12px;font-weight:700;color:var(--muted)">'+dm+'</td>';
+    var pct2 = dm ? Math.round(ps/dm*100) : 0;
+    var pc = pct2>=70?'var(--success)':pct2>=50?'var(--warning)':'var(--danger)';
+    return '<td style="padding:5px 6px;text-align:center;font-size:12px;background:rgba(0,0,0,.03);font-weight:700">'+
+      dm+'/<span style="color:'+pc+'">'+ps+'</span>'+
+      '<span style="font-size:10px;color:'+pc+'"> '+pct2+'%</span></td>';
   }
 
-  var hdrCols=''; BC.forEach(function(){hdrCols+='<col style="width:10.8%">';});
-  var hdrThs=''; BC.forEach(function(bc){hdrThs+='<th style="padding:8px 4px;text-align:center;font-size:12px">'+BL[bc]+'</th>';});
-  var hdrThs2=''; BC.forEach(function(){hdrThs2+='<th style="padding:3px 4px;text-align:center;opacity:.8">DM / PS</th>';});
-  var html2='<colgroup><col style="width:24%"><col style="width:11%">'+hdrCols+'</colgroup>'+
-    '<thead>'+
-      '<tr style="background:var(--primary);color:#fff">'+
-        '<th style="padding:8px 10px;text-align:left;font-size:12px">Loại kênh</th>'+
-        '<th style="padding:8px 4px;text-align:center;font-size:12px">Tổng</th>'+
-        hdrThs+
-      '</tr>'+
-      '<tr style="background:var(--primary-light);color:#fff;font-size:10px">'+
-        '<th style="padding:3px 10px;text-align:left;opacity:.8">DM / PS (%)</th>'+
-        '<th style="padding:3px 4px;text-align:center;opacity:.8">DM / PS</th>'+
-        hdrThs2+
-      '</tr>'+
+  // Header
+  var colg = '<col style="width:24%"><col style="width:11%">';
+  BC.forEach(function(){ colg += '<col style="width:10.8%">'; });
+  var ths1='', ths2='';
+  BC.forEach(function(bc){ ths1+='<th style="padding:8px 4px;text-align:center;font-size:12px">'+BL[bc]+'</th>'; });
+  BC.forEach(function(){ ths2+='<th style="padding:3px 4px;text-align:center;opacity:.8">DM/PS</th>'; });
+
+  var h = '<colgroup>'+colg+'</colgroup><thead>'+
+    '<tr style="background:var(--primary);color:#fff">'+
+      '<th style="padding:8px 10px;text-align:left;font-size:12px">Loại kênh</th>'+
+      '<th style="padding:8px 4px;text-align:center;font-size:12px">Tổng</th>'+ths1+'</tr>'+
+    '<tr style="background:var(--primary-light);color:#fff;font-size:10px">'+
+      '<th style="padding:3px 10px;text-align:left;opacity:.8">DM / PS (%)</th>'+
+      '<th style="padding:3px 4px;text-align:center;opacity:.8">DM / PS</th>'+ths2+'</tr>'+
     '</thead><tbody>';
 
-  ['mobile','digital'].forEach(grp=>{
-    const types=groupTypes[grp];
-    if(!types.length) return;
-    const isFtth=grp==='ftth';
-    const isDig=grp==='digital';
-    const gc=GROUP_COLOR[grp];
-    html2+=`<tr style="background:${gc};color:#fff">
-      <td colspan="${BC.length+2}" style="padding:5px 10px;font-size:11px;font-weight:700">${GROUP_LABEL[grp]}</td>
-    </tr>`;
-    types.forEach((type,idx)=>{
-      const bg=idx%2===0?'background:var(--bg)':'background:#fff';
-      const nameStyle=isDig||isFtth?'color:var(--muted)':'';
-      const bccells=BC.map(bc=>{
-        const r=KENH[bc].rows.find(x=>x.ch===type);
-        return cell(r&&r.total>0?r:null, isFtth, bc);
-      }).join('');
-      html2+=`<tr style="${bg}">
-        <td style="padding:5px 10px;font-size:12px;${nameStyle}">${ICON[type]||''} ${type.replace(' Channel','')}</td>
-        ${totalCell(type, isFtth, isDig)}
-        ${bccells}
-      </tr>`;
-    });
-    if(grp==='mobile'){
-      let totDM=0,totPS=0;
-      BC.forEach(bc=>{
-        totDM+=KENH[bc].mobileTotal;
-        KENH[bc].rows.forEach(r=>{if(r.group==='mobile') totPS+=getPs(bc,r.ch);});
+  ['mobile','digital'].forEach(function(grp) {
+    var types = groupTypes[grp];
+    if (!types.length) return;
+    var isDig = (grp === 'digital');
+    var gc = GROUP_COLOR[grp];
+
+    h += '<tr style="background:'+gc+';color:#fff">'+
+      '<td colspan="'+(BC.length+2)+'" style="padding:5px 10px;font-size:11px;font-weight:700">'+GROUP_LABEL[grp]+'</td></tr>';
+
+    types.forEach(function(type, idx) {
+      var bg = idx%2===0 ? 'background:var(--bg)' : 'background:#fff';
+      var nameStyle = isDig ? 'color:var(--muted)' : '';
+      var bccells = '';
+      BC.forEach(function(bc) {
+        var r = KENH[bc].rows.find(function(x){return x.ch===type;});
+        bccells += makeCell(r && r.total>0 ? r : null, bc);
       });
-      const tp=totDM?Math.round(totPS/totDM*100):0;
-      const tpc=tp>=70?'var(--success)':tp>=50?'var(--warning)':'var(--danger)';
-      var bcSubcells='';
+      h += '<tr style="'+bg+'">'+
+        '<td style="padding:5px 10px;font-size:12px;'+nameStyle+'">'+(ICON[type]||'')+' '+type+'</td>'+
+        makeTotalCell(type, isDig)+bccells+'</tr>';
+    });
+
+    if (grp === 'mobile') {
+      var totDM=0, totPS=0;
+      BC.forEach(function(bc){
+        totDM += KENH[bc].mobileTotal;
+        KENH[bc].rows.forEach(function(r){ if(r.group==='mobile') totPS+=getPs(bc,r.ch); });
+      });
+      var tp = totDM ? Math.round(totPS/totDM*100) : 0;
+      var tpc = tp>=70?'var(--success)':tp>=50?'var(--warning)':'var(--danger)';
+      var subCells='';
       BC.forEach(function(bc){
         var bDM=KENH[bc].mobileTotal, bPS=0;
-        KENH[bc].rows.forEach(function(r){if(r.group==='mobile') bPS+=getPs(bc,r.ch);});
+        KENH[bc].rows.forEach(function(r){ if(r.group==='mobile') bPS+=getPs(bc,r.ch); });
         var p=bDM?Math.round(bPS/bDM*100):0;
         var pc2=p>=70?'var(--success)':p>=50?'var(--warning)':'var(--danger)';
-        bcSubcells+='<td style="padding:6px 4px;text-align:center;font-size:12px">'+
-          '<span style="color:'+gc+';font-weight:700">'+bDM+'</span>/'+
-          '<span style="color:'+pc2+';font-weight:700">'+bPS+'</span>'+
+        subCells+='<td style="padding:6px 4px;text-align:center;font-size:12px">'+
+          '<b style="color:'+gc+'">'+bDM+'</b>/<b style="color:'+pc2+'">'+bPS+'</b>'+
           '<span style="font-size:10px;color:'+pc2+'"> '+p+'%</span></td>';
       });
-      html2+='<tr style="background:'+gc+'22;font-weight:700">'+
+      h += '<tr style="background:'+gc+'22;font-weight:700">'+
         '<td style="padding:6px 10px;font-size:12px;color:'+gc+'">Tổng Kênh Mobile</td>'+
         '<td style="padding:6px 4px;text-align:center;font-size:12px;background:rgba(0,0,0,.04)">'+
-          '<span style="color:'+gc+'">'+totDM+'</span>/'+
-          '<span style="color:'+tpc+'">'+totPS+'</span>'+
+          '<b style="color:'+gc+'">'+totDM+'</b>/<b style="color:'+tpc+'">'+totPS+'</b>'+
           '<span style="font-size:10px;color:'+tpc+'"> '+tp+'%</span></td>'+
-        bcSubcells+'</tr>';
+        subCells+'</tr>';
     }
-    if(grp==='digital'){
-      var totDig=BC.reduce(function(s,bc){return s+KENH[bc].digitalTotal;},0);
-      var digCells='';
-      BC.forEach(function(bc){ digCells+='<td style="padding:6px 4px;text-align:center;font-size:12px;color:'+gc+'">'+KENH[bc].digitalTotal+'</td>'; });
-      html2+='<tr style="background:'+gc+'22;font-weight:700">'+
+    if (grp === 'digital') {
+      var totDig=0; BC.forEach(function(bc){totDig+=KENH[bc].digitalTotal;});
+      var digC=''; BC.forEach(function(bc){digC+='<td style="padding:6px 4px;text-align:center;font-size:12px;color:'+gc+'">'+KENH[bc].digitalTotal+'</td>';});
+      h += '<tr style="background:'+gc+'22;font-weight:700">'+
         '<td style="padding:6px 10px;font-size:12px;color:'+gc+'">Tổng Kênh Digital</td>'+
-        '<td style="padding:6px 4px;text-align:center;font-size:12px;color:'+gc+';background:rgba(0,0,0,.04)">'+totDig+'</td>'+
-        digCells+'</tr>';
+        '<td style="padding:6px 4px;text-align:center;font-size:12px;color:'+gc+';background:rgba(0,0,0,.04)">'+totDig+'</td>'+digC+'</tr>';
     }
   });
-  html2+='</tbody>';
-  tbl.innerHTML=html2;
+
+  h += '</tbody>';
+  tbl.innerHTML = h;
 }
+
 
 
 
