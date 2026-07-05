@@ -1168,6 +1168,35 @@ const SALES = {
     </div>
   </div>
 
+  <!-- ── SECTION 3b: ACTIVE CÁC THÁNG ── -->
+  <div class="section">
+    <div class="section-head">📱 3b. ACTIVE HÀNG THÁNG / ACTIVACIONES MENSUALES — CAJAMARCA</div>
+    <div class="section-body">
+      <div class="chart-wrap">
+        <div>
+          <div class="chart-box" style="height:240px">
+            <canvas id="activeMonthChart"></canvas>
+          </div>
+          <p class="caption" id="activeMonthCaption">Nguồn: file Active hàng tháng · T7 là MTD (1-02/07/2026)</p>
+        </div>
+        <div class="info-panel">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:6px">ACTIVE MTD / MES (Activaciones)</div>
+          <table style="width:100%;font-size:11px;border-collapse:collapse">
+            <thead>
+              <tr style="border-bottom:2px solid var(--border)">
+                <th style="text-align:left;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">Tháng</th>
+                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">Total</th>
+                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">Post</th>
+                <th style="text-align:right;padding:4px 6px;color:var(--muted);font-size:10px;text-transform:uppercase">Pre</th>
+              </tr>
+            </thead>
+            <tbody id="activeMonthTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ── SECTION 4: WEEKLY STATION ALERTS ── -->
   <div class="section">
     <div class="section-head">⚠️ 4. TRẠM GIẢM THUÊ BAO 15C3D / ESTACIONES CON BAJAS — THEO TỪNG TUẦN / POR SEMANA</div>
@@ -1310,8 +1339,8 @@ const SALES = {
         <table class="tbl" id="kenhDetailTable" style="width:100%;font-size:12px;table-layout:fixed;border-collapse:collapse"></table>
       </div>
       <p style="font-size:11px;color:var(--muted);margin-top:8px">
-        * Không tính <em>Staff in Point Of Sale channel</em>. DM = số kênh trong danh mục. PS = kênh có phát sinh Active T6 1-28/06.<br>
-        Kênh BIPAY (Agente/Negocios) không phát sinh Active thông thường — hiển thị mờ.
+        <span id="kenhFootnote">* Không tính <em>Staff in Point Of Sale channel</em>. DM = số kênh trong danh mục. PS = kênh có phát sinh Active T6 1-30/06.<br>
+        Kênh BIPAY (Agente/Negocios) không phát sinh Active thông thường — hiển thị mờ.</span>
       </p>
     </div>
   </div>
@@ -1389,7 +1418,7 @@ const SALES = {
 
   <!-- BC x Channel breakdown -->
   <div class="section">
-    <div class="section-head">📊 Kênh theo từng BC / Canal por BC — T6 vs T5 cùng kỳ (1-31/05)</div>
+    <div class="section-head" id="bcChHead">📊 Kênh theo từng BC / Canal por BC — T6 vs T5 cùng kỳ (1-31/05)</div>
     <div id="salesBcChSection" class="section-body" style="padding:10px 0">
       <div id="salesBcChGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px"></div>
     </div>
@@ -1397,7 +1426,7 @@ const SALES = {
 
   <!-- Declining staff by channel tabs -->
   <div class="section">
-    <div class="section-head">⚠️ Nhân viên Active suy giảm theo kênh / Caída por Canal (T6 vs T5 cùng kỳ 1-31/05)</div>
+    <div class="section-head" id="staffHead">⚠️ Nhân viên Active suy giảm theo kênh / Caída por Canal</div>
     <div id="staffSectionBody" class="section-body" style="padding:12px 14px">
       <div class="tabs" id="staffDeclineTabs">
         <div class="tab active" onclick="switchStaffTab('promotores',this)">📣 Promotores</div>
@@ -1452,7 +1481,7 @@ const SALES = {
       if (!leafletMap) initLeafletMap();
       else setTimeout(() => leafletMap.invalidateSize(), 50);
     }
-    if (id === 'sales') { buildSalesTab(); buildKenhCatalog(); }
+    if (id === 'sales') { buildSalesTab(); buildKenhCatalog(_salesMonth||6); }
   }
 
   // ── Station tab switching (W21/W22/W23) ──
@@ -1778,6 +1807,87 @@ function buildKPICards() {
       }
     }
   });
+
+  // ── Active tháng Chart ──
+  (function buildActiveMonthChart() {
+    const ACT_DATA = [
+      {m:'T5/26', total:29197, post:26927, pre:2270, full:true},
+      {m:'T6/26', total:28768, post:26054, pre:2714, full:true},
+      {m:'T7/26', total:1616,  post:1383,  pre:233,  full:false},
+    ];
+    const fmt = v => v.toLocaleString('de-DE');
+    // Table
+    const tb = document.getElementById('activeMonthTbody');
+    if (tb) {
+      tb.innerHTML = ACT_DATA.map((d,i) => {
+        const isLast = i === ACT_DATA.length - 1;
+        const bg = isLast ? 'background:#eff6ff' : (i%2===0?'':'background:#f8fafc');
+        const note = d.full ? '' : ' <span style="font-size:10px;color:var(--warning)">(MTD)</span>';
+        return `<tr style="${bg}">
+          <td style="padding:5px 6px;font-weight:700">${d.m}${note}</td>
+          <td style="text-align:right;padding:5px 6px;font-weight:700">${fmt(d.total)}</td>
+          <td style="text-align:right;padding:5px 6px;color:#7c3aed">${fmt(d.post)}</td>
+          <td style="text-align:right;padding:5px 6px;color:#0891b2">${fmt(d.pre)}</td>
+        </tr>`;
+      }).join('');
+    }
+    // Chart
+    const ctx = document.getElementById('activeMonthChart');
+    if (!ctx) return;
+    const colors = ACT_DATA.map(d => d.full ? 'rgba(15,76,129,0.82)' : 'rgba(234,88,12,0.75)');
+    const borderC = ACT_DATA.map(d => d.full ? '#0f4c81' : '#ea580c');
+    new Chart(ctx.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ACT_DATA.map(d => d.m + (d.full ? '' : ' *MTD')),
+        datasets: [
+          {
+            label: 'Postpaid',
+            data: ACT_DATA.map(d => d.post),
+            backgroundColor: 'rgba(124,58,237,0.75)',
+            borderColor: '#7c3aed',
+            borderWidth: 1,
+            borderRadius: 4,
+            stack: 's1',
+          },
+          {
+            label: 'Prepaid',
+            data: ACT_DATA.map(d => d.pre),
+            backgroundColor: 'rgba(8,145,178,0.75)',
+            borderColor: '#0891b2',
+            borderWidth: 1,
+            borderRadius: 4,
+            stack: 's1',
+          },
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { position: 'top', labels: { font: {size:11}, padding:10, boxWidth:13 } },
+          tooltip: {
+            callbacks: {
+              afterBody(items) {
+                const total = items.reduce((s,c)=>s+(c.raw||0),0);
+                return `Total: ${total.toLocaleString('de-DE')}`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: { ticks:{font:{size:11}}, grid:{display:false}, stacked:true },
+          y: {
+            stacked: true,
+            ticks: { callback: v => v.toLocaleString('de-DE'), font:{size:11} },
+            grid: { color: '#f1f5f9' },
+            title: { display:true, text:'Activaciones', font:{size:11}, color:'#64748b' },
+          }
+        }
+      }
+    });
+  })();
+
 
   // ── REG Sidebar Table + Caption (dynamic from CFG) ──────────
   (function buildRegTable() {
@@ -2335,6 +2445,15 @@ function switchSalesMonth(m) {
   updateDailyChart(m);
   updateStaffSection(m);
   updateKenhCatalogHeader(m);
+  buildKenhCatalog(m);
+  // Update section headers
+  const ckLabels = {5:'—',6:'T5 cùng kỳ (1-31/05)',7:'T6 cùng kỳ (1-02/06)'};
+  const mLabel = {5:'T5',6:'T6',7:'T7'}[m]||'T'+m;
+  const ck = ckLabels[m]||'';
+  const bcH = document.getElementById('bcChHead');
+  if(bcH) bcH.textContent = `📊 Kênh theo từng BC / Canal por BC — ${mLabel} vs ${ck}`;
+  const stH = document.getElementById('staffHead');
+  if(stH) stH.textContent = `⚠️ Nhân viên Active suy giảm theo kênh / Caída por Canal (${mLabel} vs ${ck})`;
 }
 
 function updateDailyChart(m) {
@@ -2610,7 +2729,8 @@ function buildSalesTab() {
 
 
 // ── Channel Catalog (Danh mục kênh) ─────────────────────────────────────
-function buildKenhCatalog() {
+function buildKenhCatalog(m) {
+  m = m || _salesMonth || 6;
   if (typeof KENH === 'undefined') return;
   const BC = ['CAJBC01','CAJBC07','CAJBC08','CAJBC05','CAJBC10','CAJBC14'];
   const BL = {CAJBC01:'BC01',CAJBC07:'BC07',CAJBC08:'BC08',CAJBC05:'BC05',CAJBC10:'BC10',CAJBC14:'BC14'};
@@ -2621,23 +2741,34 @@ function buildKenhCatalog() {
     'Dealer Online':'🌐','Agente BIPAY':'💳','Negocios BIPAY':'💼',
     'Tusami':'🤖','FTTH':'📶'
   };
-  const GROUP_LABEL = {
-    mobile: '📱 Kênh Mobile',
-    digital: '💻 Kênh Digital',
-    ftth: '📶 Kênh FTTH'
-  };
-  const GROUP_COLOR = { mobile:'#0f4c81', digital:'#6d28d9', ftth:'#0891b2' };
+  const GROUP_LABEL = {mobile:'📱 Kênh Mobile', digital:'💻 Kênh Digital', ftth:'📶 Kênh FTTH'};
+  const GROUP_COLOR = {mobile:'#0f4c81', digital:'#6d28d9', ftth:'#0891b2'};
+  const MOBILE_GRP = new Set(['mobile']);
 
-  // ── Summary bar ────────────────────────────────────────────────────────
+  // Helper: get PS for a given month/bc/channel
+  function getPs(bc, ch) {
+    const mps = KENH_PS[m];
+    if (mps && mps[bc] && mps[bc][ch] !== undefined) return mps[bc][ch];
+    // fallback to stored ps in KENH row
+    const r = KENH[bc].rows.find(x=>x.ch===ch);
+    return r ? (r.ps || 0) : 0;
+  }
+
+  // ── Summary bar ──────────────────────────────────────────────────────────
   const bar = document.getElementById('kenhSummaryBar');
   if (!bar) return;
   let mAll=0,mPsAll=0,dAll=0,fAll=0;
-  BC.forEach(bc=>{const d=KENH[bc]; mAll+=d.mobileTotal; mPsAll+=d.mobilePs; dAll+=d.digitalTotal; fAll+=d.ftthTotal;});
-  const totalAll = mAll+dAll+fAll;
-  const pct = Math.round(mPsAll/mAll*100);
+  BC.forEach(bc=>{
+    const d=KENH[bc];
+    mAll+=d.mobileTotal; dAll+=d.digitalTotal; fAll+=d.ftthTotal;
+    d.rows.forEach(r=>{ if(r.group==='mobile') mPsAll += getPs(bc,r.ch); });
+  });
+  const totalAll=mAll+dAll+fAll;
+  const pct=Math.round(mPsAll/mAll*100);
+  const mLabel = {5:'T5',6:'T6',7:'T7'}[m]||'';
   bar.innerHTML = [
     {label:'📱 Kênh Mobile (DM)', val:mAll, sub:'trong danh mục', color:'var(--primary)'},
-    {label:'Phát sinh T6', val:mPsAll, sub:`/${mAll} = ${pct}%`, color:pct>=70?'var(--success)':'var(--warning)'},
+    {label:'Phát sinh '+mLabel, val:mPsAll, sub:`/${mAll} = ${pct}%`, color:pct>=70?'var(--success)':'var(--warning)'},
     {label:'Chưa phát sinh', val:mAll-mPsAll, sub:'kênh Mobile không Active', color:'var(--danger)'},
     {label:'💻 Kênh Digital', val:dAll, sub:'BIPAY + Tusami', color:'#6d28d9'},
     {label:'Tỉ lệ PS', val:pct+'%', sub:'kênh Mobile có Active', color:pct>=70?'var(--success)':'var(--warning)'},
@@ -2648,37 +2779,42 @@ function buildKenhCatalog() {
     <div style="font-size:10px;color:var(--muted)">${s.sub}</div>
   </div>`).join('');
 
-  // ── Collect ordered channel types by group ─────────────────────────────
-  const groupTypes = {mobile:[], digital:[], ftth:[]};
-  const seen = {mobile:new Set(), digital:new Set(), ftth:new Set()};
-  BC.forEach(bc => {
-    KENH[bc].rows.forEach(r => {
-      if (!seen[r.group].has(r.ch)) { seen[r.group].add(r.ch); groupTypes[r.group].push(r.ch); }
+  // Update footnote
+  const mnLabels={5:'T5 1-31/05',6:'T6 1-30/06',7:'T7 1-02/07'};
+  const fnEl = document.getElementById('kenhFootnote');
+  if(fnEl) fnEl.innerHTML = `* Không tính <em>Staff in Point Of Sale channel</em>. DM = số kênh trong danh mục. PS = kênh có phát sinh Active ${mnLabels[m]||''}.<br>Kênh BIPAY (Agente/Negocios) không phát sinh Active thông thường — hiển thị mờ.`;
+
+  // ── Collect ordered channel types by group ──────────────────────────────
+  const groupTypes={mobile:[],digital:[],ftth:[]};
+  const seen={mobile:new Set(),digital:new Set(),ftth:new Set()};
+  BC.forEach(bc=>{
+    KENH[bc].rows.forEach(r=>{
+      if(!seen[r.group].has(r.ch)){seen[r.group].add(r.ch); groupTypes[r.group].push(r.ch);}
     });
   });
 
-  // ── Build table ────────────────────────────────────────────────────────
-  const tbl = document.getElementById('kenhDetailTable');
-  if (!tbl) return;
+  // ── Build table ──────────────────────────────────────────────────────────
+  const tbl=document.getElementById('kenhDetailTable');
+  if(!tbl) return;
 
-  // Helper: cell content
-  function cell(r, isFtth) {
-    if (!r) return `<td style="padding:5px 6px;text-align:center;color:var(--border)">—</td>`;
-    if (isFtth) return `<td style="padding:5px 6px;text-align:center;font-size:12px">
+  function cell(r, isFtth, bc) {
+    if(!r) return `<td style="padding:5px 6px;text-align:center;color:var(--border)">—</td>`;
+    if(isFtth) return `<td style="padding:5px 6px;text-align:center;font-size:12px">
       <span style="font-weight:600">${r.total}</span><span style="font-size:10px;color:var(--muted)"> DM</span></td>`;
-    if (r.ps === null) return `<td style="padding:5px 6px;text-align:center;color:var(--muted)">—</td>`;
-    const pct2 = r.total ? Math.round(r.ps/r.total*100) : 0;
-    const pc = pct2>=70?'var(--success)':pct2>=50?'var(--warning)':'var(--danger)';
-    const aoMark = r.ao ? '<sup style="color:var(--muted)" title="Nguồn: file Active">*</sup>' : '';
+    const ps = getPs(bc, r.ch);
+    if(r.ps===null && ps===0 && !(KENH_PS[m]&&KENH_PS[m][bc]&&KENH_PS[m][bc][r.ch]!==undefined))
+      return `<td style="padding:5px 6px;text-align:center;color:var(--muted)">—</td>`;
+    const pct2=r.total?Math.round(ps/r.total*100):0;
+    const pc=pct2>=70?'var(--success)':pct2>=50?'var(--warning)':'var(--danger)';
+    const aoMark=r.ao?'<sup style="color:var(--muted)" title="Nguồn: file Active">*</sup>':'';
     return `<td style="padding:5px 6px;text-align:center;font-size:12px">
-      <span style="font-weight:600">${r.total}${aoMark}</span>/<span style="color:${pc};font-weight:600">${r.ps}</span>
+      <span style="font-weight:600">${r.total}${aoMark}</span>/<span style="color:${pc};font-weight:600">${ps}</span>
       <span style="font-size:10px;color:${pc}"> ${pct2}%</span></td>`;
   }
 
-  // Helper: total cell for a channel type across all BCs
   function totalCell(type, isFtth, isDig) {
-    let dm=0, ps=0;
-    BC.forEach(bc => { const r=KENH[bc].rows.find(x=>x.ch===type); if(r){dm+=r.total; if(r.ps!=null) ps+=r.ps;} });
+    let dm=0,ps=0;
+    BC.forEach(bc=>{const r=KENH[bc].rows.find(x=>x.ch===type); if(r){dm+=r.total; ps+=getPs(bc,type);}});
     if(!dm) return `<td style="padding:5px 6px;text-align:center;color:var(--border)">—</td>`;
     if(isFtth) return `<td style="padding:5px 6px;text-align:center;font-size:12px;font-weight:700">${dm}<span style="font-size:10px;color:var(--muted)"> DM</span></td>`;
     if(isDig)  return `<td style="padding:5px 6px;text-align:center;font-size:12px;font-weight:700;color:var(--muted)">${dm}</td>`;
@@ -2688,8 +2824,7 @@ function buildKenhCatalog() {
       ${dm}/<span style="color:${pc}">${ps}</span><span style="font-size:10px;color:${pc}"> ${pct2}%</span></td>`;
   }
 
-  // Header
-  let html2 = `<colgroup><col style="width:24%"><col style="width:11%">${BC.map(()=>'<col style="width:10.8%">').join('')}</colgroup>
+  let html2=`<colgroup><col style="width:24%"><col style="width:11%">${BC.map(()=>'<col style="width:10.8%">').join('')}</colgroup>
   <thead>
     <tr style="background:var(--primary);color:#fff">
       <th style="padding:8px 10px;text-align:left;font-size:12px">Loại kênh</th>
@@ -2703,67 +2838,66 @@ function buildKenhCatalog() {
     </tr>
   </thead><tbody>`;
 
-  ['mobile','digital'].forEach(grp => {
-    const types = groupTypes[grp];
-    if (!types.length) return;
-    const isFtth = grp === 'ftth';
-    const isDig  = grp === 'digital';
-    const gc = GROUP_COLOR[grp];
-
-    // Group header row
-    html2 += `<tr style="background:${gc};color:#fff">
+  ['mobile','digital'].forEach(grp=>{
+    const types=groupTypes[grp];
+    if(!types.length) return;
+    const isFtth=grp==='ftth';
+    const isDig=grp==='digital';
+    const gc=GROUP_COLOR[grp];
+    html2+=`<tr style="background:${gc};color:#fff">
       <td colspan="${BC.length+2}" style="padding:5px 10px;font-size:11px;font-weight:700">${GROUP_LABEL[grp]}</td>
     </tr>`;
-
-    // Channel rows
-    types.forEach((type, idx) => {
-      const bg = idx%2===0?'background:var(--bg)':'background:#fff';
-      const nameStyle = isDig||isFtth ? 'color:var(--muted)' : '';
-      const bccells = BC.map(bc => {
-        const r = KENH[bc].rows.find(x=>x.ch===type);
-        return cell(r && r.total>0 ? r : null, isFtth);
+    types.forEach((type,idx)=>{
+      const bg=idx%2===0?'background:var(--bg)':'background:#fff';
+      const nameStyle=isDig||isFtth?'color:var(--muted)':'';
+      const bccells=BC.map(bc=>{
+        const r=KENH[bc].rows.find(x=>x.ch===type);
+        return cell(r&&r.total>0?r:null, isFtth, bc);
       }).join('');
-      html2 += `<tr style="${bg}">
+      html2+=`<tr style="${bg}">
         <td style="padding:5px 10px;font-size:12px;${nameStyle}">${ICON[type]||''} ${type.replace(' Channel','')}</td>
         ${totalCell(type, isFtth, isDig)}
         ${bccells}
       </tr>`;
     });
-
-    // Subtotal row for Mobile
-    if (grp === 'mobile') {
+    if(grp==='mobile'){
       let totDM=0,totPS=0;
-      BC.forEach(bc=>{totDM+=KENH[bc].mobileTotal; totPS+=KENH[bc].mobilePs;});
+      BC.forEach(bc=>{
+        totDM+=KENH[bc].mobileTotal;
+        KENH[bc].rows.forEach(r=>{if(r.group==='mobile') totPS+=getPs(bc,r.ch);});
+      });
       const tp=totDM?Math.round(totPS/totDM*100):0;
       const tpc=tp>=70?'var(--success)':tp>=50?'var(--warning)':'var(--danger)';
-      html2 += `<tr style="background:${gc}22;font-weight:700">
+      html2+=`<tr style="background:${gc}22;font-weight:700">
         <td style="padding:6px 10px;font-size:12px;color:${gc}">Tổng Kênh Mobile</td>
         <td style="padding:6px 4px;text-align:center;font-size:12px;background:rgba(0,0,0,.04)">
           <span style="color:${gc}">${totDM}</span>/<span style="color:${tpc}">${totPS}</span>
           <span style="font-size:10px;color:${tpc}"> ${tp}%</span></td>
-        ${BC.map(bc => {
-          const d = KENH[bc];
-          const p = d.mobileTotal ? Math.round(d.mobilePs/d.mobileTotal*100) : 0;
-          const pc2 = p>=70?'var(--success)':p>=50?'var(--warning)':'var(--danger)';
+        ${BC.map(bc=>{
+          let bDM=KENH[bc].mobileTotal, bPS=0;
+          KENH[bc].rows.forEach(r=>{if(r.group==='mobile') bPS+=getPs(bc,r.ch);});
+          const p=bDM?Math.round(bPS/bDM*100):0;
+          const pc2=p>=70?'var(--success)':p>=50?'var(--warning)':'var(--danger)';
           return `<td style="padding:6px 4px;text-align:center;font-size:12px">
-            <span style="color:${gc};font-weight:700">${d.mobileTotal}</span>/<span style="color:${pc2};font-weight:700">${d.mobilePs}</span>
+            <span style="color:${gc};font-weight:700">${bDM}</span>/<span style="color:${pc2};font-weight:700">${bPS}</span>
             <span style="font-size:10px;color:${pc2}"> ${p}%</span></td>`;
         }).join('')}
       </tr>`;
     }
-    if (grp === 'digital') {
-      const totDig = BC.reduce((s,bc)=>s+KENH[bc].digitalTotal,0);
-      html2 += `<tr style="background:${gc}22;font-weight:700">
+    if(grp==='digital'){
+      const totDig=BC.reduce((s,bc)=>s+KENH[bc].digitalTotal,0);
+      html2+=`<tr style="background:${gc}22;font-weight:700">
         <td style="padding:6px 10px;font-size:12px;color:${gc}">Tổng Kênh Digital</td>
         <td style="padding:6px 4px;text-align:center;font-size:12px;color:${gc};background:rgba(0,0,0,.04)">${totDig}</td>
         ${BC.map(bc=>`<td style="padding:6px 4px;text-align:center;font-size:12px;color:${gc}">${KENH[bc].digitalTotal}</td>`).join('')}
       </tr>`;
     }
   });
-
-  html2 += '</tbody>';
-  tbl.innerHTML = html2;
+  html2+='</tbody>';
+  tbl.innerHTML=html2;
 }
+
+
 
 </script>
 
