@@ -2457,6 +2457,7 @@ function switchSalesMonth(m) {
   try { updateDailyChart(m); }     catch(e){ console.error('[updateDailyChart]',e); }
   try { updateStaffSection(m); }   catch(e){ console.error('[updateStaffSection]',e); }
   try { buildKenhCatalog(m); }     catch(e){ console.error('[buildKenhCatalog]',e); }
+  try { updateMnpChart(m); }       catch(e){ console.error('[updateMnpChart]',e); }
 }
 
 function updateDailyChart(m) {
@@ -2467,6 +2468,44 @@ function updateDailyChart(m) {
   _salesDailyChart.data.datasets[0].data = D.byDay;
   _salesDailyChart.data.datasets[0].label = 'Active T'+m;
   _salesDailyChart.update();
+}
+
+function updateMnpChart(m) {
+  var D = SALES_DATA[m];
+  if (!D || !_salesMnpChart) return;
+  var fmt = function(v){ return v.toLocaleString('de-DE'); };
+  var pctFn = function(v,t){ return t ? Math.round(v/t*100)+'%' : '-'; };
+
+  var keys, vals, colors;
+  if (D.mnp) {
+    keys   = Object.keys(D.mnp);
+    vals   = keys.map(function(k){ return D.mnp[k]; });
+    colors = ['#1e5fc1','#7c3aed','#059669'];
+  } else {
+    keys   = ['Postpaid','Prepaid'];
+    vals   = [D.post, D.pre];
+    colors = ['#7c3aed','#0891b2'];
+  }
+
+  _salesMnpChart.data.labels = keys;
+  _salesMnpChart.data.datasets[0].data = vals;
+  _salesMnpChart.data.datasets[0].backgroundColor = colors;
+  _salesMnpChart.update();
+
+  var legend = document.getElementById('salesMnpLegend');
+  if (legend) {
+    var lHtml = '';
+    keys.forEach(function(k, i) {
+      lHtml += '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #f1f5f9">' +
+        '<div style="display:flex;align-items:center;gap:7px">' +
+          '<div style="width:10px;height:10px;border-radius:50%;background:'+colors[i]+';flex-shrink:0"></div>' +
+          '<span>'+k+'</span></div>' +
+        '<span style="font-weight:600">'+fmt(vals[i])+
+          ' <span style="color:var(--muted);font-weight:400">('+pctFn(vals[i],D.total)+')</span></span>' +
+        '</div>';
+    });
+    legend.innerHTML = lHtml;
+  }
 }
 
 function updateStaffSection(m) {
