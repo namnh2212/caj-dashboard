@@ -1634,7 +1634,7 @@ function buildKPICards() {
       `📊 <b>KH Năm: ${k.c15AnnualKh.toLocaleString('vi-VN')} TB</b><br>
       Lũy kế YTD T6: <b style="color:${k.c15YtdPct >= 100 ? 'var(--success)' : 'var(--warning)'}">${k.c15YtdActual.toLocaleString('vi-VN')} TB — ${k.c15YtdPct}% KH</b><br>
       vs KH Năm: <b style="color:var(--warning)">${k.c15AnnualPct}%</b><br><br>
-      T6 (${CFG.rev.t6Note.split(' ')[0]}): ${chFmt} TB<br>
+      T6 (${CFG.rev.t6Note.split(' ')[0]}): ${(ch < 0 ? '' : '+') + ch.toLocaleString('vi-VN')} TB<br>
       ℹ️ T2 có KH âm (${CFG.c15.plan[1].toLocaleString('vi-VN')}) do kế hoạch thị trường dự kiến giảm theo mùa.`;
     const cap = document.getElementById('c15Caption');
     if (cap) cap.textContent =
