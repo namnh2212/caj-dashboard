@@ -495,15 +495,18 @@ const DIGITAL_DATA = {
     CAJBC10: {'Agente BIPAY':39,  'Negocios BIPAY':217, 'Tusami':0},
     CAJBC14: {'Agente BIPAY':36,  'Negocios BIPAY':120, 'Tusami':0},
   },
-  // giaoDich = số kênh có phát sinh giao dịch (Agente co giao dich 30/06)
+  // giaoDich = số kênh có phát sinh giao dịch, theo từng tháng
   // a=Agente BIPAY, n=Negocios BIPAY; dm=danh mục, tx=có giao dịch
+  // CẬP NHẬT: thêm key tháng mới khi có dữ liệu
   giaoDich: {
-    CAJBC01: {a_dm:46,  a_tx:30, n_dm:208, n_tx:56},
-    CAJBC07: {a_dm:63,  a_tx:32, n_dm:109, n_tx:20},
-    CAJBC08: {a_dm:15,  a_tx:8,  n_dm:18,  n_tx:1 },
-    CAJBC05: {a_dm:135, a_tx:27, n_dm:149, n_tx:19},
-    CAJBC10: {a_dm:39,  a_tx:8,  n_dm:217, n_tx:20},
-    CAJBC14: {a_dm:36,  a_tx:6,  n_dm:120, n_tx:20},
+    6: { // T6 — Ds Agente 29/06, Agente co giao dich 30/06
+      CAJBC01: {a_dm:46,  a_tx:30, n_dm:208, n_tx:56},
+      CAJBC07: {a_dm:63,  a_tx:32, n_dm:109, n_tx:20},
+      CAJBC08: {a_dm:15,  a_tx:8,  n_dm:18,  n_tx:1 },
+      CAJBC05: {a_dm:135, a_tx:27, n_dm:149, n_tx:19},
+      CAJBC10: {a_dm:39,  a_tx:8,  n_dm:217, n_tx:20},
+      CAJBC14: {a_dm:36,  a_tx:6,  n_dm:120, n_tx:20},
+    },
   },
 };
 
@@ -3157,7 +3160,8 @@ function buildDigitalPage(m) {
   var dtRange = {5:'01-31/05/2026',6:'01-30/06/2026',7:'01-02/07/2026'}[m] || '';
   var channels = DIGITAL_DATA.channels;
   var byBC     = DIGITAL_DATA.byBC;
-  var gd       = DIGITAL_DATA.giaoDich || {};
+  var gdAll    = DIGITAL_DATA.giaoDich || {};
+  var gd       = gdAll[m] || null; // null nếu không có dữ liệu TX tháng này
   var srcDate  = DIGITAL_DATA.srcDate  || '';
 
   var titleEl = document.getElementById('digitalCatalogTitle');
@@ -3171,7 +3175,7 @@ function buildDigitalPage(m) {
     channels.forEach(function(ch){ dAll += (byBC[bc] ? byBC[bc][ch]||0 : 0); });
   });
   var txAll_a = 0, dm_a = 0, txAll_n = 0, dm_n = 0;
-  BC.forEach(function(bc){
+  if (gd) BC.forEach(function(bc){
     var g = gd[bc]||{};
     txAll_a += g.a_tx||0; dm_a += g.a_dm||0;
     txAll_n += g.n_tx||0; dm_n += g.n_dm||0;
@@ -3180,24 +3184,24 @@ function buildDigitalPage(m) {
   var pct_n = dm_n ? (txAll_n/dm_n*100).toFixed(1) : 0;
 
   var barHtml = '<div style="background:var(--bg);border-radius:8px;padding:10px 12px;border:1px solid var(--border);grid-column:span 2">' +
-    '<div style="font-size:10px;color:var(--muted);margin-bottom:2px">💻 Tổng Kênh Digital — '+srcDate+'</div>' +
+    '<div style="font-size:10px;color:var(--muted);margin-bottom:2px">💻 Tổng Kênh Digital' + (srcDate ? ' — '+srcDate : '') + '</div>' +
     '<div style="font-size:18px;font-weight:700;color:'+gc+'">'+dAll+' <span style="font-size:11px;font-weight:400">kênh DM</span></div>' +
-    '<div style="font-size:11px;margin-top:4px">💳 Agente: <b>'+txAll_a+'/'+dm_a+'</b> <span style="color:var(--success)">'+pct_a+'%</span> &nbsp;|&nbsp; '+
-    '💼 Negocios: <b>'+txAll_n+'/'+dm_n+'</b> <span style="color:var(--success)">'+pct_n+'%</span></div></div>';
+    (gd ? '<div style="font-size:11px;margin-top:4px">💳 Agente: <b>'+txAll_a+'/'+dm_a+'</b> <span style="color:var(--success)">'+pct_a+'%</span> &nbsp;|&nbsp; '+
+    '💼 Negocios: <b>'+txAll_n+'/'+dm_n+'</b> <span style="color:var(--success)">'+pct_n+'%</span></div>' : '') + '</div>';
 
   BC.forEach(function(bc){
     var bcTotal = 0;
     channels.forEach(function(ch){ bcTotal += byBC[bc]?byBC[bc][ch]||0:0; });
-    var g = gd[bc]||{};
-    var pa = g.a_dm ? (g.a_tx/g.a_dm*100).toFixed(0) : 0;
-    var pn = g.n_dm ? (g.n_tx/g.n_dm*100).toFixed(0) : 0;
+    var g = gd ? (gd[bc]||{}) : {};
+    var pa = g.a_dm ? (g.a_tx/g.a_dm*100).toFixed(0) : null;
+    var pn = g.n_dm ? (g.n_tx/g.n_dm*100).toFixed(0) : null;
     barHtml += '<div style="background:var(--bg);border-radius:8px;padding:8px 10px;border:1px solid var(--border)">' +
       '<div style="font-size:10px;color:var(--muted);margin-bottom:2px">'+BL[bc]+'</div>' +
       '<div style="font-size:16px;font-weight:700;color:'+gc+'">'+bcTotal+'</div>' +
-      '<div style="font-size:10px;line-height:1.6">'+
+      (gd ? '<div style="font-size:10px;line-height:1.6">'+
         '💳 '+(g.a_tx||0)+'/'+(g.a_dm||0)+' <b style="color:var(--success)">'+pa+'%</b><br>'+
         '💼 '+(g.n_tx||0)+'/'+(g.n_dm||0)+' <b style="color:var(--success)">'+pn+'%</b>'+
-      '</div></div>';
+      '</div>' : '<div style="font-size:10px;color:var(--muted)">kênh digital</div>') + '</div>';
   });
   bar.innerHTML = barHtml;
   bar.style.gridTemplateColumns = 'repeat(4,1fr)';
@@ -3206,66 +3210,95 @@ function buildDigitalPage(m) {
   var tbl = document.getElementById('digitalDetailTable');
   if (!tbl) return;
 
-  var h = '<colgroup><col style="width:12%">' +
-    '<col style="width:9%"><col style="width:9%"><col style="width:8%">' +
-    '<col style="width:9%"><col style="width:9%"><col style="width:8%">' +
-    '<col style="width:7%"></colgroup>' +
-    '<thead><tr style="background:'+gc+';color:#fff;font-size:12px">' +
-    '<th style="padding:6px 8px;text-align:left">BC</th>' +
-    '<th style="padding:6px 4px;text-align:center" colspan="3">💳 Agente BIPAY</th>' +
-    '<th style="padding:6px 4px;text-align:center" colspan="3">💼 Negocios BIPAY</th>' +
-    '<th style="padding:6px 4px;text-align:center">🤖 Tusami</th>' +
-    '</tr>' +
-    '<tr style="background:#ede9fe;font-size:11px;color:'+gc+'">' +
-    '<th style="padding:4px 8px"></th>' +
-    '<th style="padding:4px;text-align:center">DM</th><th style="padding:4px;text-align:center">TX</th><th style="padding:4px;text-align:center">%TX</th>' +
-    '<th style="padding:4px;text-align:center">DM</th><th style="padding:4px;text-align:center">TX</th><th style="padding:4px;text-align:center">%TX</th>' +
-    '<th style="padding:4px;text-align:center">DM</th>' +
-    '</tr></thead><tbody>';
+  // Cột TX chỉ hiện khi có dữ liệu giao dịch tháng này
+  var showTX = !!gd;
+  var h = showTX
+    ? '<colgroup><col style="width:12%">' +
+      '<col style="width:9%"><col style="width:9%"><col style="width:8%">' +
+      '<col style="width:9%"><col style="width:9%"><col style="width:8%">' +
+      '<col style="width:7%"></colgroup>' +
+      '<thead><tr style="background:'+gc+';color:#fff;font-size:12px">' +
+      '<th style="padding:6px 8px;text-align:left">BC</th>' +
+      '<th style="padding:6px 4px;text-align:center" colspan="3">💳 Agente BIPAY</th>' +
+      '<th style="padding:6px 4px;text-align:center" colspan="3">💼 Negocios BIPAY</th>' +
+      '<th style="padding:6px 4px;text-align:center">🤖 Tusami</th>' +
+      '</tr>' +
+      '<tr style="background:#ede9fe;font-size:11px;color:'+gc+'">' +
+      '<th style="padding:4px 8px"></th>' +
+      '<th style="padding:4px;text-align:center">DM</th><th style="padding:4px;text-align:center">TX</th><th style="padding:4px;text-align:center">%TX</th>' +
+      '<th style="padding:4px;text-align:center">DM</th><th style="padding:4px;text-align:center">TX</th><th style="padding:4px;text-align:center">%TX</th>' +
+      '<th style="padding:4px;text-align:center">DM</th>' +
+      '</tr></thead><tbody>'
+    : '<colgroup><col style="width:20%"><col style="width:16%"><col style="width:16%"><col style="width:16%"></colgroup>' +
+      '<thead><tr style="background:'+gc+';color:#fff;font-size:12px">' +
+      '<th style="padding:6px 8px;text-align:left">BC</th>' +
+      '<th style="padding:6px 4px;text-align:center">💳 Agente BIPAY</th>' +
+      '<th style="padding:6px 4px;text-align:center">💼 Negocios BIPAY</th>' +
+      '<th style="padding:6px 4px;text-align:center">🤖 Tusami</th>' +
+      '</tr></thead><tbody>';
 
   var tot = {a_dm:0,a_tx:0,n_dm:0,n_tx:0,tusami:0};
   BC.forEach(function(bc, idx){
     var bg = idx%2===0 ? 'background:#faf5ff' : 'background:#fff';
-    var g  = gd[bc]||{};
+    var g  = gd ? (gd[bc]||{}) : {};
     var pa = g.a_dm ? (g.a_tx/g.a_dm*100).toFixed(1) : '—';
     var pn = g.n_dm ? (g.n_tx/g.n_dm*100).toFixed(1) : '—';
-    var pcol_a = pa !== '—' && +pa >= 40 ? 'var(--success)' : pa !== '—' && +pa >= 20 ? 'var(--warning)' : 'var(--danger)';
-    var pcol_n = pn !== '—' && +pn >= 20 ? 'var(--success)' : pn !== '—' && +pn >= 10 ? 'var(--warning)' : 'var(--danger)';
+    var pcol_a = pa!=='—'&&+pa>=40?'var(--success)':pa!=='—'&&+pa>=20?'var(--warning)':'var(--danger)';
+    var pcol_n = pn!=='—'&&+pn>=20?'var(--success)':pn!=='—'&&+pn>=10?'var(--warning)':'var(--danger)';
+    var a_dm = byBC[bc]?byBC[bc]['Agente BIPAY']||0:0;
+    var n_dm = byBC[bc]?byBC[bc]['Negocios BIPAY']||0:0;
     var tusami = byBC[bc]?byBC[bc]['Tusami']||0:0;
-    tot.a_dm+=g.a_dm||0; tot.a_tx+=g.a_tx||0;
-    tot.n_dm+=g.n_dm||0; tot.n_tx+=g.n_tx||0;
+    if (showTX){ tot.a_dm+=g.a_dm||0; tot.a_tx+=g.a_tx||0; tot.n_dm+=g.n_dm||0; tot.n_tx+=g.n_tx||0; }
+    else { tot.a_dm+=a_dm; tot.n_dm+=n_dm; }
     tot.tusami+=tusami;
-    h += '<tr style="'+bg+'">' +
-      '<td style="padding:6px 8px;font-weight:700;font-size:12px">'+BL[bc]+'</td>' +
-      '<td style="padding:6px 4px;text-align:center;font-size:12px">'+(g.a_dm||'—')+'</td>' +
-      '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700">'+(g.a_tx||0)+'</td>' +
-      '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700;color:'+pcol_a+'">'+pa+'%</td>' +
-      '<td style="padding:6px 4px;text-align:center;font-size:12px">'+(g.n_dm||'—')+'</td>' +
-      '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700">'+(g.n_tx||0)+'</td>' +
-      '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700;color:'+pcol_n+'">'+pn+'%</td>' +
-      '<td style="padding:6px 4px;text-align:center;font-size:12px;color:var(--muted)">'+( tusami||'—')+'</td>' +
-      '</tr>';
+    h += showTX
+      ? '<tr style="'+bg+'">' +
+        '<td style="padding:6px 8px;font-weight:700;font-size:12px">'+BL[bc]+'</td>' +
+        '<td style="padding:6px 4px;text-align:center;font-size:12px">'+(g.a_dm||a_dm)+'</td>' +
+        '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700">'+(g.a_tx||0)+'</td>' +
+        '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700;color:'+pcol_a+'">'+pa+'%</td>' +
+        '<td style="padding:6px 4px;text-align:center;font-size:12px">'+(g.n_dm||n_dm)+'</td>' +
+        '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700">'+(g.n_tx||0)+'</td>' +
+        '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700;color:'+pcol_n+'">'+pn+'%</td>' +
+        '<td style="padding:6px 4px;text-align:center;font-size:12px;color:var(--muted)">'+(tusami||'—')+'</td>' +
+        '</tr>'
+      : '<tr style="'+bg+'">' +
+        '<td style="padding:6px 8px;font-weight:700;font-size:12px">'+BL[bc]+'</td>' +
+        '<td style="padding:6px 4px;text-align:center;font-size:12px">'+a_dm+'</td>' +
+        '<td style="padding:6px 4px;text-align:center;font-size:12px">'+n_dm+'</td>' +
+        '<td style="padding:6px 4px;text-align:center;font-size:12px;color:var(--muted)">'+(tusami||'—')+'</td>' +
+        '</tr>';
   });
   // Total row
-  var pa_t = tot.a_dm ? (tot.a_tx/tot.a_dm*100).toFixed(1) : '—';
-  var pn_t = tot.n_dm ? (tot.n_tx/tot.n_dm*100).toFixed(1) : '—';
-  h += '<tr style="background:#ede9fe;font-weight:700;font-size:12px">' +
-    '<td style="padding:6px 8px;color:'+gc+'">Tổng</td>' +
-    '<td style="padding:6px 4px;text-align:center">'+tot.a_dm+'</td>' +
-    '<td style="padding:6px 4px;text-align:center;color:'+gc+'">'+tot.a_tx+'</td>' +
-    '<td style="padding:6px 4px;text-align:center;color:var(--success)">'+pa_t+'%</td>' +
-    '<td style="padding:6px 4px;text-align:center">'+tot.n_dm+'</td>' +
-    '<td style="padding:6px 4px;text-align:center;color:'+gc+'">'+tot.n_tx+'</td>' +
-    '<td style="padding:6px 4px;text-align:center;color:var(--success)">'+pn_t+'%</td>' +
-    '<td style="padding:6px 4px;text-align:center;color:var(--muted)">'+tot.tusami+'</td>' +
-    '</tr>';
+  var pa_t = tot.a_dm&&showTX ? (tot.a_tx/tot.a_dm*100).toFixed(1) : '—';
+  var pn_t = tot.n_dm&&showTX ? (tot.n_tx/tot.n_dm*100).toFixed(1) : '—';
+  h += showTX
+    ? '<tr style="background:#ede9fe;font-weight:700;font-size:12px">' +
+      '<td style="padding:6px 8px;color:'+gc+'">Tổng</td>' +
+      '<td style="padding:6px 4px;text-align:center">'+tot.a_dm+'</td>' +
+      '<td style="padding:6px 4px;text-align:center;color:'+gc+'">'+tot.a_tx+'</td>' +
+      '<td style="padding:6px 4px;text-align:center;color:var(--success)">'+pa_t+'%</td>' +
+      '<td style="padding:6px 4px;text-align:center">'+tot.n_dm+'</td>' +
+      '<td style="padding:6px 4px;text-align:center;color:'+gc+'">'+tot.n_tx+'</td>' +
+      '<td style="padding:6px 4px;text-align:center;color:var(--success)">'+pn_t+'%</td>' +
+      '<td style="padding:6px 4px;text-align:center;color:var(--muted)">'+tot.tusami+'</td>' +
+      '</tr>'
+    : '<tr style="background:#ede9fe;font-weight:700;font-size:12px">' +
+      '<td style="padding:6px 8px;color:'+gc+'">Tổng</td>' +
+      '<td style="padding:6px 4px;text-align:center">'+tot.a_dm+'</td>' +
+      '<td style="padding:6px 4px;text-align:center">'+tot.n_dm+'</td>' +
+      '<td style="padding:6px 4px;text-align:center;color:var(--muted)">'+tot.tusami+'</td>' +
+      '</tr>';
   h += '</tbody>';
   tbl.innerHTML = h;
 
   // Note
   var noteEl = document.getElementById('digitalNote');
-  if (noteEl) noteEl.innerHTML = '* Nguồn: <b>Ds Agente '+srcDate.split('-')[0]+'</b> (DM = danh mục kênh) + <b>Agente co giao dich '+srcDate.split('-')[1]+'</b> (TX = có phát sinh giao dịch). '+
-    'DM: so sánh Numero telefonico (Ds Agente) với PHONENUMBER (giao dịch), lọc PROFILE=AGENTE BIPAY (Agente) / MERCHANT (Negocios).';
+  if (noteEl) noteEl.innerHTML = showTX
+    ? '* Nguồn DM: <b>Ds Agente '+srcDate.split('-')[0]+'</b> — cột C=BC, F=Canal, AE=Phone. '+
+      'TX: <b>Agente co giao dich '+srcDate.split('-')[1]+'</b> — PROFILE=AGENTE BIPAY/MERCHANT, K=PHONENUMBER. '+
+      'Màu: 🟢 ≥40%/≥20% · 🟡 ≥20%/≥10% · 🔴 thấp hơn.'
+    : '* DM = danh mục kênh tại thời điểm cập nhật. Dữ liệu giao dịch (TX) chưa có cho tháng này.';
 }
 
 
