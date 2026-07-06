@@ -481,16 +481,29 @@ const KENH_PS = {
 
 // ── Kênh Digital — dữ liệu độc lập, cập nhật không ảnh hưởng tab Mobile ──
 const DIGITAL_DATA = {
-  // Danh sách loại kênh Digital (thêm/bớt tại đây)
+  // CẬP NHẬT: chỉ sửa byBC (DM từ Ds Agente) + giaoDich (TX từ Agente co giao dich)
+  // Nguồn DM : Ds Agente DDMMYYYY.xls  — cột C=BC, F=Canal, AE=Phone
+  // Nguồn TX  : Agente co giao dich DDMM.xlsx — PROFILE=AGENTE BIPAY/MERCHANT, K=PHONENUMBER
+  srcDate: '29-30/06/2026',
   channels: ['Agente BIPAY', 'Negocios BIPAY', 'Tusami'],
-  // Số điểm kênh Digital theo từng BC (DM = danh mục)
+  // DM = số kênh trong danh mục (Ds Agente 29/06)
   byBC: {
-    CAJBC01: {'Agente BIPAY':46,  'Negocios BIPAY':210, 'Tusami':1},
+    CAJBC01: {'Agente BIPAY':46,  'Negocios BIPAY':208, 'Tusami':1},
     CAJBC07: {'Agente BIPAY':63,  'Negocios BIPAY':109, 'Tusami':0},
     CAJBC08: {'Agente BIPAY':15,  'Negocios BIPAY':18,  'Tusami':0},
-    CAJBC05: {'Agente BIPAY':137, 'Negocios BIPAY':150, 'Tusami':0},
-    CAJBC10: {'Agente BIPAY':42,  'Negocios BIPAY':221, 'Tusami':0},
+    CAJBC05: {'Agente BIPAY':135, 'Negocios BIPAY':149, 'Tusami':0},
+    CAJBC10: {'Agente BIPAY':39,  'Negocios BIPAY':217, 'Tusami':0},
     CAJBC14: {'Agente BIPAY':36,  'Negocios BIPAY':120, 'Tusami':0},
+  },
+  // giaoDich = số kênh có phát sinh giao dịch (Agente co giao dich 30/06)
+  // a=Agente BIPAY, n=Negocios BIPAY; dm=danh mục, tx=có giao dịch
+  giaoDich: {
+    CAJBC01: {a_dm:46,  a_tx:30, n_dm:208, n_tx:56},
+    CAJBC07: {a_dm:63,  a_tx:32, n_dm:109, n_tx:20},
+    CAJBC08: {a_dm:15,  a_tx:8,  n_dm:18,  n_tx:1 },
+    CAJBC05: {a_dm:135, a_tx:27, n_dm:149, n_tx:19},
+    CAJBC10: {a_dm:39,  a_tx:8,  n_dm:217, n_tx:20},
+    CAJBC14: {a_dm:36,  a_tx:6,  n_dm:120, n_tx:20},
   },
 };
 
@@ -1537,6 +1550,7 @@ const SALES = {
         <div id="digitalSummaryBar" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px"></div>
         <div style="overflow-x:auto">
           <table class="tbl" id="digitalDetailTable" style="width:100%;font-size:12px;table-layout:fixed;border-collapse:collapse"></table>
+          <p id="digitalNote" style="font-size:10px;color:var(--muted);margin-top:6px;line-height:1.5"></p>
         </div>
         <p style="font-size:11px;color:var(--muted);margin-top:8px" id="digitalFootnote">
           * Kênh BIPAY (Agente/Negocios) và Tusami không phát sinh Active thông thường qua hệ thống.
@@ -3136,92 +3150,122 @@ function buildDigitalPage(m) {
   m = m || _salesMonth || 6;
   if (typeof DIGITAL_DATA === 'undefined') return;
 
-  var BC  = ['CAJBC01','CAJBC07','CAJBC08','CAJBC05','CAJBC10','CAJBC14'];
-  var BL  = {CAJBC01:'BC01',CAJBC07:'BC07',CAJBC08:'BC08',CAJBC05:'BC05',CAJBC10:'BC10',CAJBC14:'BC14'};
-  var ICON = {'Agente BIPAY':'💳','Negocios BIPAY':'💼','Tusami':'🤖'};
+  var BC   = ['CAJBC01','CAJBC07','CAJBC08','CAJBC05','CAJBC10','CAJBC14'];
+  var BL   = {CAJBC01:'BC01',CAJBC07:'BC07',CAJBC08:'BC08',CAJBC05:'BC05',CAJBC10:'BC10',CAJBC14:'BC14'};
   var gc   = '#6d28d9';
-  var mLbl   = {5:'T5/2026',6:'T6/2026',7:'T7/2026 (MTD)'}[m] || 'T'+m;
+  var mLbl = {5:'T5/2026',6:'T6/2026',7:'T7/2026 (MTD)'}[m] || 'T'+m;
   var dtRange = {5:'01-31/05/2026',6:'01-30/06/2026',7:'01-02/07/2026'}[m] || '';
   var channels = DIGITAL_DATA.channels;
   var byBC     = DIGITAL_DATA.byBC;
+  var gd       = DIGITAL_DATA.giaoDich || {};
+  var srcDate  = DIGITAL_DATA.srcDate  || '';
 
-  // Update title
   var titleEl = document.getElementById('digitalCatalogTitle');
   if (titleEl) titleEl.textContent = '💻 Kênh Digital / Canales Digitales — '+mLbl+' — '+dtRange;
 
-  // ── Summary bar: Tổng + từng BC ──────────────────────────────────────────
+  // ── Summary bar ──────────────────────────────────────────────
   var bar = document.getElementById('digitalSummaryBar');
   if (!bar) return;
   var dAll = 0;
-  BC.forEach(function(bc) {
-    channels.forEach(function(ch) { dAll += (byBC[bc] ? byBC[bc][ch] || 0 : 0); });
+  BC.forEach(function(bc){
+    channels.forEach(function(ch){ dAll += (byBC[bc] ? byBC[bc][ch]||0 : 0); });
   });
-  var barHtml = '<div style="background:var(--bg);border-radius:8px;padding:10px 12px;border:1px solid var(--border)">' +
-    '<div style="font-size:10px;color:var(--muted);margin-bottom:2px">💻 Tổng Kênh Digital</div>' +
-    '<div style="font-size:20px;font-weight:700;color:'+gc+'">'+dAll+'</div>' +
-    '<div style="font-size:10px;color:var(--muted)">toàn Cajamarca</div></div>';
-  BC.forEach(function(bc) {
-    var bcTotal = 0;
-    channels.forEach(function(ch){ bcTotal += (byBC[bc] ? byBC[bc][ch] || 0 : 0); });
-    barHtml += '<div style="background:var(--bg);border-radius:8px;padding:10px 12px;border:1px solid var(--border)">' +
-      '<div style="font-size:10px;color:var(--muted);margin-bottom:2px">'+BL[bc]+'</div>' +
-      '<div style="font-size:20px;font-weight:700;color:'+gc+'">'+bcTotal+'</div>' +
-      '<div style="font-size:10px;color:var(--muted)">kênh digital</div></div>';
+  var txAll_a = 0, dm_a = 0, txAll_n = 0, dm_n = 0;
+  BC.forEach(function(bc){
+    var g = gd[bc]||{};
+    txAll_a += g.a_tx||0; dm_a += g.a_dm||0;
+    txAll_n += g.n_tx||0; dm_n += g.n_dm||0;
   });
-  // Show first 4 cards in grid (Total + 3 BCs); others hidden on small screens
-  bar.innerHTML = barHtml;
-  bar.style.gridTemplateColumns = 'repeat('+Math.min(4,(BC.length+1))+',1fr)';
+  var pct_a = dm_a ? (txAll_a/dm_a*100).toFixed(1) : 0;
+  var pct_n = dm_n ? (txAll_n/dm_n*100).toFixed(1) : 0;
 
-  // ── Build detail table ────────────────────────────────────────────────────
+  var barHtml = '<div style="background:var(--bg);border-radius:8px;padding:10px 12px;border:1px solid var(--border);grid-column:span 2">' +
+    '<div style="font-size:10px;color:var(--muted);margin-bottom:2px">💻 Tổng Kênh Digital — '+srcDate+'</div>' +
+    '<div style="font-size:18px;font-weight:700;color:'+gc+'">'+dAll+' <span style="font-size:11px;font-weight:400">kênh DM</span></div>' +
+    '<div style="font-size:11px;margin-top:4px">💳 Agente: <b>'+txAll_a+'/'+dm_a+'</b> <span style="color:var(--success)">'+pct_a+'%</span> &nbsp;|&nbsp; '+
+    '💼 Negocios: <b>'+txAll_n+'/'+dm_n+'</b> <span style="color:var(--success)">'+pct_n+'%</span></div></div>';
+
+  BC.forEach(function(bc){
+    var bcTotal = 0;
+    channels.forEach(function(ch){ bcTotal += byBC[bc]?byBC[bc][ch]||0:0; });
+    var g = gd[bc]||{};
+    var pa = g.a_dm ? (g.a_tx/g.a_dm*100).toFixed(0) : 0;
+    var pn = g.n_dm ? (g.n_tx/g.n_dm*100).toFixed(0) : 0;
+    barHtml += '<div style="background:var(--bg);border-radius:8px;padding:8px 10px;border:1px solid var(--border)">' +
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:2px">'+BL[bc]+'</div>' +
+      '<div style="font-size:16px;font-weight:700;color:'+gc+'">'+bcTotal+'</div>' +
+      '<div style="font-size:10px;line-height:1.6">'+
+        '💳 '+(g.a_tx||0)+'/'+(g.a_dm||0)+' <b style="color:var(--success)">'+pa+'%</b><br>'+
+        '💼 '+(g.n_tx||0)+'/'+(g.n_dm||0)+' <b style="color:var(--success)">'+pn+'%</b>'+
+      '</div></div>';
+  });
+  bar.innerHTML = barHtml;
+  bar.style.gridTemplateColumns = 'repeat(4,1fr)';
+
+  // ── Detail table: BC × (Agente DM/TX/% | Negocios DM/TX/% | Tusami DM) ──
   var tbl = document.getElementById('digitalDetailTable');
   if (!tbl) return;
 
-  var colg = '<col style="width:24%"><col style="width:11%">';
-  BC.forEach(function(){ colg += '<col style="width:10.8%">'; });
+  var h = '<colgroup><col style="width:12%">' +
+    '<col style="width:9%"><col style="width:9%"><col style="width:8%">' +
+    '<col style="width:9%"><col style="width:9%"><col style="width:8%">' +
+    '<col style="width:7%"></colgroup>' +
+    '<thead><tr style="background:'+gc+';color:#fff;font-size:12px">' +
+    '<th style="padding:6px 8px;text-align:left">BC</th>' +
+    '<th style="padding:6px 4px;text-align:center" colspan="3">💳 Agente BIPAY</th>' +
+    '<th style="padding:6px 4px;text-align:center" colspan="3">💼 Negocios BIPAY</th>' +
+    '<th style="padding:6px 4px;text-align:center">🤖 Tusami</th>' +
+    '</tr>' +
+    '<tr style="background:#ede9fe;font-size:11px;color:'+gc+'">' +
+    '<th style="padding:4px 8px"></th>' +
+    '<th style="padding:4px;text-align:center">DM</th><th style="padding:4px;text-align:center">TX</th><th style="padding:4px;text-align:center">%TX</th>' +
+    '<th style="padding:4px;text-align:center">DM</th><th style="padding:4px;text-align:center">TX</th><th style="padding:4px;text-align:center">%TX</th>' +
+    '<th style="padding:4px;text-align:center">DM</th>' +
+    '</tr></thead><tbody>';
 
-  var ths = '';
-  BC.forEach(function(bc){ ths += '<th style="padding:8px 4px;text-align:center;font-size:12px">'+BL[bc]+'</th>'; });
-
-  var h = '<colgroup>'+colg+'</colgroup><thead>' +
-    '<tr style="background:'+gc+';color:#fff">' +
-      '<th style="padding:8px 10px;text-align:left;font-size:12px">Loại kênh / Canal</th>' +
-      '<th style="padding:8px 4px;text-align:center;font-size:12px">Tổng</th>'+ths+'</tr>' +
-    '</thead><tbody>';
-
-  h += '<tr style="background:'+gc+';color:#fff">' +
-    '<td colspan="'+(BC.length+2)+'" style="padding:5px 10px;font-size:11px;font-weight:700">💻 Kênh Digital</td></tr>';
-
-  channels.forEach(function(ch, idx) {
-    var bg = idx%2===0 ? 'background:var(--bg)' : 'background:#fff';
-    var totDM = 0;
-    var bccells = '';
-    BC.forEach(function(bc) {
-      var v = byBC[bc] ? byBC[bc][ch] || 0 : 0;
-      totDM += v;
-      bccells += v > 0
-        ? '<td style="padding:5px 6px;text-align:center;font-size:12px;color:var(--muted)">'+v+'</td>'
-        : '<td style="padding:5px 6px;text-align:center;color:var(--border)">—</td>';
-    });
+  var tot = {a_dm:0,a_tx:0,n_dm:0,n_tx:0,tusami:0};
+  BC.forEach(function(bc, idx){
+    var bg = idx%2===0 ? 'background:#faf5ff' : 'background:#fff';
+    var g  = gd[bc]||{};
+    var pa = g.a_dm ? (g.a_tx/g.a_dm*100).toFixed(1) : '—';
+    var pn = g.n_dm ? (g.n_tx/g.n_dm*100).toFixed(1) : '—';
+    var pcol_a = pa !== '—' && +pa >= 40 ? 'var(--success)' : pa !== '—' && +pa >= 20 ? 'var(--warning)' : 'var(--danger)';
+    var pcol_n = pn !== '—' && +pn >= 20 ? 'var(--success)' : pn !== '—' && +pn >= 10 ? 'var(--warning)' : 'var(--danger)';
+    var tusami = byBC[bc]?byBC[bc]['Tusami']||0:0;
+    tot.a_dm+=g.a_dm||0; tot.a_tx+=g.a_tx||0;
+    tot.n_dm+=g.n_dm||0; tot.n_tx+=g.n_tx||0;
+    tot.tusami+=tusami;
     h += '<tr style="'+bg+'">' +
-      '<td style="padding:5px 10px;font-size:12px;color:var(--muted)">'+(ICON[ch]||'')+' '+ch+'</td>' +
-      '<td style="padding:5px 6px;text-align:center;font-size:12px;font-weight:700;color:var(--muted)">'+totDM+'</td>' +
-      bccells+'</tr>';
+      '<td style="padding:6px 8px;font-weight:700;font-size:12px">'+BL[bc]+'</td>' +
+      '<td style="padding:6px 4px;text-align:center;font-size:12px">'+(g.a_dm||'—')+'</td>' +
+      '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700">'+(g.a_tx||0)+'</td>' +
+      '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700;color:'+pcol_a+'">'+pa+'%</td>' +
+      '<td style="padding:6px 4px;text-align:center;font-size:12px">'+(g.n_dm||'—')+'</td>' +
+      '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700">'+(g.n_tx||0)+'</td>' +
+      '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700;color:'+pcol_n+'">'+pn+'%</td>' +
+      '<td style="padding:6px 4px;text-align:center;font-size:12px;color:var(--muted)">'+( tusami||'—')+'</td>' +
+      '</tr>';
   });
-
   // Total row
-  var totCells = '';
-  BC.forEach(function(bc) {
-    var bcT = 0;
-    channels.forEach(function(ch){ bcT += byBC[bc] ? byBC[bc][ch] || 0 : 0; });
-    totCells += '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700;color:'+gc+'">'+bcT+'</td>';
-  });
-  h += '<tr style="background:'+gc+'22;font-weight:700">' +
-    '<td style="padding:6px 10px;font-size:12px;color:'+gc+'">Tổng Kênh Digital</td>' +
-    '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700;color:'+gc+';background:rgba(0,0,0,.04)">'+dAll+'</td>' +
-    totCells+'</tr>';
-
+  var pa_t = tot.a_dm ? (tot.a_tx/tot.a_dm*100).toFixed(1) : '—';
+  var pn_t = tot.n_dm ? (tot.n_tx/tot.n_dm*100).toFixed(1) : '—';
+  h += '<tr style="background:#ede9fe;font-weight:700;font-size:12px">' +
+    '<td style="padding:6px 8px;color:'+gc+'">Tổng</td>' +
+    '<td style="padding:6px 4px;text-align:center">'+tot.a_dm+'</td>' +
+    '<td style="padding:6px 4px;text-align:center;color:'+gc+'">'+tot.a_tx+'</td>' +
+    '<td style="padding:6px 4px;text-align:center;color:var(--success)">'+pa_t+'%</td>' +
+    '<td style="padding:6px 4px;text-align:center">'+tot.n_dm+'</td>' +
+    '<td style="padding:6px 4px;text-align:center;color:'+gc+'">'+tot.n_tx+'</td>' +
+    '<td style="padding:6px 4px;text-align:center;color:var(--success)">'+pn_t+'%</td>' +
+    '<td style="padding:6px 4px;text-align:center;color:var(--muted)">'+tot.tusami+'</td>' +
+    '</tr>';
   h += '</tbody>';
   tbl.innerHTML = h;
+
+  // Note
+  var noteEl = document.getElementById('digitalNote');
+  if (noteEl) noteEl.innerHTML = '* Nguồn: <b>Ds Agente '+srcDate.split('-')[0]+'</b> (DM = danh mục kênh) + <b>Agente co giao dich '+srcDate.split('-')[1]+'</b> (TX = có phát sinh giao dịch). '+
+    'DM: so sánh Numero telefonico (Ds Agente) với PHONENUMBER (giao dịch), lọc PROFILE=AGENTE BIPAY (Agente) / MERCHANT (Negocios).';
 }
 
 
