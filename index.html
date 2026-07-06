@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <!-- build: 2026-07-06 06:29:42 UTC -->
+  <!-- build: 2026-07-06 17:35:49 UTC -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard điều hành / Gestión - Chi nhánh Cajamarca / Sucursal Cajamarca</title>
   <link rel="icon" type="image/png" href="https://bitel.com.pe/upload/2005922/20250710/Bitel_azul_2__1__79885_2cd99.png">
@@ -484,7 +484,7 @@ const DIGITAL_DATA = {
   // CẬP NHẬT: chỉ sửa byBC (DM từ Ds Agente) + giaoDich (TX từ Agente co giao dich)
   // Nguồn DM : Ds Agente DDMMYYYY.xls  — cột C=BC, F=Canal, AE=Phone
   // Nguồn TX  : Agente co giao dich DDMM.xlsx — PROFILE=AGENTE BIPAY/MERCHANT, K=PHONENUMBER
-  srcDate: '29-30/06/2026',
+  srcDate: '06/07/2026',
   // newThisMonth = số kênh tạo mới TRONG THÁNG m (Fecha de creación = tháng m, năm 2026)
   newThisMonth: {
     1: {CAJBC01:{a:7,  n:43}, CAJBC07:{a:2,  n:51}, CAJBC08:{a:0, n:2},  CAJBC05:{a:2,  n:24}, CAJBC10:{a:0,  n:68}, CAJBC14:{a:0,  n:47}},
@@ -492,7 +492,8 @@ const DIGITAL_DATA = {
     3: {CAJBC01:{a:11, n:1},  CAJBC07:{a:14, n:0},  CAJBC08:{a:3, n:2},  CAJBC05:{a:25, n:23}, CAJBC10:{a:12, n:29}, CAJBC14:{a:19, n:20}},
     4: {CAJBC01:{a:10, n:28}, CAJBC07:{a:9,  n:3},  CAJBC08:{a:3, n:0},  CAJBC05:{a:27, n:20}, CAJBC10:{a:8,  n:25}, CAJBC14:{a:6,  n:9} },
     5: {CAJBC01:{a:2,  n:33}, CAJBC07:{a:4,  n:17}, CAJBC08:{a:0, n:2},  CAJBC05:{a:27, n:17}, CAJBC10:{a:1,  n:17}, CAJBC14:{a:0,  n:4} },
-    6: {CAJBC01:{a:4,  n:22}, CAJBC07:{a:5,  n:5},  CAJBC08:{a:0, n:3},  CAJBC05:{a:28, n:23}, CAJBC10:{a:0,  n:12}, CAJBC14:{a:0,  n:2} },
+    6: {CAJBC01:{a:4,  n:26}, CAJBC07:{a:5,  n:5},  CAJBC08:{a:0, n:3},  CAJBC05:{a:33, n:28}, CAJBC10:{a:2,  n:13}, CAJBC14:{a:0,  n:2} },
+    7: {CAJBC01:{a:0,  n:3},  CAJBC07:{a:0,  n:5},  CAJBC08:{a:0, n:6},  CAJBC05:{a:6,  n:8},  CAJBC10:{a:0,  n:5},  CAJBC14:{a:0,  n:1} },
   },
   channels: ['Agente BIPAY', 'Negocios BIPAY', 'Tusami'],
   // nuevosDM = lũy kế Agente/Negocios được tạo đến cuối tháng m (Fecha de creación cột BF)
@@ -504,16 +505,17 @@ const DIGITAL_DATA = {
     3: {CAJBC01:{a:30,  n:127}, CAJBC07:{a:45, n:84},  CAJBC08:{a:12, n:13}, CAJBC05:{a:55,  n:90},  CAJBC10:{a:33,  n:167}, CAJBC14:{a:30, n:105}},
     4: {CAJBC01:{a:40,  n:155}, CAJBC07:{a:54, n:87},  CAJBC08:{a:15, n:13}, CAJBC05:{a:82,  n:110}, CAJBC10:{a:41,  n:192}, CAJBC14:{a:36, n:114}},
     5: {CAJBC01:{a:42,  n:188}, CAJBC07:{a:58, n:104}, CAJBC08:{a:15, n:15}, CAJBC05:{a:109, n:127}, CAJBC10:{a:42,  n:209}, CAJBC14:{a:36, n:118}},
-    6: {CAJBC01:{a:46,  n:210}, CAJBC07:{a:63, n:109}, CAJBC08:{a:15, n:18}, CAJBC05:{a:137, n:150}, CAJBC10:{a:42,  n:221}, CAJBC14:{a:36, n:120}},
+    6: {CAJBC01:{a:46,  n:214}, CAJBC07:{a:63, n:109}, CAJBC08:{a:15, n:18}, CAJBC05:{a:142, n:155}, CAJBC10:{a:44,  n:222}, CAJBC14:{a:36, n:120}},
+    7: {CAJBC01:{a:46,  n:217}, CAJBC07:{a:63, n:114}, CAJBC08:{a:15, n:24}, CAJBC05:{a:148, n:163}, CAJBC10:{a:44,  n:227}, CAJBC14:{a:36, n:121}},
   },
   // DM = số kênh trong danh mục (Ds Agente 29/06)
   byBC: {
-    CAJBC01: {'Agente BIPAY':46,  'Negocios BIPAY':208, 'Tusami':1},
-    CAJBC07: {'Agente BIPAY':63,  'Negocios BIPAY':109, 'Tusami':0},
-    CAJBC08: {'Agente BIPAY':15,  'Negocios BIPAY':18,  'Tusami':0},
-    CAJBC05: {'Agente BIPAY':135, 'Negocios BIPAY':149, 'Tusami':0},
-    CAJBC10: {'Agente BIPAY':39,  'Negocios BIPAY':217, 'Tusami':0},
-    CAJBC14: {'Agente BIPAY':36,  'Negocios BIPAY':120, 'Tusami':0},
+    CAJBC01: {'Agente BIPAY':46,  'Negocios BIPAY':217, 'Tusami':1},
+    CAJBC07: {'Agente BIPAY':63,  'Negocios BIPAY':114, 'Tusami':0},
+    CAJBC08: {'Agente BIPAY':15,  'Negocios BIPAY':24,  'Tusami':0},
+    CAJBC05: {'Agente BIPAY':148, 'Negocios BIPAY':163, 'Tusami':0},
+    CAJBC10: {'Agente BIPAY':44,  'Negocios BIPAY':227, 'Tusami':0},
+    CAJBC14: {'Agente BIPAY':36,  'Negocios BIPAY':121, 'Tusami':0},
   },
   // giaoDich = số kênh có phát sinh giao dịch, theo từng tháng
   // a=Agente BIPAY, n=Negocios BIPAY; dm=danh mục, tx=có giao dịch
@@ -3178,7 +3180,7 @@ function buildDigitalPage(m) {
   var BL   = {CAJBC01:'BC01',CAJBC07:'BC07',CAJBC08:'BC08',CAJBC05:'BC05',CAJBC10:'BC10',CAJBC14:'BC14'};
   var gc   = '#6d28d9';
   var mLbl = {5:'T5/2026',6:'T6/2026',7:'T7/2026 (MTD)'}[m] || 'T'+m;
-  var dtRange = {5:'01-31/05/2026',6:'01-30/06/2026',7:'01-02/07/2026'}[m] || '';
+  var dtRange = {5:'01-31/05/2026',6:'01-30/06/2026',7:'01-06/07/2026'}[m] || '';
   var channels = DIGITAL_DATA.channels;
   var byBC     = DIGITAL_DATA.byBC;
   var gdAll    = DIGITAL_DATA.giaoDich || {};
