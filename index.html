@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <!-- build: 2026-07-06 17:35:49 UTC -->
+  <!-- build: 2026-07-06 21:42:46 UTC -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard điều hành / Gestión - Chi nhánh Cajamarca / Sucursal Cajamarca</title>
   <link rel="icon" type="image/png" href="https://bitel.com.pe/upload/2005922/20250710/Bitel_azul_2__1__79885_2cd99.png">
@@ -484,7 +484,7 @@ const DIGITAL_DATA = {
   // CẬP NHẬT: chỉ sửa byBC (DM từ Ds Agente) + giaoDich (TX từ Agente co giao dich)
   // Nguồn DM : Ds Agente DDMMYYYY.xls  — cột C=BC, F=Canal, AE=Phone
   // Nguồn TX  : Agente co giao dich DDMM.xlsx — PROFILE=AGENTE BIPAY/MERCHANT, K=PHONENUMBER
-  srcDate: '06/07/2026',
+  srcDate: '06/07/2026-06/07/2026',
   // newThisMonth = số kênh tạo mới TRONG THÁNG m (Fecha de creación = tháng m, năm 2026)
   newThisMonth: {
     1: {CAJBC01:{a:7,  n:43}, CAJBC07:{a:2,  n:51}, CAJBC08:{a:0, n:2},  CAJBC05:{a:2,  n:24}, CAJBC10:{a:0,  n:68}, CAJBC14:{a:0,  n:47}},
@@ -528,6 +528,14 @@ const DIGITAL_DATA = {
       CAJBC05: {a_dm:135, a_tx:27, n_dm:149, n_tx:19},
       CAJBC10: {a_dm:39,  a_tx:8,  n_dm:217, n_tx:20},
       CAJBC14: {a_dm:36,  a_tx:6,  n_dm:120, n_tx:20},
+    },
+    7: { // T7 — Ds Agente 06/07, Agente co giao dich 06/07
+      CAJBC01: {a_dm:46,  a_tx:14, n_dm:215, n_tx:10},
+      CAJBC07: {a_dm:63,  a_tx:24, n_dm:114, n_tx:6 },
+      CAJBC08: {a_dm:15,  a_tx:3,  n_dm:24,  n_tx:0 },
+      CAJBC05: {a_dm:145, a_tx:10, n_dm:162, n_tx:5 },
+      CAJBC10: {a_dm:41,  a_tx:6,  n_dm:223, n_tx:6 },
+      CAJBC14: {a_dm:36,  a_tx:0,  n_dm:121, n_tx:4 },
     },
   },
 };
