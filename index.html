@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <!-- build: 2026-07-06 06:22:28 UTC -->
+  <!-- build: 2026-07-06 06:29:42 UTC -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard điều hành / Gestión - Chi nhánh Cajamarca / Sucursal Cajamarca</title>
   <link rel="icon" type="image/png" href="https://bitel.com.pe/upload/2005922/20250710/Bitel_azul_2__1__79885_2cd99.png">
@@ -485,6 +485,15 @@ const DIGITAL_DATA = {
   // Nguồn DM : Ds Agente DDMMYYYY.xls  — cột C=BC, F=Canal, AE=Phone
   // Nguồn TX  : Agente co giao dich DDMM.xlsx — PROFILE=AGENTE BIPAY/MERCHANT, K=PHONENUMBER
   srcDate: '29-30/06/2026',
+  // newThisMonth = số kênh tạo mới TRONG THÁNG m (Fecha de creación = tháng m, năm 2026)
+  newThisMonth: {
+    1: {CAJBC01:{a:7,  n:43}, CAJBC07:{a:2,  n:51}, CAJBC08:{a:0, n:2},  CAJBC05:{a:2,  n:24}, CAJBC10:{a:0,  n:68}, CAJBC14:{a:0,  n:47}},
+    2: {CAJBC01:{a:12, n:31}, CAJBC07:{a:17, n:11}, CAJBC08:{a:7, n:5},  CAJBC05:{a:27, n:28}, CAJBC10:{a:13, n:48}, CAJBC14:{a:11, n:31}},
+    3: {CAJBC01:{a:11, n:1},  CAJBC07:{a:14, n:0},  CAJBC08:{a:3, n:2},  CAJBC05:{a:25, n:23}, CAJBC10:{a:12, n:29}, CAJBC14:{a:19, n:20}},
+    4: {CAJBC01:{a:10, n:28}, CAJBC07:{a:9,  n:3},  CAJBC08:{a:3, n:0},  CAJBC05:{a:27, n:20}, CAJBC10:{a:8,  n:25}, CAJBC14:{a:6,  n:9} },
+    5: {CAJBC01:{a:2,  n:33}, CAJBC07:{a:4,  n:17}, CAJBC08:{a:0, n:2},  CAJBC05:{a:27, n:17}, CAJBC10:{a:1,  n:17}, CAJBC14:{a:0,  n:4} },
+    6: {CAJBC01:{a:4,  n:22}, CAJBC07:{a:5,  n:5},  CAJBC08:{a:0, n:3},  CAJBC05:{a:28, n:23}, CAJBC10:{a:0,  n:12}, CAJBC14:{a:0,  n:2} },
+  },
   channels: ['Agente BIPAY', 'Negocios BIPAY', 'Tusami'],
   // nuevosDM = lũy kế Agente/Negocios được tạo đến cuối tháng m (Fecha de creación cột BF)
   // a=Agente BIPAY Channel, n=Negocios BIPAY Channel — nguồn: Ds Agente 29/06/2026
@@ -3174,6 +3183,8 @@ function buildDigitalPage(m) {
   var byBC     = DIGITAL_DATA.byBC;
   var gdAll    = DIGITAL_DATA.giaoDich || {};
   var gd       = gdAll[m] || null; // null nếu không có dữ liệu TX tháng này
+  var nuevosM  = (DIGITAL_DATA.nuevosDM||{})[m]      || null; // lũy kế đến tháng m
+  var newMonth = (DIGITAL_DATA.newThisMonth||{})[m]  || null; // tạo mới trong tháng m
   var srcDate  = DIGITAL_DATA.srcDate  || '';
 
   var titleEl = document.getElementById('digitalCatalogTitle');
@@ -3184,16 +3195,18 @@ function buildDigitalPage(m) {
   if (!bar) return;
   var dAll = 0;
   BC.forEach(function(bc){
-    channels.forEach(function(ch){ dAll += (byBC[bc] ? byBC[bc][ch]||0 : 0); });
+    var nm = nuevosM ? (nuevosM[bc]||{}) : {};
+    dAll += (nm.a||0) + (nm.n||0) + (byBC[bc]?byBC[bc]['Tusami']||0:0);
   });
   var txAll_a = 0, dm_a = 0, txAll_n = 0, dm_n = 0;
-  if (gd) BC.forEach(function(bc){
-    var g = gd[bc]||{};
-    txAll_a += g.a_tx||0; dm_a += g.a_dm||0;
-    txAll_n += g.n_tx||0; dm_n += g.n_dm||0;
+  BC.forEach(function(bc){
+    var nm = nuevosM ? (nuevosM[bc]||{}) : {};
+    dm_a += nm.a !== undefined ? (nm.a||0) : (byBC[bc]?byBC[bc]['Agente BIPAY']||0:0);
+    dm_n += nm.n !== undefined ? (nm.n||0) : (byBC[bc]?byBC[bc]['Negocios BIPAY']||0:0);
+    if (gd) { var g=gd[bc]||{}; txAll_a+=g.a_tx||0; txAll_n+=g.n_tx||0; }
   });
-  var pct_a = dm_a ? (txAll_a/dm_a*100).toFixed(1) : 0;
-  var pct_n = dm_n ? (txAll_n/dm_n*100).toFixed(1) : 0;
+  var pct_a = dm_a&&gd ? (txAll_a/dm_a*100).toFixed(1) : 0;
+  var pct_n = dm_n&&gd ? (txAll_n/dm_n*100).toFixed(1) : 0;
 
   var barHtml = '<div style="background:var(--bg);border-radius:8px;padding:10px 12px;border:1px solid var(--border);grid-column:span 2">' +
     '<div style="font-size:10px;color:var(--muted);margin-bottom:2px">💻 Tổng Kênh Digital' + (srcDate ? ' — '+srcDate : '') + '</div>' +
@@ -3202,17 +3215,19 @@ function buildDigitalPage(m) {
     '💼 Negocios: <b>'+txAll_n+'/'+dm_n+'</b> <span style="color:var(--success)">'+pct_n+'%</span></div>' : '') + '</div>';
 
   BC.forEach(function(bc){
-    var bcTotal = 0;
-    channels.forEach(function(ch){ bcTotal += byBC[bc]?byBC[bc][ch]||0:0; });
+    var nm = nuevosM ? (nuevosM[bc]||{}) : {};
+    var bc_a = nm.a !== undefined ? (nm.a||0) : (byBC[bc]?byBC[bc]['Agente BIPAY']||0:0);
+    var bc_n = nm.n !== undefined ? (nm.n||0) : (byBC[bc]?byBC[bc]['Negocios BIPAY']||0:0);
+    var bcTotal = bc_a + bc_n + (byBC[bc]?byBC[bc]['Tusami']||0:0);
     var g = gd ? (gd[bc]||{}) : {};
-    var pa = g.a_dm ? (g.a_tx/g.a_dm*100).toFixed(0) : null;
-    var pn = g.n_dm ? (g.n_tx/g.n_dm*100).toFixed(0) : null;
+    var pa = bc_a ? (g.a_tx/bc_a*100).toFixed(0) : null;
+    var pn = bc_n ? (g.n_tx/bc_n*100).toFixed(0) : null;
     barHtml += '<div style="background:var(--bg);border-radius:8px;padding:8px 10px;border:1px solid var(--border)">' +
       '<div style="font-size:10px;color:var(--muted);margin-bottom:2px">'+BL[bc]+'</div>' +
       '<div style="font-size:16px;font-weight:700;color:'+gc+'">'+bcTotal+'</div>' +
       (gd ? '<div style="font-size:10px;line-height:1.6">'+
-        '💳 '+(g.a_tx||0)+'/'+(g.a_dm||0)+' <b style="color:var(--success)">'+pa+'%</b><br>'+
-        '💼 '+(g.n_tx||0)+'/'+(g.n_dm||0)+' <b style="color:var(--success)">'+pn+'%</b>'+
+        '💳 '+(g.a_tx||0)+'/'+bc_a+' <b style="color:var(--success)">'+pa+'%</b><br>'+
+        '💼 '+(g.n_tx||0)+'/'+bc_n+' <b style="color:var(--success)">'+pn+'%</b>'+
       '</div>' : '<div style="font-size:10px;color:var(--muted)">kênh digital</div>') + '</div>';
   });
   bar.innerHTML = barHtml;
@@ -3251,25 +3266,26 @@ function buildDigitalPage(m) {
 
   var tot = {a_dm:0,a_tx:0,n_dm:0,n_tx:0,tusami:0};
   BC.forEach(function(bc, idx){
-    var bg = idx%2===0 ? 'background:#faf5ff' : 'background:#fff';
+    var bg  = idx%2===0 ? 'background:#faf5ff' : 'background:#fff';
+    var nm  = nuevosM ? (nuevosM[bc]||{}) : {};
+    var a_dm = nm.a !== undefined ? (nm.a||0) : (byBC[bc]?byBC[bc]['Agente BIPAY']||0:0);
+    var n_dm = nm.n !== undefined ? (nm.n||0) : (byBC[bc]?byBC[bc]['Negocios BIPAY']||0:0);
+    var tusami = byBC[bc]?byBC[bc]['Tusami']||0:0;
     var g  = gd ? (gd[bc]||{}) : {};
-    var pa = g.a_dm ? (g.a_tx/g.a_dm*100).toFixed(1) : '—';
-    var pn = g.n_dm ? (g.n_tx/g.n_dm*100).toFixed(1) : '—';
+    var pa = a_dm&&gd ? (g.a_tx/a_dm*100).toFixed(1) : '—';
+    var pn = n_dm&&gd ? (g.n_tx/n_dm*100).toFixed(1) : '—';
     var pcol_a = pa!=='—'&&+pa>=40?'var(--success)':pa!=='—'&&+pa>=20?'var(--warning)':'var(--danger)';
     var pcol_n = pn!=='—'&&+pn>=20?'var(--success)':pn!=='—'&&+pn>=10?'var(--warning)':'var(--danger)';
-    var a_dm = byBC[bc]?byBC[bc]['Agente BIPAY']||0:0;
-    var n_dm = byBC[bc]?byBC[bc]['Negocios BIPAY']||0:0;
-    var tusami = byBC[bc]?byBC[bc]['Tusami']||0:0;
-    if (showTX){ tot.a_dm+=g.a_dm||0; tot.a_tx+=g.a_tx||0; tot.n_dm+=g.n_dm||0; tot.n_tx+=g.n_tx||0; }
-    else { tot.a_dm+=a_dm; tot.n_dm+=n_dm; }
+    tot.a_dm+=a_dm; tot.n_dm+=n_dm;
+    if (showTX){ tot.a_tx+=g.a_tx||0; tot.n_tx+=g.n_tx||0; }
     tot.tusami+=tusami;
     h += showTX
       ? '<tr style="'+bg+'">' +
         '<td style="padding:6px 8px;font-weight:700;font-size:12px">'+BL[bc]+'</td>' +
-        '<td style="padding:6px 4px;text-align:center;font-size:12px">'+(g.a_dm||a_dm)+'</td>' +
+        '<td style="padding:6px 4px;text-align:center;font-size:12px">'+a_dm+'</td>' +
         '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700">'+(g.a_tx||0)+'</td>' +
         '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700;color:'+pcol_a+'">'+pa+'%</td>' +
-        '<td style="padding:6px 4px;text-align:center;font-size:12px">'+(g.n_dm||n_dm)+'</td>' +
+        '<td style="padding:6px 4px;text-align:center;font-size:12px">'+n_dm+'</td>' +
         '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700">'+(g.n_tx||0)+'</td>' +
         '<td style="padding:6px 4px;text-align:center;font-size:12px;font-weight:700;color:'+pcol_n+'">'+pn+'%</td>' +
         '<td style="padding:6px 4px;text-align:center;font-size:12px;color:var(--muted)">'+(tusami||'—')+'</td>' +
@@ -3305,26 +3321,23 @@ function buildDigitalPage(m) {
   tbl.innerHTML = h;
 
   // Note
-  // ── Kênh mới trong tháng (Fecha de creación = tháng m) ──
-  var nuevosAll = DIGITAL_DATA.nuevosDM || {};
-  var nuevos    = nuevosAll[m] || null;
+  // ── Kênh tạo mới trong tháng m (Fecha de creación = tháng m, năm 2026) ──
   var nSec = document.getElementById('digitalNuevos');
   if (nSec) {
-    if (!nuevos) {
+    if (!newMonth) {
       nSec.innerHTML = '';
     } else {
       var tot_na = 0, tot_nn = 0;
-      BC.forEach(function(bc){ tot_na += nuevos[bc]?nuevos[bc].a||0:0; tot_nn += nuevos[bc]?nuevos[bc].n||0:0; });
+      BC.forEach(function(bc){ tot_na += newMonth[bc]?newMonth[bc].a||0:0; tot_nn += newMonth[bc]?newMonth[bc].n||0:0; });
       var nHtml = '<div style="margin-top:14px">' +
-        '<div style="font-size:12px;font-weight:700;color:'+gc+';margin-bottom:6px">📊 Agente & Negocios lũy kế đến T'+m+'/2026 (Fecha de creación)</div>' +
+        '<div style="font-size:12px;font-weight:700;color:'+gc+';margin-bottom:6px">🆕 Kênh tạo mới trong T'+m+'/2026 (Fecha de creación)</div>' +
         '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">';
-      // Summary card
       nHtml += '<div style="grid-column:span 1;background:#f0fdf4;border-radius:8px;padding:8px 10px;border:1px solid #bbf7d0">' +
-        '<div style="font-size:10px;color:var(--muted)">Tổng lũy kế</div>' +
+        '<div style="font-size:10px;color:var(--muted)">Tổng tạo mới</div>' +
         '<div style="font-size:16px;font-weight:700;color:#16a34a">'+(tot_na+tot_nn)+'</div>' +
         '<div style="font-size:10px;line-height:1.5">💳 '+tot_na+'<br>💼 '+tot_nn+'</div></div>';
       BC.forEach(function(bc){
-        var g = nuevos[bc]||{a:0,n:0};
+        var g = newMonth[bc]||{a:0,n:0};
         nHtml += '<div style="background:#f0fdf4;border-radius:8px;padding:8px 10px;border:1px solid #bbf7d0">' +
           '<div style="font-size:10px;color:var(--muted)">'+BL[bc]+'</div>' +
           '<div style="font-size:16px;font-weight:700;color:#16a34a">'+(g.a+g.n)+'</div>' +
