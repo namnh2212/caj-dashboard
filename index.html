@@ -486,6 +486,16 @@ const DIGITAL_DATA = {
   // Nguồn TX  : Agente co giao dich DDMM.xlsx — PROFILE=AGENTE BIPAY/MERCHANT, K=PHONENUMBER
   srcDate: '29-30/06/2026',
   channels: ['Agente BIPAY', 'Negocios BIPAY', 'Tusami'],
+  // nuevosDM = số kênh tạo mới trong tháng (Fecha de creación, cột BF, Ds Agente)
+  // a=Agente BIPAY Channel, n=Negocios BIPAY Channel — nguồn: Ds Agente 29/06/2026
+  nuevosDM: {
+    1: {CAJBC01:{a:7,  n:43}, CAJBC07:{a:2,  n:51}, CAJBC08:{a:0, n:2},  CAJBC05:{a:2,  n:24}, CAJBC10:{a:0,  n:68}, CAJBC14:{a:0,  n:47}},
+    2: {CAJBC01:{a:12, n:31}, CAJBC07:{a:17, n:11}, CAJBC08:{a:7, n:5},  CAJBC05:{a:27, n:28}, CAJBC10:{a:13, n:48}, CAJBC14:{a:11, n:31}},
+    3: {CAJBC01:{a:11, n:1},  CAJBC07:{a:14, n:0},  CAJBC08:{a:3, n:2},  CAJBC05:{a:25, n:23}, CAJBC10:{a:12, n:29}, CAJBC14:{a:19, n:20}},
+    4: {CAJBC01:{a:10, n:28}, CAJBC07:{a:9,  n:3},  CAJBC08:{a:3, n:0},  CAJBC05:{a:27, n:20}, CAJBC10:{a:8,  n:25}, CAJBC14:{a:6,  n:9} },
+    5: {CAJBC01:{a:2,  n:33}, CAJBC07:{a:4,  n:17}, CAJBC08:{a:0, n:2},  CAJBC05:{a:27, n:17}, CAJBC10:{a:1,  n:17}, CAJBC14:{a:0,  n:4} },
+    6: {CAJBC01:{a:4,  n:22}, CAJBC07:{a:5,  n:5},  CAJBC08:{a:0, n:3},  CAJBC05:{a:28, n:23}, CAJBC10:{a:0,  n:12}, CAJBC14:{a:0,  n:2} },
+  },
   // DM = số kênh trong danh mục (Ds Agente 29/06)
   byBC: {
     CAJBC01: {'Agente BIPAY':46,  'Negocios BIPAY':208, 'Tusami':1},
@@ -1553,7 +1563,8 @@ const SALES = {
         <div id="digitalSummaryBar" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px"></div>
         <div style="overflow-x:auto">
           <table class="tbl" id="digitalDetailTable" style="width:100%;font-size:12px;table-layout:fixed;border-collapse:collapse"></table>
-          <p id="digitalNote" style="font-size:10px;color:var(--muted);margin-top:6px;line-height:1.5"></p>
+          <div id="digitalNuevos"></div>
+      <p id="digitalNote" style="font-size:10px;color:var(--muted);margin-top:6px;line-height:1.5"></p>
         </div>
         <p style="font-size:11px;color:var(--muted);margin-top:8px" id="digitalFootnote">
           * Kênh BIPAY (Agente/Negocios) và Tusami không phát sinh Active thông thường qua hệ thống.
@@ -3293,6 +3304,36 @@ function buildDigitalPage(m) {
   tbl.innerHTML = h;
 
   // Note
+  // ── Kênh mới trong tháng (Fecha de creación = tháng m) ──
+  var nuevosAll = DIGITAL_DATA.nuevosDM || {};
+  var nuevos    = nuevosAll[m] || null;
+  var nSec = document.getElementById('digitalNuevos');
+  if (nSec) {
+    if (!nuevos) {
+      nSec.innerHTML = '';
+    } else {
+      var tot_na = 0, tot_nn = 0;
+      BC.forEach(function(bc){ tot_na += nuevos[bc]?nuevos[bc].a||0:0; tot_nn += nuevos[bc]?nuevos[bc].n||0:0; });
+      var nHtml = '<div style="margin-top:14px">' +
+        '<div style="font-size:12px;font-weight:700;color:'+gc+';margin-bottom:6px">🆕 Kênh tạo mới trong T'+m+'/2026 (Fecha de creación)</div>' +
+        '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">';
+      // Summary card
+      nHtml += '<div style="grid-column:span 1;background:#f0fdf4;border-radius:8px;padding:8px 10px;border:1px solid #bbf7d0">' +
+        '<div style="font-size:10px;color:var(--muted)">Tổng mới</div>' +
+        '<div style="font-size:16px;font-weight:700;color:#16a34a">'+(tot_na+tot_nn)+'</div>' +
+        '<div style="font-size:10px;line-height:1.5">💳 '+tot_na+'<br>💼 '+tot_nn+'</div></div>';
+      BC.forEach(function(bc){
+        var g = nuevos[bc]||{a:0,n:0};
+        nHtml += '<div style="background:#f0fdf4;border-radius:8px;padding:8px 10px;border:1px solid #bbf7d0">' +
+          '<div style="font-size:10px;color:var(--muted)">'+BL[bc]+'</div>' +
+          '<div style="font-size:16px;font-weight:700;color:#16a34a">'+(g.a+g.n)+'</div>' +
+          '<div style="font-size:10px;line-height:1.5">💳 '+g.a+'<br>💼 '+g.n+'</div></div>';
+      });
+      nHtml += '</div></div>';
+      nSec.innerHTML = nHtml;
+    }
+  }
+
   var noteEl = document.getElementById('digitalNote');
   if (noteEl) noteEl.innerHTML = showTX
     ? '* Nguồn DM: <b>Ds Agente '+srcDate.split('-')[0]+'</b> — cột C=BC, F=Canal, AE=Phone. '+
