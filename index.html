@@ -1173,7 +1173,8 @@ const SALES = {
     <div class="header-title">Dashboard điều hành / Gestión · Chi nhánh Cajamarca / Sucursal Cajamarca</div>
     <div class="header-sub">Báo cáo kinh doanh hàng tuần / Informe semanal de negocio · Nguồn / Fuente: Báo cáo tuần &amp; Cảnh báo thuê bao giảm / Alertas de bajas</div>
   </div>
-  <div class="header-badge">📅 Dữ liệu đến W26 — 29/06/2026</div>
+  <div class="header-badge" id="headerBadge">📅 Dữ liệu đến W27 — 06/07/2026</div>
+<script>document.getElementById('headerBadge').textContent='📅 Dữ liệu đến '+CFG.header.week+' — '+CFG.header.date;</script>
 </div>
 
 <div class="page-tabs">
