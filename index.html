@@ -8,7 +8,7 @@
   <link rel="icon" type="image/png" href="https://bitel.com.pe/upload/2005922/20250710/Bitel_azul_2__1__79885_2cd99.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css">
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
@@ -810,9 +810,9 @@ const SALES = {
   <style>
     :root {
       color-scheme: light;
-      --primary: #0f4c81;
-      --primary-light: #1e6eb5;
-      --accent: #e85d04;
+      --primary: #03558B;
+      --primary-light: #1877B3;
+      --accent: #FFE900;
       --success: #16a34a;
       --warning: #d97706;
       --danger: #dc2626;
@@ -824,17 +824,17 @@ const SALES = {
       --muted: #64748b;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Be Vietnam Pro', 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; }
+    body { font-family: 'Montserrat', 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; }
 
     /* ── HEADER ── */
     .header {
-      background: linear-gradient(135deg, #0c3b6e 0%, #1a5fa8 100%);
+      background: linear-gradient(135deg, #022A45 0%, #1877B3 100%);
       color: #fff;
       padding: 14px 24px;
       display: flex;
       align-items: center;
       gap: 16px;
-      border-bottom: 3px solid #e85d04;
+      border-bottom: 4px solid #FFE900;
     }
     .header-icon { display:flex; align-items:center; background:#fff; border-radius:8px; padding:4px 10px; flex-shrink:0; }
     .header-icon img { height:34px; display:block; }
@@ -996,12 +996,12 @@ const SALES = {
     .estado-noaction   { color: #475569; background: #f1f5f9; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; white-space: nowrap; }
 
     /* ── PAGE-LEVEL TABS ── */
-    .page-tabs { background: #0b3461; display: flex; border-bottom: 1px solid rgba(255,255,255,.12); }
+    .page-tabs { background: #022A45; display: flex; border-bottom: 1px solid rgba(255,255,255,.12); }
     .page-tab {
       padding: 9px 22px; font-size: 12px; font-weight: 700; color: rgba(255,255,255,.55);
       cursor: pointer; border-bottom: 3px solid transparent; transition: .15s; letter-spacing: .3px;
     }
-    .page-tab.active { color: #fff; border-bottom-color: #e85d04; background: rgba(255,255,255,.07); }
+    .page-tab.active { color: #fff; border-bottom-color: #FFE900; background: rgba(255,255,255,.07); }
     .page-tab:hover:not(.active) { color: rgba(255,255,255,.85); background: rgba(255,255,255,.04); }
     .page-pane { display: none; }
     .page-pane.active { display: block; }
@@ -1806,9 +1806,9 @@ function buildKPICards() {
           data: ytdActual15,
           type: 'line',
           yAxisID: 'yYTD',
-          borderColor: '#e85d04',
+          borderColor: '#1877B3',
           backgroundColor: 'rgba(232,93,4,0.08)',
-          pointBackgroundColor: '#e85d04',
+          pointBackgroundColor: '#1877B3',
           pointRadius: 5,
           pointHoverRadius: 7,
           borderWidth: 2.5,
@@ -1873,8 +1873,8 @@ function buildKPICards() {
         },
         yYTD: {
           position: 'right',
-          title: { display: true, text: 'Lũy kế (TB)', font: { size: 11 }, color: '#e85d04' },
-          ticks: { callback: v => (v/1000).toFixed(0)+'k', font: { size: 11 }, color: '#e85d04' },
+          title: { display: true, text: 'Lũy kế (TB)', font: { size: 11 }, color: '#1877B3' },
+          ticks: { callback: v => (v/1000).toFixed(0)+'k', font: { size: 11 }, color: '#1877B3' },
           grid: { display: false },
           suggestedMin: 0,
           suggestedMax: 45000,
@@ -1922,9 +1922,9 @@ function buildKPICards() {
           data: pctRev,
           type: 'line',
           yAxisID: 'yPct',
-          borderColor: '#e85d04',
+          borderColor: '#1877B3',
           backgroundColor: 'rgba(232,93,4,0.08)',
-          pointBackgroundColor: '#e85d04',
+          pointBackgroundColor: '#1877B3',
           pointRadius: 5,
           pointHoverRadius: 7,
           borderWidth: 2.5,
@@ -1962,8 +1962,8 @@ function buildKPICards() {
         },
         yPct: {
           position: 'right',
-          title: { display: true, text: '% Đạt', font: { size: 11 }, color: '#e85d04' },
-          ticks: { callback: v => v + '%', font: { size: 11 }, color: '#e85d04' },
+          title: { display: true, text: '% Đạt', font: { size: 11 }, color: '#1877B3' },
+          ticks: { callback: v => v + '%', font: { size: 11 }, color: '#1877B3' },
           grid: { display: false },
           min: 95,
           max: 110,
@@ -2208,10 +2208,10 @@ function buildKPICards() {
         {
           label: 'TB REG thực hiện / Real (TB)',
           data: absActualReg,
-          borderColor: '#e85d04',
+          borderColor: '#1877B3',
           backgroundColor: 'rgba(232,93,4,0.10)',
           fill: true,
-          pointBackgroundColor: '#e85d04',
+          pointBackgroundColor: '#1877B3',
           pointRadius: 5,
           pointHoverRadius: 8,
           borderWidth: 2.5,
@@ -2268,8 +2268,8 @@ function buildKPICards() {
       scales: {
         y: {
           position: 'left',
-          title: { display: true, text: 'Thuê bao REG / Suscriptores REG', font: { size: 11 }, color: '#e85d04' },
-          ticks: { callback: v => (v/1000).toFixed(0)+'k', font: { size: 11 }, color: '#e85d04' },
+          title: { display: true, text: 'Thuê bao REG / Suscriptores REG', font: { size: 11 }, color: '#1877B3' },
+          ticks: { callback: v => (v/1000).toFixed(0)+'k', font: { size: 11 }, color: '#1877B3' },
           grid: { color: '#f1f5f9' },
           min: 295000,
           suggestedMax: 325000,
