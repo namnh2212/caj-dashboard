@@ -1017,7 +1017,7 @@ const SALES = {
     .msec { padding: 11px 13px; border-bottom: 1px solid #e2e8f0; }
     .mkpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
     .mkpi { background: #ffffff; border-radius: 7px; padding: 7px 9px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
-    .mkpi-val { font-size: 20px; font-weight: 800; line-height: 1; color: #0f4c81; }
+    .mkpi-val { font-size: 20px; font-weight: 800; line-height: 1; color: #03558B; }
     .mkpi-lbl { font-size: 10px; color: #64748b; margin-top: 1px; }
     .mfbtn {
       background: #ffffff; border: 1px solid #e2e8f0; color: #475569;
@@ -1044,7 +1044,7 @@ const SALES = {
     .leaflet-popup-tip { background: #ffffff !important; }
     .leaflet-popup-content { margin: 0 !important; }
     .lpu { padding: 11px 13px; min-width: 205px; }
-    .lpu-code { font-size: 13px; font-weight: 800; font-family: monospace; color: #0f4c81; display: flex; align-items: center; gap: 7px; }
+    .lpu-code { font-size: 13px; font-weight: 800; font-family: monospace; color: #03558B; display: flex; align-items: center; gap: 7px; }
     .lpu-addr { font-size: 10px; color: #64748b; margin: 3px 0 8px; }
     .lpu-row { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px; }
     .lpu-lbl { color: #64748b; }
@@ -1784,8 +1784,8 @@ function buildKPICards() {
         {
           label: 'KH tháng',
           data: kh15,
-          backgroundColor: 'rgba(15,76,129,0.10)',
-          borderColor: '#0f4c81',
+          backgroundColor: 'rgba(230,210,0,0.10)',
+          borderColor: '#E6D200',
           borderWidth: 2,
           borderRadius: 4,
           yAxisID: 'y',
@@ -1807,7 +1807,7 @@ function buildKPICards() {
           type: 'line',
           yAxisID: 'yYTD',
           borderColor: '#1877B3',
-          backgroundColor: 'rgba(232,93,4,0.08)',
+          backgroundColor: 'rgba(24,119,179,0.08)',
           pointBackgroundColor: '#1877B3',
           pointRadius: 5,
           pointHoverRadius: 7,
@@ -1821,9 +1821,9 @@ function buildKPICards() {
           data: ytdKH15,
           type: 'line',
           yAxisID: 'yYTD',
-          borderColor: '#0f4c81',
+          borderColor: '#E6D200',
           borderDash: [5, 4],
-          pointBackgroundColor: '#0f4c81',
+          pointBackgroundColor: '#E6D200',
           pointRadius: 4,
           pointHoverRadius: 6,
           borderWidth: 2,
@@ -1898,8 +1898,8 @@ function buildKPICards() {
         {
           label: 'KH Doanh thu (tr. PEN)',
           data: khRev,
-          backgroundColor: 'rgba(15,76,129,0.10)',
-          borderColor: '#0f4c81',
+          backgroundColor: 'rgba(230,210,0,0.10)',
+          borderColor: '#E6D200',
           borderWidth: 2,
           borderRadius: 4,
           yAxisID: 'y',
@@ -1923,7 +1923,7 @@ function buildKPICards() {
           type: 'line',
           yAxisID: 'yPct',
           borderColor: '#1877B3',
-          backgroundColor: 'rgba(232,93,4,0.08)',
+          backgroundColor: 'rgba(24,119,179,0.08)',
           pointBackgroundColor: '#1877B3',
           pointRadius: 5,
           pointHoverRadius: 7,
@@ -2000,7 +2000,7 @@ function buildKPICards() {
     const ctx = document.getElementById('activeMonthChart');
     if (!ctx) return;
     const colors = ACT_DATA.map(d => d.full ? 'rgba(15,76,129,0.82)' : 'rgba(234,88,12,0.75)');
-    const borderC = ACT_DATA.map(d => d.full ? '#0f4c81' : '#ea580c');
+    const borderC = ACT_DATA.map(d => d.full ? '#03558B' : '#60a5fa');
     new Chart(ctx.getContext('2d'), {
       type: 'bar',
       data: {
@@ -2209,7 +2209,7 @@ function buildKPICards() {
           label: 'TB REG thực hiện / Real (TB)',
           data: absActualReg,
           borderColor: '#1877B3',
-          backgroundColor: 'rgba(232,93,4,0.10)',
+          backgroundColor: 'rgba(24,119,179,0.10)',
           fill: true,
           pointBackgroundColor: '#1877B3',
           pointRadius: 5,
@@ -2221,11 +2221,11 @@ function buildKPICards() {
         {
           label: 'KH / Plan (+3.500 TB/mes)',
           data: absKhReg,
-          borderColor: '#0f4c81',
+          borderColor: '#E6D200',
           borderDash: [6, 4],
           backgroundColor: 'transparent',
           fill: false,
-          pointBackgroundColor: '#0f4c81',
+          pointBackgroundColor: '#E6D200',
           pointRadius: 4,
           pointHoverRadius: 6,
           borderWidth: 2,
@@ -3053,7 +3053,7 @@ function buildKenhCatalog(m) {
     'Dealer':'🚗','Small CAB':'🏘','Small Dealer':'🔑','Islas BITEL':'🏝','Retail':'🛍',
     'Mini Store':'🛒','Dealer Online':'🌐','Agente BIPAY':'💳','Negocios BIPAY':'💼','Tusami':'🤖','FTTH':'📶'};
   var GROUP_LABEL = {mobile:'📱 Kênh Mobile', digital:'💻 Kênh Digital'};
-  var GROUP_COLOR = {mobile:'#0f4c81', digital:'#6d28d9'};
+  var GROUP_COLOR = {mobile:'#03558B', digital:'#6d28d9'};
 
   function getPs(bc, ch) {
     var mps = KENH_PS[m];
