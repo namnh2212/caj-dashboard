@@ -2979,20 +2979,6 @@ function renderSalesMonth(m) {
       <div class="kpi-sub">${k.sub}</div>
     </div>`).join('');
 
-  // ── YELLOW HERO: clone salesKpiRow → heroSalesKpiRow ──
-  (function(){
-    var src = document.getElementById('salesKpiRow');
-    var dst = document.getElementById('heroSalesKpiRow');
-    if (src && dst) dst.innerHTML = src.innerHTML;
-    var ml = document.getElementById('heroSalesMonth');
-    if (ml) ml.textContent = 'T' + m + '/2026';
-    var hl = document.getElementById('salesHeroLabel');
-    if (hl) {
-      var D2 = SALES_DATA[m];
-      if (D2 && D2.label) hl.innerHTML = '📱 MOBILE — ' + D2.label.replace('T'+m+' — ','');
-    }
-  })();;
-
   // ── BC table header ─────────────────────────────────────────────────────
   const ckH = document.getElementById('bcColCK');
   const curH = document.getElementById('bcColCur');
@@ -3514,5 +3500,36 @@ function buildDigitalPage(m) {
 </script>
 
 
+
+<script>
+// ── YELLOW HERO: patch renderSalesMonth to also update hero row ──
+(function(){
+  var _orig = window.renderSalesMonth;
+  if (typeof _orig !== 'function') {
+    // renderSalesMonth is declared in same scope, patch after DOMReady
+    document.addEventListener('DOMContentLoaded', function(){ patchSalesHero(); });
+  } else {
+    patchSalesHero();
+  }
+  function patchSalesHero() {
+    // renderSalesMonth is a plain function declaration, accessible globally
+    var orig = renderSalesMonth;
+    window.renderSalesMonth = function(m) {
+      orig(m);
+      // After original renders salesKpiRow, clone it to hero
+      var src = document.getElementById('salesKpiRow');
+      var dst = document.getElementById('heroSalesKpiRow');
+      if (src && dst) dst.innerHTML = src.innerHTML;
+      var ml = document.getElementById('heroSalesMonth');
+      if (ml) ml.textContent = 'T' + m + '/2026';
+      var hl = document.getElementById('salesHeroLabel');
+      if (hl) {
+        var D = SALES_DATA[m];
+        if (D && D.label) hl.innerHTML = '📱 MOBILE — ' + D.label.replace('T'+m+' — ','');
+      }
+    };
+  }
+})();
+</script>
 </body>
 </html>
