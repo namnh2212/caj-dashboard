@@ -2527,8 +2527,8 @@ function buildKPICards() {
     const el = document.getElementById('mlist');
     if (!el) return;
     const sorted = [...mkList].sort((a, b) => {
-      const aw = a.weeks.includes('W27') ? 0 : 1;
-      const bw = b.weeks.includes('W27') ? 0 : 1;
+      const aw = (a.weeks||[]).includes('W27') ? 0 : 1;
+      const bw = (b.weeks||[]).includes('W27') ? 0 : 1;
       if (aw !== bw) return aw - bw;
       return ((a.s.c||[0,0,0])[2]) - ((b.s.c||[0,0,0])[2]);
     });
@@ -2977,7 +2977,7 @@ function renderSalesMonth(m) {
       <div class="kpi-label">${k.label}</div>
       <div class="kpi-value" style="color:${k.color}">${k.val}</div>
       <div class="kpi-sub">${k.sub}</div>
-    </div>`).join('')
+    </div>`).join('');
 
   // ── YELLOW HERO: clone salesKpiRow → heroSalesKpiRow ──
   (function(){
