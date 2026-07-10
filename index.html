@@ -2440,7 +2440,7 @@ function buildKPICards() {
     });
 
     setTimeout(() => leafletMap.invalidateSize(), 100);
-    buildMlist('all');
+    buildMlist(Object.values(allMarkers));
   }
 
   function buildPopup(id, s, weeks) {
