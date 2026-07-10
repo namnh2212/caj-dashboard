@@ -822,6 +822,16 @@ const SALES = {
       --border: #e2e8f0;
       --text: #1e293b;
       --muted: #64748b;
+      /* Bitel Design System tokens */
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      --radius-pill: 999px;
+      --shadow-card: 0 1px 3px rgba(3,85,139,.07), 0 1px 2px rgba(3,85,139,.04);
+      --shadow-elevated: 0 8px 24px rgba(3,85,139,.10), 0 2px 6px rgba(3,85,139,.06);
+      --font-sans: 'Montserrat', 'Segoe UI', system-ui, sans-serif;
+      --font-sans-data: 'Be Vietnam Pro', 'Segoe UI', system-ui, sans-serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Montserrat', 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; }
@@ -830,24 +840,70 @@ const SALES = {
     .header {
       background: linear-gradient(135deg, #022A45 0%, #1877B3 100%);
       color: #fff;
-      padding: 14px 24px;
+      padding: 16px 24px;
       display: flex;
       align-items: center;
       gap: 16px;
-      border-bottom: 4px solid #FFE900;
+      font-family: var(--font-sans, 'Montserrat', sans-serif);
     }
-    .header-icon { display:flex; align-items:center; background:#fff; border-radius:8px; padding:4px 10px; flex-shrink:0; }
-    .header-icon img { height:34px; display:block; }
-    .header-title { font-size: 15px; font-weight: 700; letter-spacing: 0.3px; }
-    .header-sub { font-size: 11px; opacity: 0.75; margin-top: 2px; }
-    .header-badge {
-      margin-left: auto;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: 20px;
-      padding: 5px 14px;
-      font-size: 11px;
+    .header-logo-chip {
+      background: #FFE900;
+      border-radius: 12px;
+      padding: 8px 12px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+    }
+    .header-logo-chip img { height: 26px; display: block; }
+    .header-title { font-size: 17px; font-weight: 800; letter-spacing: 0.2px; }
+    .header-sub { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+    .header-controls { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .header-pill {
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.20);
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
       white-space: nowrap;
+    }
+    .header-pill-data { font-weight: 700; }
+    .header-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #FFE900;
+      flex-shrink: 0;
+    }
+    .header-pill-white {
+      background: #fff;
+      color: #022A45;
+      border-radius: 999px;
+      padding: 7px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* ── YELLOW HERO ── */
+    .yellow-hero {
+      background: var(--accent);
+      background-image: linear-gradient(180deg, #FFE900 0%, #FFE900 70%, #FFFEF0 100%);
+      padding: 24px 24px 28px;
+    }
+    .yellow-hero .kpi-row { margin-bottom: 0; }
+    .yellow-hero .kpi-card { background: rgba(255,255,255,.55); border-color: rgba(255,255,255,.7); }
+    .yellow-hero .kpi-card .kpi-label { color: #022A45; opacity: .75; }
+    .yellow-hero .kpi-card .kpi-value { color: #022A45; }
+    .yellow-hero .kpi-card .kpi-sub { color: #022A45; opacity: .7; }
+    .yellow-hero-label {
+      font-size: 13px; font-weight: 700; color: #022A45; opacity: .8;
+      margin-bottom: 14px; letter-spacing: .3px;
+    }
+    .yellow-hero-controls {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
     }
 
     /* ── LAYOUT ── */
@@ -857,11 +913,11 @@ const SALES = {
     .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
     .kpi-card {
       background: var(--card);
-      border-radius: 10px;
+      border-radius: var(--radius-lg);
       padding: 14px 16px;
       border: 1px solid var(--border);
       border-top: 4px solid var(--primary);
-      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+      box-shadow: var(--shadow-card);
     }
     .kpi-card.warn { border-top-color: var(--warning); }
     .kpi-card.danger { border-top-color: var(--danger); }
@@ -872,17 +928,17 @@ const SALES = {
     .kpi-card.danger .kpi-value { color: var(--danger); }
     .kpi-card.ok .kpi-value { color: var(--success); }
     .kpi-sub { font-size: 11px; color: var(--muted); }
-    .kpi-pct { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 10px; font-weight: 700; background: #fef3c7; color: #92400e; }
+    .kpi-pct { display: inline-block; padding: 1px 7px; border-radius: var(--radius-pill); font-size: 10px; font-weight: 700; background: #fef3c7; color: #92400e; }
     .kpi-pct.ok { background: #dcfce7; color: #166534; }
 
     /* ── SECTION ── */
     .section {
       background: var(--card);
-      border-radius: 10px;
+      border-radius: var(--radius-lg);
       border: 1px solid var(--border);
       margin-bottom: 16px;
       overflow: hidden;
-      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+      box-shadow: var(--shadow-card);
     }
     .section-head {
       background: var(--primary);
@@ -908,7 +964,7 @@ const SALES = {
     }
     .info-lbl { color: var(--muted); }
     .info-val { font-weight: 700; }
-    .pill { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .pill { display: inline-block; padding: 2px 9px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 700; }
     .pill-warn   { background: #fef3c7; color: #92400e; }
     .pill-ok     { background: #dcfce7; color: #166534; }
     .pill-danger { background: #fee2e2; color: #991b1b; }
@@ -919,7 +975,7 @@ const SALES = {
     .tab {
       padding: 8px 18px; font-size: 12px; font-weight: 600;
       color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent;
-      margin-bottom: -2px; border-radius: 4px 4px 0 0; transition: .15s;
+      margin-bottom: -2px; border-radius: 6px 6px 0 0; transition: .15s;
     }
     .tab.active { color: var(--primary); border-bottom-color: var(--primary); background: #eff6ff; }
     .tab:hover:not(.active) { background: #f8fafc; color: var(--text); }
@@ -946,14 +1002,14 @@ const SALES = {
     .site { font-weight: 700; font-family: monospace; font-size: 12px; }
 
     /* ── SEVERITY BADGES ── */
-    .sev { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; white-space: nowrap; gap: 4px; }
+    .sev { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: var(--radius-pill); font-size: 10px; font-weight: 700; white-space: nowrap; gap: 4px; }
     .sev-xe  { background: #1e1b4b; color: #fff; }
     .sev-c   { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
     .sev-h   { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
     .sev-a   { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
     .sev-ok  { background: #f0fdf4; color: #166534; border: 1px solid #86efac; }
-    .status-cont { background: #fef2f2; color: var(--danger); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
-    .status-new  { background: #fff7ed; color: var(--warning); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
+    .status-cont { background: #fef2f2; color: var(--danger); padding: 2px 8px; border-radius: var(--radius-pill); font-size: 10px; font-weight: 700; }
+    .status-new  { background: #fff7ed; color: var(--warning); padding: 2px 8px; border-radius: var(--radius-pill); font-size: 10px; font-weight: 700; }
 
     /* ── TIMELINE ── */
     .timeline-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
@@ -972,7 +1028,7 @@ const SALES = {
     .dot-grn  { background: #dcfce7; color: var(--success); border: 2px solid #86efac; }
     .dot-org  { background: #fff7ed; color: var(--warning); border: 2px solid #fdba74; }
     .dot-dim  { background: #f1f5f9; color: var(--muted); border: 2px solid #e2e8f0; }
-    .badge-weeks { display: inline-block; padding: 2px 9px; border-radius: 10px; font-size: 10px; font-weight: 700; }
+    .badge-weeks { display: inline-block; padding: 2px 9px; border-radius: var(--radius-pill); font-size: 10px; font-weight: 700; }
     .bw3 { background: #dc2626; color: #fff; }
     .bw2 { background: #f59e0b; color: #fff; }
     .bw1 { background: #9ca3af; color: #fff; }
@@ -1016,7 +1072,7 @@ const SALES = {
     .map-sidebar h2 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: #64748b; margin-bottom: 8px; }
     .msec { padding: 11px 13px; border-bottom: 1px solid #e2e8f0; }
     .mkpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-    .mkpi { background: #ffffff; border-radius: 7px; padding: 7px 9px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+    .mkpi { background: #ffffff; border-radius: 7px; padding: 7px 9px; border: 1px solid #e2e8f0; box-shadow: var(--shadow-card); }
     .mkpi-val { font-size: 20px; font-weight: 800; line-height: 1; color: #03558B; }
     .mkpi-lbl { font-size: 10px; color: #64748b; margin-top: 1px; }
     .mfbtn {
@@ -1168,14 +1224,29 @@ const SALES = {
 <body>
 
 <div class="header">
-  <div class="header-icon"><img src="https://bitel.com.pe/upload/2005922/20250710/Bitel_azul_2__1__79885_2cd99.png" alt="Bitel"></div>
-  <div>
-    <div class="header-title">Dashboard điều hành / Gestión · Chi nhánh Cajamarca / Sucursal Cajamarca</div>
-    <div class="header-sub">Báo cáo kinh doanh hàng tuần / Informe semanal de negocio · Nguồn / Fuente: Báo cáo tuần &amp; Cảnh báo thuê bao giảm / Alertas de bajas</div>
+  <div class="header-logo-chip">
+    <img src="https://bitel.com.pe/upload/2005922/20250710/Bitel_azul_2__1__79885_2cd99.png" alt="Bitel">
   </div>
-  <div class="header-badge" id="headerBadge">📅 Dữ liệu đến W27 — 06/07/2026</div>
-<script>document.getElementById('headerBadge').textContent='📅 Dữ liệu đến '+CFG.header.week+' — '+CFG.header.date;</script>
+  <div>
+    <div class="header-title">Dashboard điều hành / Gestión</div>
+    <div class="header-sub">Theo dõi chi nhánh · Chi nhánh Cajamarca / Sucursal Cajamarca</div>
+  </div>
+  <div class="header-controls">
+    <div class="header-pill">🇻🇳 Tiếng Việt <span style="opacity:.6">▾</span></div>
+    <div class="header-pill header-pill-data" id="headerBadge">
+      <span class="header-dot"></span>
+      Dữ liệu đến <strong id="headerDataDate">06/07</strong>
+    </div>
+    <div class="header-pill-white" id="headerUpdateDate">Cập nhật dữ liệu: 10/07/2026</div>
+  </div>
 </div>
+<script>
+  (function(){
+    var d = CFG.header.date; // '06/07/2026'
+    var parts = d.split('/');
+    document.getElementById('headerDataDate').textContent = parts[0]+'/'+parts[1];
+  })();
+</script>
 
 <div class="page-tabs">
   <div class="page-tab active" onclick="switchPage('dashboard',this)">📊 Dashboard KPI</div>
@@ -1186,6 +1257,12 @@ const SALES = {
 </div>
 
 <div id="page-dashboard" class="page-pane active">
+<div class="yellow-hero">
+  <div style="max-width:var(--content-max-width,1280px);margin:0 auto">
+    <div class="yellow-hero-label">📊 TỔNG QUAN TUẦN / RESUMEN SEMANAL — <span id="heroWeekLabel"></span></div>
+    <div class="kpi-row" id="heroKpiRow"></div>
+  </div>
+</div>
 <div class="container">
 
   <!-- ── KPI CARDS — rendered by JS from CFG.kpi ── -->
@@ -1447,6 +1524,12 @@ const SALES = {
      SALES PAGE — BÁN HÀNG / VENTAS
 ════════════════════════════════════════════════ -->
 <div id="page-sales" class="page-pane">
+<div class="yellow-hero" id="salesHero">
+  <div style="max-width:var(--content-max-width,1280px);margin:0 auto">
+    <div class="yellow-hero-label" id="salesHeroLabel">📱 MOBILE — THÁNG <span id="heroSalesMonth"></span></div>
+    <div class="kpi-row" id="heroSalesKpiRow"></div>
+  </div>
+</div>
 <div class="container">
 
 <div id="salesMonthBar" style="display:flex;gap:10px;padding:12px 14px 0;align-items:center;flex-wrap:wrap">
@@ -1688,7 +1771,19 @@ function buildKPICards() {
       </div>`;
   })();
 
-  // ── 15C3D Sidebar Table + Caption + Note (dynamic) ──────────
+  // ── 15C3D Sidebar Table
+
+  // ── YELLOW HERO: clone KPI cards from kpiCards into heroKpiRow ──
+  (function(){
+    var src = document.getElementById('kpiCards');
+    var dst = document.getElementById('heroKpiRow');
+    if (src && dst) {
+      dst.innerHTML = src.innerHTML;
+    }
+    // Set week label
+    var hwl = document.getElementById('heroWeekLabel');
+    if (hwl) hwl.textContent = CFG.header.week || '';
+  })(); + Caption + Note (dynamic) ──────────
   (function build15C3DTable() {
     const months = MONTHS, act = CFG.c15.actual, pl = CFG.c15.plan, ytd = CFG.c15.ytd;
     const last = act.length - 1;
@@ -1784,8 +1879,8 @@ function buildKPICards() {
         {
           label: 'KH tháng',
           data: kh15,
-          backgroundColor: 'rgba(230,210,0,0.10)',
-          borderColor: '#E6D200',
+          backgroundColor: 'rgba(148,163,184,0.15)',
+          borderColor: '#94a3b8',
           borderWidth: 2,
           borderRadius: 4,
           yAxisID: 'y',
@@ -1821,9 +1916,9 @@ function buildKPICards() {
           data: ytdKH15,
           type: 'line',
           yAxisID: 'yYTD',
-          borderColor: '#E6D200',
+          borderColor: '#94a3b8',
           borderDash: [5, 4],
-          pointBackgroundColor: '#E6D200',
+          pointBackgroundColor: '#94a3b8',
           pointRadius: 4,
           pointHoverRadius: 6,
           borderWidth: 2,
@@ -1898,8 +1993,8 @@ function buildKPICards() {
         {
           label: 'KH Doanh thu (tr. PEN)',
           data: khRev,
-          backgroundColor: 'rgba(230,210,0,0.10)',
-          borderColor: '#E6D200',
+          backgroundColor: 'rgba(148,163,184,0.15)',
+          borderColor: '#94a3b8',
           borderWidth: 2,
           borderRadius: 4,
           yAxisID: 'y',
@@ -2221,11 +2316,11 @@ function buildKPICards() {
         {
           label: 'KH / Plan (+3.500 TB/mes)',
           data: absKhReg,
-          borderColor: '#E6D200',
+          borderColor: '#94a3b8',
           borderDash: [6, 4],
           backgroundColor: 'transparent',
           fill: false,
-          pointBackgroundColor: '#E6D200',
+          pointBackgroundColor: '#94a3b8',
           pointRadius: 4,
           pointHoverRadius: 6,
           borderWidth: 2,
@@ -2880,7 +2975,21 @@ function renderSalesMonth(m) {
       <div class="kpi-label">${k.label}</div>
       <div class="kpi-value" style="color:${k.color}">${k.val}</div>
       <div class="kpi-sub">${k.sub}</div>
-    </div>`).join('');
+    </div>`).join('')
+
+  // ── YELLOW HERO: clone salesKpiRow → heroSalesKpiRow ──
+  (function(){
+    var src = document.getElementById('salesKpiRow');
+    var dst = document.getElementById('heroSalesKpiRow');
+    if (src && dst) dst.innerHTML = src.innerHTML;
+    var ml = document.getElementById('heroSalesMonth');
+    if (ml) ml.textContent = 'T' + m + '/2026';
+    var hl = document.getElementById('salesHeroLabel');
+    if (hl) {
+      var D2 = SALES_DATA[m];
+      if (D2 && D2.label) hl.innerHTML = '📱 MOBILE — ' + D2.label.replace('T'+m+' — ','');
+    }
+  })();;
 
   // ── BC table header ─────────────────────────────────────────────────────
   const ckH = document.getElementById('bcColCK');
@@ -3401,6 +3510,7 @@ function buildDigitalPage(m) {
 
 
 </script>
+
 
 </body>
 </html>
