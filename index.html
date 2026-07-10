@@ -2530,7 +2530,7 @@ function buildKPICards() {
       const aw = (a.weeks||[]).includes('W27') ? 0 : 1;
       const bw = (b.weeks||[]).includes('W27') ? 0 : 1;
       if (aw !== bw) return aw - bw;
-      return ((a.s.c||[0,0,0])[2]) - ((b.s.c||[0,0,0])[2]);
+      return (((a.s||{}).c||[0,0,0])[2]) - (((b.s||{}).c||[0,0,0])[2]);
     });
     document.getElementById('mlistCount').textContent = sorted.length ? `(${sorted.length})` : '';
     el.innerHTML = '';
