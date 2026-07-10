@@ -1771,7 +1771,7 @@ function buildKPICards() {
       </div>`;
   })();
 
-  // ── 15C3D Sidebar Table
+  // ── 15C3D Sidebar Table + Caption + Note (dynamic) ──────────
 
   // ── YELLOW HERO: clone KPI cards from kpiCards into heroKpiRow ──
   (function(){
@@ -1783,7 +1783,9 @@ function buildKPICards() {
     // Set week label
     var hwl = document.getElementById('heroWeekLabel');
     if (hwl) hwl.textContent = CFG.header.week || '';
-  })(); + Caption + Note (dynamic) ──────────
+  })();
+
+  // ── 15C3D Sidebar Table + Caption + Note (dynamic) ──────────
   (function build15C3DTable() {
     const months = MONTHS, act = CFG.c15.actual, pl = CFG.c15.plan, ytd = CFG.c15.ytd;
     const last = act.length - 1;
