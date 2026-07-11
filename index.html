@@ -8,7 +8,7 @@
   <link rel="icon" type="image/png" href="https://bitel.com.pe/upload/2005922/20250710/Bitel_azul_2__1__79885_2cd99.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css">
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
@@ -810,9 +810,9 @@ const SALES = {
   <style>
     :root {
       color-scheme: light;
-      --primary: #03558B;
-      --primary-light: #1877B3;
-      --accent: #FFE900;
+      --primary: #0f4c81;
+      --primary-light: #1e6eb5;
+      --accent: #e85d04;
       --success: #16a34a;
       --warning: #d97706;
       --danger: #dc2626;
@@ -822,88 +822,32 @@ const SALES = {
       --border: #e2e8f0;
       --text: #1e293b;
       --muted: #64748b;
-      /* Bitel Design System tokens */
-      --radius-sm: 6px;
-      --radius-md: 8px;
-      --radius-lg: 12px;
-      --radius-xl: 16px;
-      --radius-pill: 999px;
-      --shadow-card: 0 1px 3px rgba(3,85,139,.07), 0 1px 2px rgba(3,85,139,.04);
-      --shadow-elevated: 0 8px 24px rgba(3,85,139,.10), 0 2px 6px rgba(3,85,139,.06);
-      --font-sans: 'Montserrat', 'Segoe UI', system-ui, sans-serif;
-      --font-sans-data: 'Be Vietnam Pro', 'Segoe UI', system-ui, sans-serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Montserrat', 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; }
+    body { font-family: 'Be Vietnam Pro', 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; }
 
     /* ── HEADER ── */
     .header {
-      background: linear-gradient(135deg, #022A45 0%, #1877B3 100%);
+      background: linear-gradient(135deg, #0c3b6e 0%, #1a5fa8 100%);
       color: #fff;
-      padding: 16px 24px;
+      padding: 14px 24px;
       display: flex;
       align-items: center;
       gap: 16px;
-      font-family: var(--font-sans, 'Montserrat', sans-serif);
+      border-bottom: 3px solid #e85d04;
     }
-    .header-logo-chip {
-      background: #FFE900;
-      border-radius: 12px;
-      padding: 8px 12px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-    }
-    .header-logo-chip img { height: 26px; display: block; }
-    .header-title { font-size: 17px; font-weight: 800; letter-spacing: 0.2px; }
-    .header-sub { font-size: 12px; opacity: 0.75; margin-top: 2px; }
-    .header-controls { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-    .header-pill {
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(255,255,255,.20);
-      border-radius: 999px;
-      padding: 7px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    .header-icon { display:flex; align-items:center; background:#fff; border-radius:8px; padding:4px 10px; flex-shrink:0; }
+    .header-icon img { height:34px; display:block; }
+    .header-title { font-size: 15px; font-weight: 700; letter-spacing: 0.3px; }
+    .header-sub { font-size: 11px; opacity: 0.75; margin-top: 2px; }
+    .header-badge {
+      margin-left: auto;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 11px;
       white-space: nowrap;
-    }
-    .header-pill-data { font-weight: 700; }
-    .header-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: #FFE900;
-      flex-shrink: 0;
-    }
-    .header-pill-white {
-      background: #fff;
-      color: #022A45;
-      border-radius: 999px;
-      padding: 7px 16px;
-      font-size: 12px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    /* ── YELLOW HERO ── */
-    .yellow-hero {
-      background: var(--accent);
-      background-image: linear-gradient(180deg, #FFE900 0%, #FFE900 70%, #FFFEF0 100%);
-      padding: 24px 24px 28px;
-    }
-    .yellow-hero .kpi-row { margin-bottom: 0; }
-    .yellow-hero .kpi-card { background: rgba(255,255,255,.55); border-color: rgba(255,255,255,.7); }
-    .yellow-hero .kpi-card .kpi-label { color: #022A45; opacity: .75; }
-    .yellow-hero .kpi-card .kpi-value { color: #022A45; }
-    .yellow-hero .kpi-card .kpi-sub { color: #022A45; opacity: .7; }
-    .yellow-hero-label {
-      font-size: 13px; font-weight: 700; color: #022A45; opacity: .8;
-      margin-bottom: 14px; letter-spacing: .3px;
-    }
-    .yellow-hero-controls {
-      display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
     }
 
     /* ── LAYOUT ── */
@@ -913,11 +857,11 @@ const SALES = {
     .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
     .kpi-card {
       background: var(--card);
-      border-radius: var(--radius-lg);
+      border-radius: 10px;
       padding: 14px 16px;
       border: 1px solid var(--border);
       border-top: 4px solid var(--primary);
-      box-shadow: var(--shadow-card);
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
     }
     .kpi-card.warn { border-top-color: var(--warning); }
     .kpi-card.danger { border-top-color: var(--danger); }
@@ -928,17 +872,17 @@ const SALES = {
     .kpi-card.danger .kpi-value { color: var(--danger); }
     .kpi-card.ok .kpi-value { color: var(--success); }
     .kpi-sub { font-size: 11px; color: var(--muted); }
-    .kpi-pct { display: inline-block; padding: 1px 7px; border-radius: var(--radius-pill); font-size: 10px; font-weight: 700; background: #fef3c7; color: #92400e; }
+    .kpi-pct { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 10px; font-weight: 700; background: #fef3c7; color: #92400e; }
     .kpi-pct.ok { background: #dcfce7; color: #166534; }
 
     /* ── SECTION ── */
     .section {
       background: var(--card);
-      border-radius: var(--radius-lg);
+      border-radius: 10px;
       border: 1px solid var(--border);
       margin-bottom: 16px;
       overflow: hidden;
-      box-shadow: var(--shadow-card);
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
     }
     .section-head {
       background: var(--primary);
@@ -964,7 +908,7 @@ const SALES = {
     }
     .info-lbl { color: var(--muted); }
     .info-val { font-weight: 700; }
-    .pill { display: inline-block; padding: 2px 9px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 700; }
+    .pill { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 700; }
     .pill-warn   { background: #fef3c7; color: #92400e; }
     .pill-ok     { background: #dcfce7; color: #166534; }
     .pill-danger { background: #fee2e2; color: #991b1b; }
@@ -975,7 +919,7 @@ const SALES = {
     .tab {
       padding: 8px 18px; font-size: 12px; font-weight: 600;
       color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent;
-      margin-bottom: -2px; border-radius: 6px 6px 0 0; transition: .15s;
+      margin-bottom: -2px; border-radius: 4px 4px 0 0; transition: .15s;
     }
     .tab.active { color: var(--primary); border-bottom-color: var(--primary); background: #eff6ff; }
     .tab:hover:not(.active) { background: #f8fafc; color: var(--text); }
@@ -1002,14 +946,14 @@ const SALES = {
     .site { font-weight: 700; font-family: monospace; font-size: 12px; }
 
     /* ── SEVERITY BADGES ── */
-    .sev { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: var(--radius-pill); font-size: 10px; font-weight: 700; white-space: nowrap; gap: 4px; }
+    .sev { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; white-space: nowrap; gap: 4px; }
     .sev-xe  { background: #1e1b4b; color: #fff; }
     .sev-c   { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
     .sev-h   { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
     .sev-a   { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
     .sev-ok  { background: #f0fdf4; color: #166534; border: 1px solid #86efac; }
-    .status-cont { background: #fef2f2; color: var(--danger); padding: 2px 8px; border-radius: var(--radius-pill); font-size: 10px; font-weight: 700; }
-    .status-new  { background: #fff7ed; color: var(--warning); padding: 2px 8px; border-radius: var(--radius-pill); font-size: 10px; font-weight: 700; }
+    .status-cont { background: #fef2f2; color: var(--danger); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
+    .status-new  { background: #fff7ed; color: var(--warning); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
 
     /* ── TIMELINE ── */
     .timeline-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
@@ -1028,7 +972,7 @@ const SALES = {
     .dot-grn  { background: #dcfce7; color: var(--success); border: 2px solid #86efac; }
     .dot-org  { background: #fff7ed; color: var(--warning); border: 2px solid #fdba74; }
     .dot-dim  { background: #f1f5f9; color: var(--muted); border: 2px solid #e2e8f0; }
-    .badge-weeks { display: inline-block; padding: 2px 9px; border-radius: var(--radius-pill); font-size: 10px; font-weight: 700; }
+    .badge-weeks { display: inline-block; padding: 2px 9px; border-radius: 10px; font-size: 10px; font-weight: 700; }
     .bw3 { background: #dc2626; color: #fff; }
     .bw2 { background: #f59e0b; color: #fff; }
     .bw1 { background: #9ca3af; color: #fff; }
@@ -1052,12 +996,12 @@ const SALES = {
     .estado-noaction   { color: #475569; background: #f1f5f9; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; white-space: nowrap; }
 
     /* ── PAGE-LEVEL TABS ── */
-    .page-tabs { background: #022A45; display: flex; border-bottom: 1px solid rgba(255,255,255,.12); }
+    .page-tabs { background: #0b3461; display: flex; border-bottom: 1px solid rgba(255,255,255,.12); }
     .page-tab {
       padding: 9px 22px; font-size: 12px; font-weight: 700; color: rgba(255,255,255,.55);
       cursor: pointer; border-bottom: 3px solid transparent; transition: .15s; letter-spacing: .3px;
     }
-    .page-tab.active { color: #fff; border-bottom-color: #FFE900; background: rgba(255,255,255,.07); }
+    .page-tab.active { color: #fff; border-bottom-color: #e85d04; background: rgba(255,255,255,.07); }
     .page-tab:hover:not(.active) { color: rgba(255,255,255,.85); background: rgba(255,255,255,.04); }
     .page-pane { display: none; }
     .page-pane.active { display: block; }
@@ -1072,8 +1016,8 @@ const SALES = {
     .map-sidebar h2 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: #64748b; margin-bottom: 8px; }
     .msec { padding: 11px 13px; border-bottom: 1px solid #e2e8f0; }
     .mkpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-    .mkpi { background: #ffffff; border-radius: 7px; padding: 7px 9px; border: 1px solid #e2e8f0; box-shadow: var(--shadow-card); }
-    .mkpi-val { font-size: 20px; font-weight: 800; line-height: 1; color: #03558B; }
+    .mkpi { background: #ffffff; border-radius: 7px; padding: 7px 9px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+    .mkpi-val { font-size: 20px; font-weight: 800; line-height: 1; color: #0f4c81; }
     .mkpi-lbl { font-size: 10px; color: #64748b; margin-top: 1px; }
     .mfbtn {
       background: #ffffff; border: 1px solid #e2e8f0; color: #475569;
@@ -1100,7 +1044,7 @@ const SALES = {
     .leaflet-popup-tip { background: #ffffff !important; }
     .leaflet-popup-content { margin: 0 !important; }
     .lpu { padding: 11px 13px; min-width: 205px; }
-    .lpu-code { font-size: 13px; font-weight: 800; font-family: monospace; color: #03558B; display: flex; align-items: center; gap: 7px; }
+    .lpu-code { font-size: 13px; font-weight: 800; font-family: monospace; color: #0f4c81; display: flex; align-items: center; gap: 7px; }
     .lpu-addr { font-size: 10px; color: #64748b; margin: 3px 0 8px; }
     .lpu-row { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px; }
     .lpu-lbl { color: #64748b; }
@@ -1224,29 +1168,14 @@ const SALES = {
 <body>
 
 <div class="header">
-  <div class="header-logo-chip">
-    <img src="https://bitel.com.pe/upload/2005922/20250710/Bitel_azul_2__1__79885_2cd99.png" alt="Bitel">
-  </div>
+  <div class="header-icon"><img src="https://bitel.com.pe/upload/2005922/20250710/Bitel_azul_2__1__79885_2cd99.png" alt="Bitel"></div>
   <div>
-    <div class="header-title">Dashboard điều hành / Gestión</div>
-    <div class="header-sub">Theo dõi chi nhánh · Chi nhánh Cajamarca / Sucursal Cajamarca</div>
+    <div class="header-title">Dashboard điều hành / Gestión · Chi nhánh Cajamarca / Sucursal Cajamarca</div>
+    <div class="header-sub">Báo cáo kinh doanh hàng tuần / Informe semanal de negocio · Nguồn / Fuente: Báo cáo tuần &amp; Cảnh báo thuê bao giảm / Alertas de bajas</div>
   </div>
-  <div class="header-controls">
-    <div class="header-pill">🇻🇳 Tiếng Việt <span style="opacity:.6">▾</span></div>
-    <div class="header-pill header-pill-data" id="headerBadge">
-      <span class="header-dot"></span>
-      Dữ liệu đến <strong id="headerDataDate">06/07</strong>
-    </div>
-    <div class="header-pill-white" id="headerUpdateDate">Cập nhật dữ liệu: 10/07/2026</div>
-  </div>
+  <div class="header-badge" id="headerBadge">📅 Dữ liệu đến W27 — 06/07/2026</div>
+<script>document.getElementById('headerBadge').textContent='📅 Dữ liệu đến '+CFG.header.week+' — '+CFG.header.date;</script>
 </div>
-<script>
-  (function(){
-    var d = CFG.header.date; // '06/07/2026'
-    var parts = d.split('/');
-    document.getElementById('headerDataDate').textContent = parts[0]+'/'+parts[1];
-  })();
-</script>
 
 <div class="page-tabs">
   <div class="page-tab active" onclick="switchPage('dashboard',this)">📊 Dashboard KPI</div>
@@ -1257,12 +1186,6 @@ const SALES = {
 </div>
 
 <div id="page-dashboard" class="page-pane active">
-<div class="yellow-hero">
-  <div style="max-width:var(--content-max-width,1280px);margin:0 auto">
-    <div class="yellow-hero-label">📊 TỔNG QUAN TUẦN / RESUMEN SEMANAL — <span id="heroWeekLabel"></span></div>
-    <div class="kpi-row" id="heroKpiRow"></div>
-  </div>
-</div>
 <div class="container">
 
   <!-- ── KPI CARDS — rendered by JS from CFG.kpi ── -->
@@ -1524,12 +1447,6 @@ const SALES = {
      SALES PAGE — BÁN HÀNG / VENTAS
 ════════════════════════════════════════════════ -->
 <div id="page-sales" class="page-pane">
-<div class="yellow-hero" id="salesHero">
-  <div style="max-width:var(--content-max-width,1280px);margin:0 auto">
-    <div class="yellow-hero-label" id="salesHeroLabel">📱 MOBILE — THÁNG <span id="heroSalesMonth"></span></div>
-    <div class="kpi-row" id="heroSalesKpiRow"></div>
-  </div>
-</div>
 <div class="container">
 
 <div id="salesMonthBar" style="display:flex;gap:10px;padding:12px 14px 0;align-items:center;flex-wrap:wrap">
@@ -1772,20 +1689,6 @@ function buildKPICards() {
   })();
 
   // ── 15C3D Sidebar Table + Caption + Note (dynamic) ──────────
-
-  // ── YELLOW HERO: clone KPI cards from kpiCards into heroKpiRow ──
-  (function(){
-    var src = document.getElementById('kpiCards');
-    var dst = document.getElementById('heroKpiRow');
-    if (src && dst) {
-      dst.innerHTML = src.innerHTML;
-    }
-    // Set week label
-    var hwl = document.getElementById('heroWeekLabel');
-    if (hwl) hwl.textContent = CFG.header.week || '';
-  })();
-
-  // ── 15C3D Sidebar Table + Caption + Note (dynamic) ──────────
   (function build15C3DTable() {
     const months = MONTHS, act = CFG.c15.actual, pl = CFG.c15.plan, ytd = CFG.c15.ytd;
     const last = act.length - 1;
@@ -1881,8 +1784,8 @@ function buildKPICards() {
         {
           label: 'KH tháng',
           data: kh15,
-          backgroundColor: 'rgba(148,163,184,0.15)',
-          borderColor: '#94a3b8',
+          backgroundColor: 'rgba(15,76,129,0.10)',
+          borderColor: '#0f4c81',
           borderWidth: 2,
           borderRadius: 4,
           yAxisID: 'y',
@@ -1903,9 +1806,9 @@ function buildKPICards() {
           data: ytdActual15,
           type: 'line',
           yAxisID: 'yYTD',
-          borderColor: '#1877B3',
-          backgroundColor: 'rgba(24,119,179,0.08)',
-          pointBackgroundColor: '#1877B3',
+          borderColor: '#e85d04',
+          backgroundColor: 'rgba(232,93,4,0.08)',
+          pointBackgroundColor: '#e85d04',
           pointRadius: 5,
           pointHoverRadius: 7,
           borderWidth: 2.5,
@@ -1918,9 +1821,9 @@ function buildKPICards() {
           data: ytdKH15,
           type: 'line',
           yAxisID: 'yYTD',
-          borderColor: '#94a3b8',
+          borderColor: '#0f4c81',
           borderDash: [5, 4],
-          pointBackgroundColor: '#94a3b8',
+          pointBackgroundColor: '#0f4c81',
           pointRadius: 4,
           pointHoverRadius: 6,
           borderWidth: 2,
@@ -1970,8 +1873,8 @@ function buildKPICards() {
         },
         yYTD: {
           position: 'right',
-          title: { display: true, text: 'Lũy kế (TB)', font: { size: 11 }, color: '#1877B3' },
-          ticks: { callback: v => (v/1000).toFixed(0)+'k', font: { size: 11 }, color: '#1877B3' },
+          title: { display: true, text: 'Lũy kế (TB)', font: { size: 11 }, color: '#e85d04' },
+          ticks: { callback: v => (v/1000).toFixed(0)+'k', font: { size: 11 }, color: '#e85d04' },
           grid: { display: false },
           suggestedMin: 0,
           suggestedMax: 45000,
@@ -1995,8 +1898,8 @@ function buildKPICards() {
         {
           label: 'KH Doanh thu (tr. PEN)',
           data: khRev,
-          backgroundColor: 'rgba(148,163,184,0.15)',
-          borderColor: '#94a3b8',
+          backgroundColor: 'rgba(15,76,129,0.10)',
+          borderColor: '#0f4c81',
           borderWidth: 2,
           borderRadius: 4,
           yAxisID: 'y',
@@ -2019,9 +1922,9 @@ function buildKPICards() {
           data: pctRev,
           type: 'line',
           yAxisID: 'yPct',
-          borderColor: '#1877B3',
-          backgroundColor: 'rgba(24,119,179,0.08)',
-          pointBackgroundColor: '#1877B3',
+          borderColor: '#e85d04',
+          backgroundColor: 'rgba(232,93,4,0.08)',
+          pointBackgroundColor: '#e85d04',
           pointRadius: 5,
           pointHoverRadius: 7,
           borderWidth: 2.5,
@@ -2059,8 +1962,8 @@ function buildKPICards() {
         },
         yPct: {
           position: 'right',
-          title: { display: true, text: '% Đạt', font: { size: 11 }, color: '#1877B3' },
-          ticks: { callback: v => v + '%', font: { size: 11 }, color: '#1877B3' },
+          title: { display: true, text: '% Đạt', font: { size: 11 }, color: '#e85d04' },
+          ticks: { callback: v => v + '%', font: { size: 11 }, color: '#e85d04' },
           grid: { display: false },
           min: 95,
           max: 110,
@@ -2097,7 +2000,7 @@ function buildKPICards() {
     const ctx = document.getElementById('activeMonthChart');
     if (!ctx) return;
     const colors = ACT_DATA.map(d => d.full ? 'rgba(15,76,129,0.82)' : 'rgba(234,88,12,0.75)');
-    const borderC = ACT_DATA.map(d => d.full ? '#03558B' : '#60a5fa');
+    const borderC = ACT_DATA.map(d => d.full ? '#0f4c81' : '#ea580c');
     new Chart(ctx.getContext('2d'), {
       type: 'bar',
       data: {
@@ -2305,10 +2208,10 @@ function buildKPICards() {
         {
           label: 'TB REG thực hiện / Real (TB)',
           data: absActualReg,
-          borderColor: '#1877B3',
-          backgroundColor: 'rgba(24,119,179,0.10)',
+          borderColor: '#e85d04',
+          backgroundColor: 'rgba(232,93,4,0.10)',
           fill: true,
-          pointBackgroundColor: '#1877B3',
+          pointBackgroundColor: '#e85d04',
           pointRadius: 5,
           pointHoverRadius: 8,
           borderWidth: 2.5,
@@ -2318,11 +2221,11 @@ function buildKPICards() {
         {
           label: 'KH / Plan (+3.500 TB/mes)',
           data: absKhReg,
-          borderColor: '#94a3b8',
+          borderColor: '#0f4c81',
           borderDash: [6, 4],
           backgroundColor: 'transparent',
           fill: false,
-          pointBackgroundColor: '#94a3b8',
+          pointBackgroundColor: '#0f4c81',
           pointRadius: 4,
           pointHoverRadius: 6,
           borderWidth: 2,
@@ -2365,8 +2268,8 @@ function buildKPICards() {
       scales: {
         y: {
           position: 'left',
-          title: { display: true, text: 'Thuê bao REG / Suscriptores REG', font: { size: 11 }, color: '#1877B3' },
-          ticks: { callback: v => (v/1000).toFixed(0)+'k', font: { size: 11 }, color: '#1877B3' },
+          title: { display: true, text: 'Thuê bao REG / Suscriptores REG', font: { size: 11 }, color: '#e85d04' },
+          ticks: { callback: v => (v/1000).toFixed(0)+'k', font: { size: 11 }, color: '#e85d04' },
           grid: { color: '#f1f5f9' },
           min: 295000,
           suggestedMax: 325000,
@@ -2440,7 +2343,7 @@ function buildKPICards() {
     });
 
     setTimeout(() => leafletMap.invalidateSize(), 100);
-    buildMlist(Object.values(allMarkers));
+    buildMlist('all');
   }
 
   function buildPopup(id, s, weeks) {
@@ -2527,10 +2430,10 @@ function buildKPICards() {
     const el = document.getElementById('mlist');
     if (!el) return;
     const sorted = [...mkList].sort((a, b) => {
-      const aw = (a.weeks||[]).includes('W27') ? 0 : 1;
-      const bw = (b.weeks||[]).includes('W27') ? 0 : 1;
+      const aw = a.weeks.includes('W27') ? 0 : 1;
+      const bw = b.weeks.includes('W27') ? 0 : 1;
       if (aw !== bw) return aw - bw;
-      return (((a.s||{}).c||[0,0,0])[2]) - (((b.s||{}).c||[0,0,0])[2]);
+      return ((a.s.c||[0,0,0])[2]) - ((b.s.c||[0,0,0])[2]);
     });
     document.getElementById('mlistCount').textContent = sorted.length ? `(${sorted.length})` : '';
     el.innerHTML = '';
@@ -3150,7 +3053,7 @@ function buildKenhCatalog(m) {
     'Dealer':'🚗','Small CAB':'🏘','Small Dealer':'🔑','Islas BITEL':'🏝','Retail':'🛍',
     'Mini Store':'🛒','Dealer Online':'🌐','Agente BIPAY':'💳','Negocios BIPAY':'💼','Tusami':'🤖','FTTH':'📶'};
   var GROUP_LABEL = {mobile:'📱 Kênh Mobile', digital:'💻 Kênh Digital'};
-  var GROUP_COLOR = {mobile:'#03558B', digital:'#6d28d9'};
+  var GROUP_COLOR = {mobile:'#0f4c81', digital:'#6d28d9'};
 
   function getPs(bc, ch) {
     var mps = KENH_PS[m];
@@ -3499,37 +3402,5 @@ function buildDigitalPage(m) {
 
 </script>
 
-
-
-<script>
-// ── YELLOW HERO: patch renderSalesMonth to also update hero row ──
-(function(){
-  var _orig = window.renderSalesMonth;
-  if (typeof _orig !== 'function') {
-    // renderSalesMonth is declared in same scope, patch after DOMReady
-    document.addEventListener('DOMContentLoaded', function(){ patchSalesHero(); });
-  } else {
-    patchSalesHero();
-  }
-  function patchSalesHero() {
-    // renderSalesMonth is a plain function declaration, accessible globally
-    var orig = renderSalesMonth;
-    window.renderSalesMonth = function(m) {
-      orig(m);
-      // After original renders salesKpiRow, clone it to hero
-      var src = document.getElementById('salesKpiRow');
-      var dst = document.getElementById('heroSalesKpiRow');
-      if (src && dst) dst.innerHTML = src.innerHTML;
-      var ml = document.getElementById('heroSalesMonth');
-      if (ml) ml.textContent = 'T' + m + '/2026';
-      var hl = document.getElementById('salesHeroLabel');
-      if (hl) {
-        var D = SALES_DATA[m];
-        if (D && D.label) hl.innerHTML = '📱 MOBILE — ' + D.label.replace('T'+m+' — ','');
-      }
-    };
-  }
-})();
-</script>
 </body>
 </html>
