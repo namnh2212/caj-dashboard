@@ -684,12 +684,12 @@ const KENH_PS = {
     CAJBC14:{Promotores:16,POS:25,'Dealer Autorizado':10,Store:1,'Small CAB':1},
   },
   7: {
-    CAJBC01:{Promotores:45,POS:23,'Dealer Autorizado':9,'CAB Dealer':1,Store:3,Dealer:1,'Small CAB':7,'Islas BITEL':2,Retail:2},
-    CAJBC07:{Promotores:17,POS:44,'Dealer Autorizado':10,'CAB Dealer':2,Dealer:1},
-    CAJBC08:{Promotores:7,POS:30,'Dealer Autorizado':7,'CAB Dealer':1,Dealer:1},
-    CAJBC05:{Promotores:15,POS:34,'Dealer Autorizado':9,'CAB Dealer':1,Dealer:1,'Mini Store':1},
-    CAJBC10:{Promotores:12,POS:21,'Dealer Autorizado':5,'CAB Dealer':1,Dealer:1},
-    CAJBC14:{Promotores:9,POS:5,'Dealer Autorizado':4,Store:1,'Small CAB':1},
+    CAJBC01:{Promotores:43,POS:25,'Dealer Autorizado':11,'Small CAB':7,Store:3,'Islas BITEL':2,Retail:2,Dealer:1,'CAB Dealer':1,'Small Dealer':1,'Bitel Staff':1},
+    CAJBC07:{POS:39,'Dealer Autorizado':22,Promotores:14,'CAB Dealer':2,Dealer:1},
+    CAJBC08:{POS:43,'Dealer Autorizado':11,Promotores:9,'CAB Dealer':1,Dealer:1},
+    CAJBC05:{POS:40,Promotores:18,'Dealer Autorizado':14,'CAB Dealer':1,Dealer:1,'Mini Store':1},
+    CAJBC10:{POS:19,'Dealer Autorizado':14,Promotores:10,Dealer:1,'CAB Dealer':1},
+    CAJBC14:{POS:14,'Dealer Autorizado':10,Promotores:9,'Small CAB':1,Store:1},
   },
 };
 
@@ -699,7 +699,7 @@ const DIGITAL_DATA = {
   // CẬP NHẬT: chỉ sửa byBC (DM từ Ds Agente) + giaoDich (TX từ Agente co giao dich)
   // Nguồn DM : Ds Agente DDMMYYYY.xls  — cột C=BC, F=Canal, AE=Phone
   // Nguồn TX  : Agente co giao dich DDMM.xlsx — PROFILE=AGENTE BIPAY/MERCHANT, K=PHONENUMBER
-  srcDate: '12/07/2026-12/07/2026',
+  srcDate: '20/07/2026-20/07/2026',
   // newThisMonth = số kênh tạo mới TRONG THÁNG m (Fecha de creación = tháng m, năm 2026)
   newThisMonth: {
     1: {CAJBC01:{a:7,  n:43}, CAJBC07:{a:2,  n:51}, CAJBC08:{a:0, n:2},  CAJBC05:{a:2,  n:24}, CAJBC10:{a:0,  n:68}, CAJBC14:{a:0,  n:47}},
@@ -708,7 +708,7 @@ const DIGITAL_DATA = {
     4: {CAJBC01:{a:10, n:28}, CAJBC07:{a:9,  n:3},  CAJBC08:{a:3, n:0},  CAJBC05:{a:27, n:20}, CAJBC10:{a:8,  n:25}, CAJBC14:{a:6,  n:9} },
     5: {CAJBC01:{a:2,  n:33}, CAJBC07:{a:4,  n:17}, CAJBC08:{a:0, n:2},  CAJBC05:{a:27, n:17}, CAJBC10:{a:1,  n:17}, CAJBC14:{a:0,  n:4} },
     6: {CAJBC01:{a:4,  n:26}, CAJBC07:{a:5,  n:5},  CAJBC08:{a:0, n:3},  CAJBC05:{a:33, n:28}, CAJBC10:{a:2,  n:13}, CAJBC14:{a:0,  n:2} },
-    7: {CAJBC01:{a:4,  n:8},  CAJBC07:{a:6,  n:9},  CAJBC08:{a:1, n:9},  CAJBC05:{a:12, n:13}, CAJBC10:{a:0,  n:7},  CAJBC14:{a:0,  n:2} },
+    7: {CAJBC01:{a:5,  n:12}, CAJBC07:{a:10, n:11}, CAJBC08:{a:3, n:9},  CAJBC05:{a:16, n:21}, CAJBC10:{a:1,  n:10}, CAJBC14:{a:1,  n:4} },
   },
   channels: ['Agente BIPAY', 'Negocios BIPAY', 'Tusami'],
   // nuevosDM = lũy kế Agente/Negocios được tạo đến cuối tháng m (Fecha de creación cột BF)
@@ -721,16 +721,16 @@ const DIGITAL_DATA = {
     4: {CAJBC01:{a:40,  n:155}, CAJBC07:{a:54, n:87},  CAJBC08:{a:15, n:13}, CAJBC05:{a:82,  n:110}, CAJBC10:{a:41,  n:192}, CAJBC14:{a:36, n:114}},
     5: {CAJBC01:{a:42,  n:188}, CAJBC07:{a:58, n:104}, CAJBC08:{a:15, n:15}, CAJBC05:{a:109, n:127}, CAJBC10:{a:42,  n:209}, CAJBC14:{a:36, n:118}},
     6: {CAJBC01:{a:46,  n:214}, CAJBC07:{a:63, n:109}, CAJBC08:{a:15, n:18}, CAJBC05:{a:142, n:155}, CAJBC10:{a:44,  n:222}, CAJBC14:{a:36, n:120}},
-    7: {CAJBC01:{a:50,  n:222}, CAJBC07:{a:69, n:118}, CAJBC08:{a:16, n:27}, CAJBC05:{a:154, n:168}, CAJBC10:{a:44,  n:229}, CAJBC14:{a:36, n:122}},
+    7: {CAJBC01:{a:51,  n:226}, CAJBC07:{a:67, n:120}, CAJBC08:{a:16, n:27}, CAJBC05:{a:139, n:176}, CAJBC10:{a:43,  n:232}, CAJBC14:{a:23, n:124}},
   },
   // DM = số kênh trong danh mục (Ds Agente 29/06)
   byBC: {
-    CAJBC01: {'Agente BIPAY':50,  'Negocios BIPAY':222, 'Tusami':1},
-    CAJBC07: {'Agente BIPAY':69,  'Negocios BIPAY':118, 'Tusami':0},
+    CAJBC01: {'Agente BIPAY':51,  'Negocios BIPAY':226, 'Tusami':1},
+    CAJBC07: {'Agente BIPAY':67,  'Negocios BIPAY':120, 'Tusami':0},
     CAJBC08: {'Agente BIPAY':16,  'Negocios BIPAY':27,  'Tusami':0},
-    CAJBC05: {'Agente BIPAY':154, 'Negocios BIPAY':168, 'Tusami':0},
-    CAJBC10: {'Agente BIPAY':44,  'Negocios BIPAY':229, 'Tusami':0},
-    CAJBC14: {'Agente BIPAY':36,  'Negocios BIPAY':122, 'Tusami':0},
+    CAJBC05: {'Agente BIPAY':139, 'Negocios BIPAY':176, 'Tusami':0},
+    CAJBC10: {'Agente BIPAY':43,  'Negocios BIPAY':232, 'Tusami':0},
+    CAJBC14: {'Agente BIPAY':23,  'Negocios BIPAY':124, 'Tusami':0},
   },
   // giaoDich = số kênh có phát sinh giao dịch, theo từng tháng
   // a=Agente BIPAY, n=Negocios BIPAY; dm=danh mục, tx=có giao dịch
