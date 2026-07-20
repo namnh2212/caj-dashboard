@@ -1453,7 +1453,7 @@ const SALES = {
           <div class="chart-box" style="height:240px">
             <canvas id="activeMonthChart"></canvas>
           </div>
-          <p class="caption" id="activeMonthCaption">Nguồn: file Active hàng tháng · T7 là MTD (1-12/07/2026)</p>
+          <p class="caption" id="activeMonthCaption">Nguồn: file Active hàng tháng · T7 là MTD (1-20/07/2026)</p>
         </div>
         <div class="info-panel">
           <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:6px">ACTIVE MTD / MES (Activaciones)</div>
@@ -1620,7 +1620,7 @@ const SALES = {
            background:#fff;cursor:pointer;outline:none;min-width:180px;color:var(--text)">
     <option value="5">T5/2026 — 01-31/05</option>
     <option value="6">T6/2026 — 01-30/06</option>
-    <option value="7">T7/2026 — 01-12/07</option>
+    <option value="7">T7/2026 — 01-20/07</option>
   </select>
   <span id="salesSelectedNote" style="font-size:11px;color:var(--muted)"></span>
 </div>
@@ -3009,7 +3009,7 @@ function updateStaffSection(m) {
 function updateKenhCatalogHeader(m) {
   const el = document.getElementById('kenhCatalogTitle');
   if (el) {
-    const labels = {5:'T5 — 01-31/05/2026', 6:'T6 — 01-30/06/2026', 7:'T7 — 01-12/07/2026'};
+    const labels = {5:'T5 — 01-31/05/2026', 6:'T6 — 01-30/06/2026', 7:'T7 — 01-20/07/2026'};
     el.textContent = '🗂️ Danh mục kênh / Catálogo de Canales — ' + (labels[m]||'');
   }
 }
@@ -3256,7 +3256,7 @@ function buildKenhCatalog(m) {
   bar.innerHTML = barHtml;
 
   // Footnote
-  var mnL = {5:'T5 1-31/05',6:'T6 1-30/06',7:'T7 1-12/07'};
+  var mnL = {5:'T5 1-31/05',6:'T6 1-30/06',7:'T7 1-20/07'};
   var fnEl = document.getElementById('kenhFootnote');
   if (fnEl) fnEl.innerHTML = '* Không tính <em>Staff in Point Of Sale channel</em>. DM = số kênh trong danh mục. PS = kênh có phát sinh Active '+(mnL[m]||'')+'.<br>Kênh BIPAY (Agente/Negocios) không phát sinh Active thông thường.';
 
@@ -3383,7 +3383,7 @@ function buildDigitalPage(m) {
   var BL   = {CAJBC01:'BC01',CAJBC07:'BC07',CAJBC08:'BC08',CAJBC05:'BC05',CAJBC10:'BC10',CAJBC14:'BC14'};
   var gc   = '#6d28d9';
   var mLbl = {5:'T5/2026',6:'T6/2026',7:'T7/2026 (MTD)'}[m] || 'T'+m;
-  var dtRange = {5:'01-31/05/2026',6:'01-30/06/2026',7:'01-12/07/2026'}[m] || '';
+  var dtRange = {5:'01-31/05/2026',6:'01-30/06/2026',7:'01-20/07/2026'}[m] || '';
   var channels = DIGITAL_DATA.channels;
   var byBC     = DIGITAL_DATA.byBC;
   var gdAll    = DIGITAL_DATA.giaoDich || {};
