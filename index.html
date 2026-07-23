@@ -1628,14 +1628,15 @@ const SALES = {
     <div class="msec">
       <h2>Lọc theo tuần cảnh báo / Filtrar por semana</h2>
       <div style="display:flex;flex-wrap:wrap;gap:4px">
-        <button class="mwbtn active" data-week="all" onclick="setWeekFilter('all',this)">Tất cả (507)</button>
-        <button class="mwbtn" data-week="alert" onclick="setWeekFilter('alert',this)">⚠️ Cảnh báo (45)</button>
-        <button class="mwbtn" data-week="W26" onclick="setWeekFilter('W26',this)">W26 (26)</button>
-        <button class="mwbtn" data-week="W27" onclick="setWeekFilter('W27',this)">W27 (25)</button>
-        <button class="mwbtn" data-week="W28" onclick="setWeekFilter('W28',this)" style="border-color:#dc2626;color:#dc2626;font-weight:700">🆕 W28 (20)</button>
-        <button class="mwbtn" data-week="W25" onclick="setWeekFilter('W25',this)">W25 (17)</button>
-        <button class="mwbtn" data-week="W24" onclick="setWeekFilter('W24',this)">W24 (14)</button>
-        <button class="mwbtn" data-week="W23" onclick="setWeekFilter('W23',this)">W23 (10)</button>
+        <button class="mwbtn" data-week="all" onclick="setWeekFilter('all',this)">Tất cả (524)</button>
+        <button class="mwbtn" data-week="alert" onclick="setWeekFilter('alert',this)">⚠️ Cảnh báo (60)</button>
+        <button class="mwbtn active" data-week="W29" onclick="setWeekFilter('W29',this)" style="border-color:#dc2626;color:#dc2626;font-weight:700">🆕 W29 (27)</button>
+        <button class="mwbtn" data-week="W28" onclick="setWeekFilter('W28',this)">W28 (20)</button>
+        <button class="mwbtn" data-week="W27" onclick="setWeekFilter('W27',this)">W27 (23)</button>
+        <button class="mwbtn" data-week="W26" onclick="setWeekFilter('W26',this)">W26 (23)</button>
+        <button class="mwbtn" data-week="W25" onclick="setWeekFilter('W25',this)">W25 (14)</button>
+        <button class="mwbtn" data-week="W24" onclick="setWeekFilter('W24',this)">W24 (11)</button>
+        <button class="mwbtn" data-week="W23" onclick="setWeekFilter('W23',this)">W23 (8)</button>
         <button class="mwbtn" data-week="W22" onclick="setWeekFilter('W22',this)">W22 (20)</button>
       </div>
     </div>
@@ -2532,7 +2533,7 @@ function buildKPICards() {
     return '#a78bfa';
   }
 
-  let allMarkers = {}, curFilter = 'all', curSearch = '';
+  let allMarkers = {}, curFilter = 'W29', curSearch = '';
 
   function initLeafletMap() {
     leafletMap = L.map('leaflet-map', { center: [-6.9, -78.55], zoom: 8 });
@@ -2558,7 +2559,7 @@ function buildKPICards() {
     });
 
     setTimeout(() => leafletMap.invalidateSize(), 100);
-    buildMlist('all');
+    applyFilter();
   }
 
   function buildPopup(id, s, weeks) {
@@ -2645,8 +2646,8 @@ function buildKPICards() {
     const el = document.getElementById('mlist');
     if (!el) return;
     const sorted = [...mkList].sort((a, b) => {
-      const aw = a.weeks.includes('W28') ? 0 : a.weeks.includes('W27') ? 1 : 2;
-      const bw = b.weeks.includes('W28') ? 0 : b.weeks.includes('W27') ? 1 : 2;
+      const aw = a.weeks.includes('W29') ? 0 : a.weeks.includes('W28') ? 1 : 2;
+      const bw = b.weeks.includes('W29') ? 0 : b.weeks.includes('W28') ? 1 : 2;
       if (aw !== bw) return aw - bw;
       return ((a.s.c||[0,0,0])[2]) - ((b.s.c||[0,0,0])[2]);
     });
