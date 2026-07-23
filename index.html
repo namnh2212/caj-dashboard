@@ -1283,6 +1283,7 @@ const SALES = {
     .mwbtn:hover { background:#f1f5f9; }
     .mwbtn.active { background:#eff6ff;border-color:#3b82f6;color:#1d4ed8; }
     .lwb-W25 { background:#450a0a;color:#fca5a5;border:1px solid #b91c1c; }
+    .lwb-5g { background:#ede9fe;color:#6d28d9;border:1px solid #7c3aed;font-weight:700; }
     .lpu-pos { color:#16a34a;font-weight:700; }
     .lpu-neg { color:#dc2626;font-weight:700; }
     .lpu-tbl { width:100%;font-size:11px;border-collapse:collapse;margin:5px 0; }
@@ -1630,6 +1631,7 @@ const SALES = {
       <div style="display:flex;flex-wrap:wrap;gap:4px">
         <button class="mwbtn" data-week="all" onclick="setWeekFilter('all',this)">Tất cả (524)</button>
         <button class="mwbtn" data-week="alert" onclick="setWeekFilter('alert',this)">⚠️ Cảnh báo (60)</button>
+        <button class="mwbtn" data-week="5g" onclick="setWeekFilter('5g',this)" style="border-color:#7c3aed;color:#6d28d9;font-weight:700">📶 5G (65)</button>
         <button class="mwbtn active" data-week="W29" onclick="setWeekFilter('W29',this)" style="border-color:#dc2626;color:#dc2626;font-weight:700">🆕 W29 (27)</button>
         <button class="mwbtn" data-week="W28" onclick="setWeekFilter('W28',this)">W28 (20)</button>
         <button class="mwbtn" data-week="W27" onclick="setWeekFilter('W27',this)">W27 (23)</button>
@@ -2546,16 +2548,20 @@ function buildKPICards() {
       const weeks = STATION_WEEKS[id] || [];
       const color = stationColor(id, weeks);
       const isAlert = !!color;
+      const is5G = !!s.g5;
       const deltaAbs = s.c ? Math.abs(s.c[2]) : 0;
-      const r = isAlert ? Math.max(7, Math.min(22, deltaAbs/18 + 6)) : 4;
+      const r = isAlert ? Math.max(7, Math.min(22, deltaAbs/18 + 6)) : (is5G ? 6 : 4);
 
       const m = L.circleMarker([s.lat, s.lon], {
-        radius: r, color: color||'#94a3b8', weight: isAlert ? 2 : 0.5,
-        fillColor: color||'#94a3b8', fillOpacity: isAlert ? 0.82 : 0.38,
+        radius: r,
+        color: is5G ? '#7c3aed' : (color||'#94a3b8'),
+        weight: is5G ? 2.5 : (isAlert ? 2 : 0.5),
+        fillColor: color||'#94a3b8',
+        fillOpacity: isAlert ? 0.82 : (is5G ? 0.6 : 0.38),
       });
       m.bindPopup(() => buildPopup(id, s, weeks), { maxWidth: 290 });
       m.addTo(leafletMap);
-      allMarkers[id] = { m, s, id, weeks, isAlert };
+      allMarkers[id] = { m, s, id, weeks, isAlert, is5G };
     });
 
     setTimeout(() => leafletMap.invalidateSize(), 100);
@@ -2594,7 +2600,7 @@ function buildKPICards() {
       </div>` : '';
 
     return `<div class="lpu">
-      <div class="lpu-code">${id}</div>
+      <div class="lpu-code">${id}${s.g5 ? '<span class="lwb lwb-5g">📶 5G</span>' : ''}</div>
       <div class="lpu-addr">📍 ${s.bc||''}${s.bc?' · ':''}${s.zone||''} · ${s.prov||''}${s.dist?', '+s.dist:''}</div>
       <table class="lpu-tbl"><thead><tr><th colspan="2">15C3D / Suscriptores 15C3D</th></tr></thead><tbody>${c15html}</tbody></table>
       <table class="lpu-tbl"><thead><tr><th colspan="2">REG / Suscriptores REG</th></tr></thead><tbody>${reghtml}</tbody></table>
@@ -2632,12 +2638,14 @@ function buildKPICards() {
         show = true;
       } else if (curFilter === 'alert') {
         show = mk.isAlert;
+      } else if (curFilter === '5g') {
+        show = mk.is5G;
       } else {
         show = mk.weeks.includes(curFilter);
       }
       if (show) { if (!leafletMap.hasLayer(mk.m)) mk.m.addTo(leafletMap); }
       else       { if (leafletMap.hasLayer(mk.m))  leafletMap.removeLayer(mk.m); }
-      if (show && (mk.isAlert || curSearch)) alertList.push(mk);
+      if (show && (mk.isAlert || curSearch || curFilter === '5g')) alertList.push(mk);
     });
     buildMlist(alertList);
   }
