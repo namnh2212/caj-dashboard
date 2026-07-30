@@ -31,13 +31,13 @@
 const CFG = {
 
   // ── KỲ BÁO CÁO ──────────────────────────────────────────────
-  header: { week: 'W29', date: '19/07/2026' },
+  header: { week: 'W30', date: '27/07/2026' },
 
   // ── NHÃN THÁNG ───────────────────────────────────────────────
   months: ['T1/26', 'T2/26', 'T3/26', 'T4/26', 'T5/26', 'T6/26', 'T7/26'],
 
   // ── CẢNH BÁO TRẠM (cập nhật hàng tuần) ──────────────────────
-  alert: { week: 'W29', total: 29, ongoing: 19, new: 10, regOnly: 6 },
+  alert: { week: 'W30', total: 35, ongoing: 24, new: 11, regOnly: 3 },
 
   // ── DỮ LIỆU THUÊ BAO 15C3D HÀNG THÁNG ───────────────────────
   c15: {
@@ -476,9 +476,9 @@ CFG.stations = {
     ],
     regOnlyList:'CAJ0203(-227,CAJAMARCA,0.39h), CAJ0089B4U(-198,CAJABAMBA,219h🔴), CAJ0299(-170,CUTERVO,167h🔴), CAJ0159B3U1(-169,CAJABAMBA,0h), CAJ0263(-168,BAMBAMARCA,44h), CAJ0016(-159,CAJAMARCA,37h), CAJ0195(-129,BAMBAMARCA,1h), CAJ0125(-129,CAJAMARCA,0h), CAJ0065B3U(-125,CAJAMARCA,0h), CAJ0113B3U2(-123,CELEDIN,0.21h), CAJ0296(-105,CELEDIN,126h🔴), CAJ0242(-104,CELEDIN,6.77h)',
   },
-  // -- W29 -- TUAN HIEN TAI (13/07-19/07/2026) --
+  // -- W29 (13/07-19/07/2026) --
   w29: {
-    label:'🆕 W29 (13/07–19/07)', count:29, delta15:-5301, regOnlyCount:6,
+    label:'W29 (13/07–19/07)', count:29, delta15:-5301, regOnlyCount:6,
     ongoing:[
       {id:'CAJ0317',bc:'BC05',zona:'CUTERVO/Cutervo',d15p:-530,d15:-708,dReg:-1008,cellh:8.6,sev:'a',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC05',responsible:'BC05',deadline:'',estado:'pending'},
       {id:'CAJ0002',bc:'BC01',zona:'CAJAMARCA/Cajamarca',d15p:-559,d15:-626,dReg:-986,cellh:5.76,sev:'a',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC01',responsible:'BC01',deadline:'',estado:'pending'},
@@ -516,6 +516,54 @@ CFG.stations = {
       {id:'CAJ0025',bc:'BC14',d15p:-20,d15:17,trend:'e',dReg:2,cellh:333.58,sev:'c'},
     ],
     regOnlyList:'CAJ0141(-136,CAJAMARCA,0h), CAJ3048(-127,CUTERVO,3.91h), CAJ0113B3U2(-125,CELEDIN,0.21h), CAJ0112(-121,CAJAMARCA,122.44h🔴), CAJ0403(-110,CUTERVO,74.34h), CAJ0195(-108,BAMBAMARCA,0.93h)',
+  },
+  // -- W30 -- TUAN HIEN TAI (20/07-27/07/2026) --
+  w30: {
+    label:'🆕 W30 (20/07–27/07)', count:35, delta15:-7254, regOnlyCount:3,
+    ongoing:[
+      {id:'CAJ0002',bc:'BC01',zona:'CAJAMARCA/Cajamarca',d15p:-626,d15:-571,dReg:-649,cellh:126.44,sev:'h',trend:'r',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC01',responsible:'BC01',deadline:'',estado:'pending'},
+      {id:'CAJ0107',bc:'BC07',zona:'BAMBAMARCA/Hualgayoc/Bambamarca',d15p:-140,d15:-430,dReg:-459,cellh:1246.09,sev:'x',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC07',responsible:'BC07',deadline:'',estado:'pending'},
+      {id:'CAJ0042',bc:'BC07',zona:'BAMBAMARCA/Chota',d15p:-282,d15:-412,dReg:-430,cellh:0,sev:'a',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC07',responsible:'BC07',deadline:'',estado:'pending'},
+      {id:'CAJ0002B3U1',bc:'BC01',zona:'CAJAMARCA/Cajamarca',d15p:-304,d15:-371,dReg:-421,cellh:126.44,sev:'h',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên',solution:'Khảo sát nguyên nhân + campañas CAJBC01',responsible:'BC01',deadline:'',estado:'pending'},
+      {id:'CAJ0469',bc:'BC07',zona:'—',d15p:-443,d15:-313,dReg:-356,cellh:405.54,sev:'c',trend:'r',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas —',responsible:'BC07',deadline:'',estado:'pending'},
+      {id:'CAJ0182B3U1',bc:'BC10',zona:'CAJABAMBA/Celendín/Sorochuco',d15p:-237,d15:-306,dReg:-331,cellh:3.75,sev:'a',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC10',responsible:'BC10',deadline:'',estado:'pending'},
+      {id:'CAJ0089',bc:'BC10',zona:'CAJABAMBA/Celendín/Sucre',d15p:-159,d15:-273,dReg:-303,cellh:803.48,sev:'x',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC10',responsible:'BC10',deadline:'',estado:'pending'},
+      {id:'CAJ0402B3U1',bc:'BC01',zona:'CAJAMARCA/Cutervo/Querocotillo',d15p:-224,d15:-263,dReg:-324,cellh:388.47,sev:'c',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC01',responsible:'BC01',deadline:'',estado:'pending'},
+      {id:'CAJ0063B3U',bc:'BC14',zona:'CAJAMARCA/Contumazá',d15p:-206,d15:-257,dReg:-281,cellh:4.6,sev:'a',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC14',responsible:'BC14',deadline:'',estado:'pending'},
+      {id:'CAJ0381',bc:'BC01',zona:'CAJAMARCA/Cajamarca',d15p:-155,d15:-234,dReg:-303,cellh:3.7,sev:'a',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC01',responsible:'BC01',deadline:'',estado:'pending'},
+      {id:'CAJ2011',bc:'BC01',zona:'CAJAMARCA/Los Baños del Inca',d15p:-174,d15:-226,dReg:-181,cellh:11.59,sev:'a',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC01',responsible:'BC01',deadline:'',estado:'pending'},
+      {id:'CAJ0016',bc:'BC01',zona:'CAJAMARCA/Cajamarca',d15p:-126,d15:-196,dReg:-188,cellh:73.64,sev:'h',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân giảm REG + campañas CAJBC01',responsible:'BC01',deadline:'',estado:'pending'},
+      {id:'CAJ0089B4U',bc:'BC10',zona:'CAJABAMBA/Celendín/Sucre',d15p:-144,d15:-183,dReg:-200,cellh:803.48,sev:'x',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân giảm REG + campañas CAJBC10',responsible:'BC10',deadline:'',estado:'pending'},
+      {id:'CAJ0159B3U1',bc:'BC10',zona:'CAJABAMBA/Celendín',d15p:-114,d15:-180,dReg:-179,cellh:107.01,sev:'h',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân TL INDICA QUE NO PRESENTA PROBLEMA',solution:'Theo dõi tiếp — đã thoát khỏi danh sách cảnh báo / Continuar monitoreo — salió de la alerta',responsible:'BC10',deadline:'',estado:'done'},
+      {id:'CAJ0181',bc:'BC07',zona:'BAMBAMARCA/Chota',d15p:-124,d15:-169,dReg:-166,cellh:381.18,sev:'c',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC07',responsible:'BC07',deadline:'',estado:'pending'},
+      {id:'CAJ0220',bc:'BC01',zona:'CAJAMARCA/Los Baños del Inca',d15p:-48,d15:-165,dReg:-205,cellh:24.53,sev:'a',trend:'c',cause:'Mất điện — Corte de energía CORTE DE ENERGÍA',solution:'Campañas khu Los Baños del Inca + theo dõi điện SOS ATIENDE CORTE DE ENERGIA',responsible:'BC01',deadline:'',estado:'pending'},
+      {id:'CAJ0014',bc:'BC01',zona:'CAJAMARCA/Los Baños del Inca',d15p:-138,d15:-128,dReg:-152,cellh:101.55,sev:'h',trend:'r',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC01',responsible:'BC01',deadline:'',estado:'pending'},
+      {id:'CAJ0015',bc:'BC01',zona:'CAJAMARCA/Cajamarca',d15p:-108,d15:-127,dReg:-79,cellh:0,sev:'a',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC01',responsible:'BC01',deadline:'',estado:'pending'},
+      {id:'CAJ0125',bc:'BC01',zona:'CAJAMARCA/Contumazá/Chilete',d15p:-113,d15:-126,dReg:-128,cellh:2.59,sev:'a',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân giảm REG + campañas CAJBC01',responsible:'BC01',deadline:'',estado:'pending'},
+      {id:'CAJ0198',bc:'BC05',zona:'BAMBAMARCA/Chota/Lajas',d15p:-129,d15:-124,dReg:-153,cellh:1.23,sev:'a',trend:'r',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC08',responsible:'BC05',deadline:'',estado:'pending'},
+      {id:'CAJ0110',bc:'BC05',zona:'CUTERVO/Cutervo',d15p:-67,d15:-86,dReg:-106,cellh:0,sev:'a',trend:'c',cause:'Thay thiết bị 5G — cell*h chỉ 1.48h (ngắn) CONGESTION, Lima solicito optimizacion en caj0421, cambios se realizaron pero problema persiste',solution:'Campañas hàng ngày + theo dõi phục hồi',responsible:'BC05',deadline:'',estado:'pending'},
+      {id:'CAJ0203',bc:'BC01',zona:'CAJAMARCA/Cajamarca',d15p:-127,d15:-67,dReg:-79,cellh:11.41,sev:'a',trend:'r',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân giảm REG + campañas CAJBC01',responsible:'BC01',deadline:'',estado:'pending'},
+      {id:'CAJ0252',bc:'BC07',zona:'BAMBAMARCA/Chota',d15p:-2,d15:-7,dReg:-6,cellh:0.57,sev:'a',trend:'c',cause:'Cáp không phù hợp — cần thay cáp 2x25 Presenta problemas con cables inadecuados, se necesita cable de 2x25 autoportante para ambos tramos. TL debia realiza inspeccion el 25/06',solution:'Kiểm tra kho cáp + thay cáp 2x25 + campañas BC07',responsible:'BC07',deadline:'',estado:'pending'},
+      {id:'CAJ0361',bc:'BC01',zona:'CAJAMARCA/Cajamarca',d15p:-18,d15:-5,dReg:-23,cellh:44.69,sev:'a',trend:'r',cause:'Sin reporte previo — chưa có báo cáo nguyên nhân TL INDICA QUE SE PRESENTABA PROBLEMA CON CRC',solution:'Khảo sát nguyên nhân + campañas BC01 TL INDICA SOLUCION CON CRC',responsible:'BC01',deadline:'',estado:'pending'},
+    ],
+    newW:[
+      {id:'CAJ0236',bc:'—',zona:'CHIPLE/Jaén/Colasay',d15:-606,dReg:-656,cellh:0,sev:'a',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas —',responsible:'—',deadline:'',estado:'pending'},
+      {id:'CAJ0079B3U1',bc:'BC08',zona:'CELEDIN/Cajabamba/Cachachi',d15:-264,dReg:-327,cellh:104.94,sev:'h',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC08',responsible:'BC08',deadline:'',estado:'pending'},
+      {id:'CAJ0141',bc:'BC01',zona:'CAJAMARCA/Cajamarca',d15:-196,dReg:-214,cellh:122.79,sev:'h',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC01',responsible:'BC01',deadline:'',estado:'pending'},
+      {id:'CAJ0003',bc:'BC01',zona:'CAJAMARCA/Cajamarca',d15:-165,dReg:-129,cellh:32.07,sev:'a',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC01',responsible:'BC01',deadline:'',estado:'pending'},
+      {id:'CAJ0498',bc:'BC01',zona:'CAJAMARCA/Encañada',d15:-138,dReg:-158,cellh:1019.42,sev:'x',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC01',responsible:'BC01',deadline:'',estado:'pending'},
+      {id:'CAJ0046B3U1',bc:'BC05',zona:'CUTERVO/Cutervo',d15:-120,dReg:-117,cellh:543.11,sev:'x',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC05',responsible:'BC05',deadline:'',estado:'pending'},
+      {id:'CAJ0575',bc:'—',zona:'—',d15:-115,dReg:-108,cellh:4.64,sev:'a',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas —',responsible:'—',deadline:'',estado:'pending'},
+      {id:'CAJ0113B3U2',bc:'BC08',zona:'CELEDIN/San Marcos/Pedro Gálvez',d15:-114,dReg:-123,cellh:0,sev:'a',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân giảm REG + campañas CAJBC08',responsible:'BC08',deadline:'',estado:'pending'},
+      {id:'CAJ0053',bc:'BC08',zona:'CELEDIN/Cajabamba',d15:-107,dReg:-107,cellh:3.16,sev:'a',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC08',responsible:'BC08',deadline:'',estado:'pending'},
+      {id:'LAM0278',bc:'—',zona:'—',d15:-106,dReg:-115,cellh:0,sev:'a',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas —',responsible:'—',deadline:'',estado:'pending'},
+      {id:'CAJ0471',bc:'BC07',zona:'BAMBAMARCA/Chota/Huambos',d15:-104,dReg:-129,cellh:0.69,sev:'a',trend:'c',cause:'Sin reporte previo / Chưa có báo cáo nguyên nhân',solution:'Khảo sát nguyên nhân + campañas CAJBC07',responsible:'BC07',deadline:'',estado:'pending'},
+    ],
+    improved:[
+      {id:'CAJ0023',bc:'BC14',d15p:-7,d15:19,trend:'e',dReg:59,cellh:0,sev:'a'},
+      {id:'CAJ0317',bc:'BC05',d15p:-708,d15:97,trend:'e',dReg:100,cellh:12.81,sev:'a'},
+    ],
+    regOnlyList:'CAJ0241(-156,CUTERVO,539.89h🔴), CAJ0112(-124,CAJAMARCA,917.3h🔴), CAJ0195(-118,BAMBAMARCA,0h)',
   },
 };
 const BCCH = {
@@ -1384,7 +1432,7 @@ const SALES = {
     <div class="header-title">Dashboard điều hành / Gestión · Chi nhánh Cajamarca / Sucursal Cajamarca</div>
     <div class="header-sub">Báo cáo kinh doanh hàng tuần / Informe semanal de negocio · Nguồn / Fuente: Báo cáo tuần &amp; Cảnh báo thuê bao giảm / Alertas de bajas</div>
   </div>
-  <div class="header-badge" id="headerBadge">📅 Dữ liệu đến W29 — 19/07/2026</div>
+  <div class="header-badge" id="headerBadge">📅 Dữ liệu đến W30 — 27/07/2026</div>
 <script>document.getElementById('headerBadge').textContent='📅 Dữ liệu đến '+CFG.header.week+' — '+CFG.header.date;</script>
 </div>
 
@@ -1591,7 +1639,8 @@ const SALES = {
         <button id="sol-btn-w26" onclick="filterSolution('w26')" class="sol-btn">W26 (22–29/06)</button>
         <button id="sol-btn-w27" onclick="filterSolution('w27')" class="sol-btn">W27 (29/06–06/07)</button>
         <button id="sol-btn-w28" onclick="filterSolution('w28')" class="sol-btn">W28 (06–12/07)</button>
-        <button id="sol-btn-w29" onclick="filterSolution('w29')" class="sol-btn sol-btn-active">🆕 W29 (13–19/07)</button>
+        <button id="sol-btn-w29" onclick="filterSolution('w29')" class="sol-btn">W29 (13–19/07)</button>
+        <button id="sol-btn-w30" onclick="filterSolution('w30')" class="sol-btn sol-btn-active">🆕 W30 (20–27/07)</button>
         <span style="font-size:12px;color:var(--muted);margin-left:8px">Lọc trạng thái:</span>
         <button id="sol-est-all" onclick="filterEstado('all')" class="sol-btn sol-btn-active">Tất cả</button>
         <button id="sol-est-pending" onclick="filterEstado('pending')" class="sol-btn">⏳ Chờ xử lý</button>
@@ -1630,9 +1679,10 @@ const SALES = {
       <h2>Lọc theo tuần cảnh báo / Filtrar por semana</h2>
       <div style="display:flex;flex-wrap:wrap;gap:4px">
         <button class="mwbtn" data-week="all" onclick="setWeekFilter('all',this)">Tất cả (524)</button>
-        <button class="mwbtn" data-week="alert" onclick="setWeekFilter('alert',this)">⚠️ Cảnh báo (60)</button>
+        <button class="mwbtn" data-week="alert" onclick="setWeekFilter('alert',this)">⚠️ Cảnh báo (68)</button>
         <button class="mwbtn" data-week="5g" onclick="setWeekFilter('5g',this)" style="border-color:#7c3aed;color:#6d28d9;font-weight:700">📶 5G (65)</button>
-        <button class="mwbtn active" data-week="W29" onclick="setWeekFilter('W29',this)" style="border-color:#dc2626;color:#dc2626;font-weight:700">🆕 W29 (27)</button>
+        <button class="mwbtn active" data-week="W30" onclick="setWeekFilter('W30',this)" style="border-color:#dc2626;color:#dc2626;font-weight:700">🆕 W30 (31)</button>
+        <button class="mwbtn" data-week="W29" onclick="setWeekFilter('W29',this)">W29 (27)</button>
         <button class="mwbtn" data-week="W28" onclick="setWeekFilter('W28',this)">W28 (20)</button>
         <button class="mwbtn" data-week="W27" onclick="setWeekFilter('W27',this)">W27 (23)</button>
         <button class="mwbtn" data-week="W26" onclick="setWeekFilter('W26',this)">W26 (23)</button>
@@ -2511,7 +2561,7 @@ function buildKPICards() {
   // ══════════════════════════════════════════
   //  LEAFLET MAP — ALL STATIONS
   // ══════════════════════════════════════════
-  const ALERT_WEEKS = {'W22':['CAJ0299','CAJ0094','CAJ0014','CAJ0010','CAJ0282','CAJ0088','CAJ0314','CAJ0023','CAJ0181','CAJ0574','CAJ0203','CAJ0370','CAJ0008','CAJ0012','CAJ0019','CAJ0172','CAJ0216','CAJ0588','CAJ0112','CAJ0110'],'W23':['CAJ0263','CAJ0368','CAJ0388','CAJ0116','CAJ0588','CAJ0112','CAJ0193','CAJ0205'],'W24':['CAJ0588','CAJ0112','CAJ0193','CAJ0205','CAJ0252','CAJ0013','CAJ0476','CAJ0220','CAJ0113','CAJ0110','CAJ0007','CAJ0070'],'W25':['CAJ0013','CAJ0193','CAJ0220','CAJ0112','CAJ0252','CAJ0588','CAJ0113','CAJ0070','CAJ0110','CAJ0476','CAJ0370','CAJ0041','CAJ0183','CAJ0361','CAJ0212'],'W26':['CAJ0013','CAJ0193','CAJ0220','CAJ0112','CAJ0588','CAJ0113','CAJ0370','CAJ0252','CAJ0361','CAJ0110','CAJ0212','CAJ0070','CAJ0041','CAJ0183','CAJ0476','CAJ0216','CAJ0300','CAJ0159','CAJ0141','CAJ0140','CAJ0159B3U1','CAJ0116','CAJ0306','CAJ0023'],'W27':['CAJ0013','CAJ0041','CAJ0112','CAJ0588','CAJ0361','CAJ0212','CAJ0220','CAJ0113','CAJ0370','CAJ0216','CAJ0193','CAJ0159','CAJ0070','CAJ0110','CAJ0300','CAJ0252','CAJ0183','CAJ0141','CAJ0023','CAJ0140','CAJ0306','CAJ0116','CAJ0025'],'W28':['CAJ0216','CAJ0361','CAJ0110','CAJ0252','CAJ0116','CAJ0025','CAJ0220','CAJ0023','CAJ0002','CAJ0317','CAJ0469','CAJ0042','CAJ0402B3U1','CAJ0182B3U1','CAJ0063B3U','CAJ0541','CAJ2011','CAJ0542','CAJ0198','CAJ0107'],'W29':['CAJ0317','CAJ0002','CAJ0469','CAJ0002B3U1','CAJ0042','CAJ0182B3U1','CAJ0402B3U1','CAJ0063B3U','CAJ0541','CAJ0542','CAJ2011','CAJ0107','CAJ0198','CAJ0110','CAJ0220','CAJ0361','CAJ0116','CAJ0023','CAJ0252','CAJ0089','CAJ0381','CAJ0089B4U','CAJ0014','CAJ0203','CAJ0016','CAJ0181','CAJ0159B3U1','CAJ0125','CAJ0015']};
+  const ALERT_WEEKS = {'W22':['CAJ0299','CAJ0094','CAJ0014','CAJ0010','CAJ0282','CAJ0088','CAJ0314','CAJ0023','CAJ0181','CAJ0574','CAJ0203','CAJ0370','CAJ0008','CAJ0012','CAJ0019','CAJ0172','CAJ0216','CAJ0588','CAJ0112','CAJ0110'],'W23':['CAJ0263','CAJ0368','CAJ0388','CAJ0116','CAJ0588','CAJ0112','CAJ0193','CAJ0205'],'W24':['CAJ0588','CAJ0112','CAJ0193','CAJ0205','CAJ0252','CAJ0013','CAJ0476','CAJ0220','CAJ0113','CAJ0110','CAJ0007','CAJ0070'],'W25':['CAJ0013','CAJ0193','CAJ0220','CAJ0112','CAJ0252','CAJ0588','CAJ0113','CAJ0070','CAJ0110','CAJ0476','CAJ0370','CAJ0041','CAJ0183','CAJ0361','CAJ0212'],'W26':['CAJ0013','CAJ0193','CAJ0220','CAJ0112','CAJ0588','CAJ0113','CAJ0370','CAJ0252','CAJ0361','CAJ0110','CAJ0212','CAJ0070','CAJ0041','CAJ0183','CAJ0476','CAJ0216','CAJ0300','CAJ0159','CAJ0141','CAJ0140','CAJ0159B3U1','CAJ0116','CAJ0306','CAJ0023'],'W27':['CAJ0013','CAJ0041','CAJ0112','CAJ0588','CAJ0361','CAJ0212','CAJ0220','CAJ0113','CAJ0370','CAJ0216','CAJ0193','CAJ0159','CAJ0070','CAJ0110','CAJ0300','CAJ0252','CAJ0183','CAJ0141','CAJ0023','CAJ0140','CAJ0306','CAJ0116','CAJ0025'],'W28':['CAJ0216','CAJ0361','CAJ0110','CAJ0252','CAJ0116','CAJ0025','CAJ0220','CAJ0023','CAJ0002','CAJ0317','CAJ0469','CAJ0042','CAJ0402B3U1','CAJ0182B3U1','CAJ0063B3U','CAJ0541','CAJ2011','CAJ0542','CAJ0198','CAJ0107'],'W29':['CAJ0317','CAJ0002','CAJ0469','CAJ0002B3U1','CAJ0042','CAJ0182B3U1','CAJ0402B3U1','CAJ0063B3U','CAJ0541','CAJ0542','CAJ2011','CAJ0107','CAJ0198','CAJ0110','CAJ0220','CAJ0361','CAJ0116','CAJ0023','CAJ0252','CAJ0089','CAJ0381','CAJ0089B4U','CAJ0014','CAJ0203','CAJ0016','CAJ0181','CAJ0159B3U1','CAJ0125','CAJ0015'],'W30':['CAJ0002','CAJ0107','CAJ0042','CAJ0002B3U1','CAJ0469','CAJ0182B3U1','CAJ0089','CAJ0402B3U1','CAJ0063B3U','CAJ0381','CAJ2011','CAJ0016','CAJ0089B4U','CAJ0159B3U1','CAJ0181','CAJ0220','CAJ0014','CAJ0015','CAJ0125','CAJ0198','CAJ0110','CAJ0203','CAJ0252','CAJ0361','CAJ0236','CAJ0079B3U1','CAJ0141','CAJ0003','CAJ0498','CAJ0046B3U1','CAJ0575','CAJ0113B3U2','CAJ0053','LAM0278','CAJ0471']};
   const STATION_WEEKS = {};
   Object.entries(ALERT_WEEKS).forEach(([w, ids]) => ids.forEach(id => {
     (STATION_WEEKS[id] = STATION_WEEKS[id]||[]).push(w);
@@ -2520,22 +2570,23 @@ function buildKPICards() {
   // Chi tiết trạm tuần hiện tại từ CFG.stations
   const W25_DETAIL = {};
   (function() {
-    const w25 = CFG.stations.w29;
+    const w25 = CFG.stations.w30;
     [...(w25.ongoing||[]), ...(w25.newW||[])].forEach(s => { W25_DETAIL[s.id] = s; });
   })();
 
   function stationColor(id, weeks) {
     if (!weeks || !weeks.length) return null;
-    if (weeks.includes('W29')) {
-      return CFG.stations.w29.newW?.some(s => s.id === id) ? '#ef4444' : '#f97316';
+    if (weeks.includes('W30')) {
+      return CFG.stations.w30.newW?.some(s => s.id === id) ? '#ef4444' : '#f97316';
     }
+    if (weeks.includes('W29')) return '#f97316';
     if (weeks.includes('W28')) return '#f97316';
     if (weeks.includes('W27')) return '#f97316';
     if (weeks.includes('W26')) return '#f97316';
     return '#a78bfa';
   }
 
-  let allMarkers = {}, curFilter = 'W29', curSearch = '';
+  let allMarkers = {}, curFilter = 'W30', curSearch = '';
 
   function initLeafletMap() {
     leafletMap = L.map('leaflet-map', { center: [-6.9, -78.55], zoom: 8 });
@@ -2591,7 +2642,7 @@ function buildKPICards() {
     const d25 = W25_DETAIL[id];
     const alertSection = d25 ? `
       <div class="lpu-alert">
-        <div class="lpu-alert-title">⚠️ Cảnh báo W29 (13–19/07)</div>
+        <div class="lpu-alert-title">⚠️ Cảnh báo W30 (20–27/07)</div>
         <div class="lpu-row"><span class="lpu-lbl">Δ15C3D W25</span><span class="lpu-neg">${d25.d15} TB</span></div>
         ${d25.cellh ? `<div class="lpu-row"><span class="lpu-lbl">Cell*h</span><span class="lpu-val">${d25.cellh}h</span></div>` : ''}
         ${d25.cause ? `<div class="lpu-row"><span class="lpu-lbl">Nguyên nhân</span><span class="lpu-val" style="max-width:150px;text-align:right;font-size:10px">${d25.cause}</span></div>` : ''}
@@ -2654,8 +2705,8 @@ function buildKPICards() {
     const el = document.getElementById('mlist');
     if (!el) return;
     const sorted = [...mkList].sort((a, b) => {
-      const aw = a.weeks.includes('W29') ? 0 : a.weeks.includes('W28') ? 1 : 2;
-      const bw = b.weeks.includes('W29') ? 0 : b.weeks.includes('W28') ? 1 : 2;
+      const aw = a.weeks.includes('W30') ? 0 : a.weeks.includes('W29') ? 1 : 2;
+      const bw = b.weeks.includes('W30') ? 0 : b.weeks.includes('W29') ? 1 : 2;
       if (aw !== bw) return aw - bw;
       return ((a.s.c||[0,0,0])[2]) - ((b.s.c||[0,0,0])[2]);
     });
@@ -2710,7 +2761,7 @@ function buildKPICards() {
     : `<td class="num ${h > 200 ? 'red' : h > 50 ? 'org' : ''}">${h.toFixed(2)}h</td>`;
 
   // ── Nhãn ngày từng tuần (thêm WEEK_META.WXX khi có tuần mới) ──
-  const WEEK_META = {W21:'18–24/05',W22:'24–30/05',W23:'01–08/06',W24:'08–15/06',W25:'15–22/06',W26:'22–29/06',W27:'29/06–06/07',W28:'06/07–12/07',W29:'13/07–19/07'};
+  const WEEK_META = {W21:'18–24/05',W22:'24–30/05',W23:'01–08/06',W24:'08–15/06',W25:'15–22/06',W26:'22–29/06',W27:'29/06–06/07',W28:'06/07–12/07',W29:'13/07–19/07',W30:'20/07–27/07'};
 
   // ── Mục 4: TAB + PANE trạm giảm — HOÀN TOÀN ĐỘNG từ CFG.stations ──
   // CẬP NHẬT TUẦN MỚI: chỉ cần thêm CFG.stations.wXX (+ WEEK_META.WXX). Tự dựng tab/pane, tự giữ 5 tuần gần nhất.
@@ -2866,7 +2917,7 @@ function buildKPICards() {
   })();
 
   // ── Solution table state & render ────────────────────────
-  let _solState = { week: 'w29', estado: 'all' };
+  let _solState = { week: 'w30', estado: 'all' };
 
   function renderSolutionTable() {
     const { week, estado } = _solState;
