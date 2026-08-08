@@ -86,8 +86,12 @@ const CFG = {
   const c15  = CFG.c15;
   const last = c15.actual.length - 1;
   const ytdT5 = c15.ytd[last - 1], ytdT6 = c15.ytd[last];
+  const lastMonth = (CFG.months[last]||('T'+(last+1))).split('/')[0]; // vd 'T7'
+  const ytdRange  = 'T1–' + lastMonth;
 
   CFG.kpi = {
+    lastMonth    : lastMonth,
+    ytdRange     : ytdRange,
     c15YtdActual : ytdT6,
     c15YtdPlan   : c15.ytdPlan[last],
     c15YtdPct    : +(ytdT6 / c15.ytdPlan[last] * 100).toFixed(1),
@@ -1935,14 +1939,14 @@ function buildKPICards() {
     const chFmt = (ch < 0 ? '' : '+') + ch.toLocaleString('vi-VN');
     document.getElementById('kpiCards').innerHTML =
       `<div class="kpi-card ${k.c15YtdPct >= 100 ? 'ok' : 'warn'}">
-        <div class="kpi-label">15C3D Lũy kế YTD / Acumulado — T1–T6</div>
+        <div class="kpi-label">15C3D Lũy kế YTD / Acumulado — ${k.ytdRange}</div>
         <div class="kpi-value">${k.c15YtdActual.toLocaleString('vi-VN')}</div>
-        <div class="kpi-sub">KH/Plan YTD T6: ${k.c15YtdPlan.toLocaleString('vi-VN')} &nbsp; <span class="kpi-pct ${k.c15YtdPct >= 100 ? 'ok' : 'warn'}">${k.c15YtdPct}%</span></div>
+        <div class="kpi-sub">KH/Plan YTD ${k.lastMonth}: ${k.c15YtdPlan.toLocaleString('vi-VN')} &nbsp; <span class="kpi-pct ${k.c15YtdPct >= 100 ? 'ok' : 'warn'}">${k.c15YtdPct}%</span></div>
       </div>
       <div class="kpi-card warn">
         <div class="kpi-label">vs KH Năm / Plan Anual (${k.c15AnnualKh.toLocaleString('vi-VN')} TB)</div>
         <div class="kpi-value">${k.c15AnnualPct}%</div>
-        <div class="kpi-sub">T6 (${CFG.rev.t6Note.split(' ')[0]}): ${chFmt} &nbsp;|&nbsp; Lũy kế / Acum.: ${k.c15T6Actual.toLocaleString('vi-VN')} TB</div>
+        <div class="kpi-sub">${k.lastMonth}: ${chFmt} &nbsp;|&nbsp; Lũy kế / Acum.: ${k.c15T6Actual.toLocaleString('vi-VN')} TB</div>
       </div>
       <div class="kpi-card danger">
         <div class="kpi-label">Trạm cảnh báo / Estaciones Alerta — ${k.alertWeek}</div>
@@ -1950,7 +1954,7 @@ function buildKPICards() {
         <div class="kpi-sub">${k.alertOngoing} tiếp tục / continúa + ${k.alertNew} mới / nuevas &nbsp;|&nbsp; REG-only: ${k.alertRegOnly}</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-label">Doanh thu / Ingresos YTD — T1–T6</div>
+        <div class="kpi-label">Doanh thu / Ingresos YTD — ${k.ytdRange}</div>
         <div class="kpi-value" style="font-size:20px;color:var(--success)">${k.revYtdActual.toLocaleString('vi-VN')} tr.</div>
         <div class="kpi-sub">KH/Plan YTD: ${k.revYtdPlan.toLocaleString('vi-VN')} tr. &nbsp; <span class="kpi-pct ok">${k.revYtdPct}%</span></div>
       </div>`;
@@ -1979,9 +1983,9 @@ function buildKPICards() {
     const note = document.getElementById('c15Note');
     if (note) note.innerHTML =
       `📊 <b>KH Năm: ${k.c15AnnualKh.toLocaleString('vi-VN')} TB</b><br>
-      Lũy kế YTD T6: <b style="color:${k.c15YtdPct >= 100 ? 'var(--success)' : 'var(--warning)'}">${k.c15YtdActual.toLocaleString('vi-VN')} TB — ${k.c15YtdPct}% KH</b><br>
+      Lũy kế YTD ${k.lastMonth}: <b style="color:${k.c15YtdPct >= 100 ? 'var(--success)' : 'var(--warning)'}">${k.c15YtdActual.toLocaleString('vi-VN')} TB — ${k.c15YtdPct}% KH</b><br>
       vs KH Năm: <b style="color:var(--warning)">${k.c15AnnualPct}%</b><br><br>
-      T6 (${CFG.rev.t6Note.split(' ')[0]}): ${(ch < 0 ? '' : '+') + ch.toLocaleString('vi-VN')} TB<br>
+      ${CFG.kpi.lastMonth}: ${(ch < 0 ? '' : '+') + ch.toLocaleString('vi-VN')} TB<br>
       ℹ️ T2 có KH âm (${CFG.c15.plan[1].toLocaleString('vi-VN')}) do kế hoạch thị trường dự kiến giảm theo mùa.`;
     const cap = document.getElementById('c15Caption');
     if (cap) cap.textContent =
@@ -2017,12 +2021,12 @@ function buildKPICards() {
     const k = CFG.kpi;
     const note = document.getElementById('revNote');
     if (note) note.innerHTML =
-      `📊 <b>YTD T1–T6: ${k.revYtdActual.toLocaleString('vi-VN')} tr. PEN</b><br>
+      `📊 <b>YTD ${k.ytdRange}: ${k.revYtdActual.toLocaleString('vi-VN')} tr. PEN</b><br>
       KH YTD: ${k.revYtdPlan.toLocaleString('vi-VN')} tr. &nbsp; <b class="grn">${k.revYtdPct}%</b><br><br>
       ✅ Doanh thu 6 tháng đầu năm đều vượt kế hoạch tháng.`;
     const cap = document.getElementById('revCaption');
     if (cap) cap.textContent =
-      `* Đơn vị: triệu PEN. T6 (${CFG.rev.t6Note}) số liệu đã hoàn chỉnh. Nguồn: Báo cáo tuần ${CFG.header.week}.`;
+      `* Đơn vị: triệu PEN. ${CFG.rev.t6Note}. Nguồn: Báo cáo tuần ${CFG.header.week}.`;
   })();
 
   // ── 15C3D data ──
@@ -2457,7 +2461,7 @@ function buildKPICards() {
     if (cap) cap.textContent =
       `* Fuente / Nguồn: Reg site.xlsx — fila/dòng Totals. Línea/Đường TH = tổng TB REG tuyệt đối. ` +
       `KH/Plan = base ${r.base.toLocaleString('vi-VN')} + N×${r.planMonth.toLocaleString('vi-VN')} TB/mes. ` +
-      `T6 (${r.t6Note}): +${r.growth[lastI].toLocaleString('vi-VN')} TB, lũy kế YTD: ${r.ytd[lastI].toLocaleString('vi-VN')} TB.`;
+      `${CFG.kpi.lastMonth} (${r.t6Note}): ${(r.growth[lastI]<0?'':'+')+r.growth[lastI].toLocaleString('vi-VN')} TB, lũy kế YTD: ${r.ytd[lastI].toLocaleString('vi-VN')} TB.`;
   })();
 
   // ── REG Chart — Thuê bao REG tuyệt đối vs Kế hoạch / Suscriptores REG total vs Plan ──
