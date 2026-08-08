@@ -1579,7 +1579,7 @@ const SALES = {
       <div class="chart-box" style="height:340px">
         <canvas id="activeBCChart"></canvas>
       </div>
-      <p class="caption">T4–T6 full month. Cột nhóm = Active từng BC theo tháng; đường nối = xu thế của từng BC. T7 MTD (12 ngày) không hiển thị.</p>
+      <p class="caption">T4–T7 full month. Cột nhóm = Active từng BC theo tháng; đường nối = xu thế của từng BC.</p>
     </div>
   </div>
 
@@ -2247,7 +2247,7 @@ function buildKPICards() {
     const ACT_DATA = [
       {m:'T5/26', total:29197, post:26927, pre:2270, full:true},
       {m:'T6/26', total:28768, post:26054, pre:2714, full:true},
-      {m:'T7/26', total:17583, post:3978,  pre:13605, full:false},
+      {m:'T7/26', total:27283, post:6390,  pre:20893, full:true},
     ];
     const fmt = v => v.toLocaleString('de-DE');
     // Table
@@ -2332,6 +2332,7 @@ function buildKPICards() {
       var T4 = [9375,5754,4615,3785,3145,2398];
       var T5 = [9124,5995,4764,4210,2743,2361];
       var T6 = [9316,6423,4281,4058,2513,2177];
+      var T7 = [8312,6060,4013,4324,2830,1744];
 
       var trendPlugin = {
         id: 'bcTrendLines',
@@ -2340,10 +2341,11 @@ function buildKPICards() {
           var m0 = chart.getDatasetMeta(0); // T4 bars
           var m1 = chart.getDatasetMeta(1); // T5 bars
           var m2 = chart.getDatasetMeta(2); // T6 bars
+          var m3 = chart.getDatasetMeta(3); // T7 bars
           if (!m0.data.length) return;
           ctx2.save();
           for (var i = 0; i < bcLabels.length; i++) {
-            var b0 = m0.data[i], b1 = m1.data[i], b2 = m2.data[i];
+            var b0 = m0.data[i], b1 = m1.data[i], b2 = m2.data[i], b3 = m3.data[i];
             var col = bcColors[i];
             // Draw trend line T4→T5→T6
             ctx2.beginPath();
@@ -2353,9 +2355,10 @@ function buildKPICards() {
             ctx2.moveTo(b0.x, b0.y);
             ctx2.lineTo(b1.x, b1.y);
             ctx2.lineTo(b2.x, b2.y);
+            ctx2.lineTo(b3.x, b3.y);
             ctx2.stroke();
             // Draw dots at each point
-            [{b:b0,v:T4[i]},{b:b1,v:T5[i]},{b:b2,v:T6[i]}].forEach(function(pt){
+            [{b:b0,v:T4[i]},{b:b1,v:T5[i]},{b:b2,v:T6[i]},{b:b3,v:T7[i]}].forEach(function(pt){
               ctx2.beginPath();
               ctx2.arc(pt.b.x, pt.b.y, 4, 0, Math.PI*2);
               ctx2.fillStyle = '#fff';
@@ -2388,6 +2391,9 @@ function buildKPICards() {
             { label:'T6/2026', data:T6,
               backgroundColor:'#2563eb', borderColor:'#1d4ed8',
               borderWidth:1, borderRadius:3 },
+            { label:'T7/2026', data:T7,
+              backgroundColor:'#1e3a8a', borderColor:'#1e3a8a',
+              borderWidth:1, borderRadius:3 },
           ]
         },
         options: {
@@ -2398,7 +2404,7 @@ function buildKPICards() {
             tooltip:{
               callbacks:{
                 label:function(c){
-                  var vals = [T4,T5,T6];
+                  var vals = [T4,T5,T6,T7];
                   var prev = c.datasetIndex>0 ? vals[c.datasetIndex-1][c.dataIndex] : null;
                   var d = prev!==null ? c.raw-prev : null;
                   var dStr = d!==null?' ('+(d>=0?'+':'')+fmt(d)+')':'';
@@ -2406,8 +2412,8 @@ function buildKPICards() {
                 },
                 afterTitle:function(items){
                   var i=items[0].dataIndex;
-                  var delta=T6[i]-T5[i];
-                  return ['Xu thế T5→T6: '+(delta>=0?'▲ +':'▼ ')+fmt(delta)];
+                  var delta=T7[i]-T6[i];
+                  return ['Xu thế T6→T7: '+(delta>=0?'▲ +':'▼ ')+fmt(delta)];
                 }
               }
             }
