@@ -2738,8 +2738,8 @@ function buildKPICards() {
 
   function initLeafletMap() {
     leafletMap = L.map('leaflet-map', { center: [-6.9, -78.55], zoom: 8 });
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/">CARTO</a>', maxZoom: 19
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles &copy; Esri — Esri, DeLorme, NAVTEQ', maxNativeZoom: 16, maxZoom: 18
     }).addTo(leafletMap);
 
     Object.entries(SD).forEach(([id, s]) => {
