@@ -3992,6 +3992,7 @@ function buildDigitalPage(m) {
 const POLICY = {
   srcNote: 'Nguồn: Guía Comercial Octubre 2026 · Resumen políticas de comisiones 2026 (Mobile/Digital/FTTH) · Thay đổi chính sách 10/2026. Dashboard là bản tra cứu nhanh — chi tiết đầy đủ xem PDF gốc.',
   changes: [
+    {title:'🔥 TRIPLE DATA Prepago (CAJBR) — MỚI', old:'Doble Data (vd TI7: 6GB)', neu:'Triple Data khi kích hoạt gói từ S/7, áp dụng chi nhánh CAJBR & SANBR. Gói tham gia: TI7, TI10, TI15, TI20, TI30, TI40, 8SO, 10SO, 13SO. Ví dụ: TI7 nay 9GB (3GB thường ×3) + gọi không giới hạn + 500 SMS (trước là 6GB từ khuyến mãi double data).'},
     {title:'Gói TI5 — ưu đãi giống 5SO', old:'T9: 650MB, double 1.3GB, 5 ngày, miễn phí thoại + 500 SMS (FB/IG/WhatsApp)', neu:'Tương đương 5SO: 6GB (thường 3GB), miễn phí thoại + 500 SMS; LOR 3GB. Dùng 4 ngày. +6GB 5G (chỉ hạ tầng 5G), LOR 3GB 5G.'},
     {title:'Gói TI7 & TI10 — bổ sung đuôi UNLIMITED', old:'Hết dung lượng tốc độ cao là dừng', neu:'TI7 (S/7): 6GB 5G + 6GB tốc độ cao (thường 3GB) + UNLIMITED DATA 7 ngày, kèm WhatsApp/FB/IG. TI10 (S/10): Data 5G không giới hạn + 8GB tốc độ cao (thường 4GB) + UNLIMITED DATA 10 ngày, kèm gọi KGH/500 SMS/WhatsApp/FB/IG/TV360. Mục tiêu: đẩy KH gói 5 soles lên 7 soles.'},
     {title:'Free 5G tốc độ cao cho gói add-on TT', old:'—', neu:'Mỗi gói tặng thêm Data 5G (ngoài lưu lượng ban đầu). Xem bảng "5G add-on". Gói 10SO/TI10/TI40/DM10 dùng 5G không giới hạn suốt thời hạn. Ở LOR không được double data.'},
@@ -4079,12 +4080,12 @@ const POLICY = {
     {key:'ftth1gb', name:'Bitel Fibra 1 GB (GPON)', fam:'FTTH', price:'S/139', data:'1000 Mbps', voice:'—', apps:'L1Max', canal:'FTTH', note:'Bitdefender +S/9. Simétrico.'},
     {key:'ti3', name:'Paquete TI3', fam:'TI', price:'S/3', data:'200 MB alta velocidad', voice:'Ilimitadas + 500 SMS TDN', apps:'—', canal:'Prepago (al 164)', note:'5G: 400MB. Validez 3 ngày.'},
     {key:'ti5', name:'Paquete TI5 (MỚI T10)', fam:'TI', price:'S/5', data:'~6GB (như 5SO)', voice:'Miễn phí thoại + 500 SMS', apps:'FB/IG/WhatsApp', canal:'Prepago (al 164)', note:'5G: 6GB (LOR 3GB). Dùng 4 ngày.'},
-    {key:'ti7', name:'Paquete TI7 (MỚI T10)', fam:'TI', price:'S/7', data:'6GB tốc độ cao + UNLIMITED 7 ngày', voice:'—', apps:'WhatsApp/FB/IG', canal:'Prepago (al 164)', note:'5G: 6GB. UNLIMITED đến hết chu kỳ.'},
-    {key:'ti10', name:'Paquete TI10 (MỚI T10)', fam:'TI', price:'S/10', data:'8GB tốc độ cao + UNLIMITED 10 ngày', voice:'Gọi KGH + 500 SMS', apps:'WhatsApp/FB/IG/TV360', canal:'Prepago (al 164)', note:'5G: ILIMITADO.'},
-    {key:'ti15', name:'Paquete TI15', fam:'TI', price:'S/15', data:'7 GB', voice:'Ilimitadas + 500 SMS', apps:'—', canal:'Prepago', note:'5G: 7GB. 15 ngày.'},
-    {key:'ti20', name:'Paquete TI20', fam:'TI', price:'S/20', data:'12 GB + GB nocturnos ilimitados', voice:'—', apps:'—', canal:'Prepago', note:'5G: 24GB. 30 ngày.'},
-    {key:'ti30', name:'Paquete TI30', fam:'TI', price:'S/30', data:'20 GB', voice:'—', apps:'—', canal:'Prepago', note:'5G: 20GB. 30 ngày.'},
-    {key:'ti40', name:'Paquete TI40', fam:'TI', price:'S/40', data:'50 GB', voice:'—', apps:'—', canal:'Prepago', note:'5G: ILIMITADO. 30 ngày.'},
+    {key:'ti7', name:'Paquete TI7 (MỚI T10)', fam:'TI', price:'S/7', data:'6GB tốc độ cao + UNLIMITED 7 ngày', voice:'—', apps:'WhatsApp/FB/IG', canal:'Prepago (al 164)', note:'5G: 6GB. UNLIMITED đến hết chu kỳ. · 🔥 Triple Data CAJBR: ×3 data thường (từ S/7).'},
+    {key:'ti10', name:'Paquete TI10 (MỚI T10)', fam:'TI', price:'S/10', data:'8GB tốc độ cao + UNLIMITED 10 ngày', voice:'Gọi KGH + 500 SMS', apps:'WhatsApp/FB/IG/TV360', canal:'Prepago (al 164)', note:'5G: ILIMITADO. · 🔥 Triple Data CAJBR: ×3 data thường (từ S/7).'},
+    {key:'ti15', name:'Paquete TI15', fam:'TI', price:'S/15', data:'7 GB', voice:'Ilimitadas + 500 SMS', apps:'—', canal:'Prepago', note:'5G: 7GB. 15 ngày. · 🔥 Triple Data CAJBR: ×3 data thường (từ S/7).'},
+    {key:'ti20', name:'Paquete TI20', fam:'TI', price:'S/20', data:'12 GB + GB nocturnos ilimitados', voice:'—', apps:'—', canal:'Prepago', note:'5G: 24GB. 30 ngày. · 🔥 Triple Data CAJBR: ×3 data thường (từ S/7).'},
+    {key:'ti30', name:'Paquete TI30', fam:'TI', price:'S/30', data:'20 GB', voice:'—', apps:'—', canal:'Prepago', note:'5G: 20GB. 30 ngày. · 🔥 Triple Data CAJBR: ×3 data thường (từ S/7).'},
+    {key:'ti40', name:'Paquete TI40', fam:'TI', price:'S/40', data:'50 GB', voice:'—', apps:'—', canal:'Prepago', note:'5G: ILIMITADO. 30 ngày. · 🔥 Triple Data CAJBR: ×3 data thường (từ S/7).'},
   ],
   addon5g: [
     {fam:'Gói SO', rows:[['3SO','2 GB','1'],['5SO','6 GB','4'],['8SO','10 GB','7'],['10SO','Unlimited','9'],['13SO','20 GB','12']]},
