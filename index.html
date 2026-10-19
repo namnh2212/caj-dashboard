@@ -1708,6 +1708,7 @@ const SALES = {
   <div class="page-tab" onclick="switchPage('sales',this)">📱 Mobile</div>
   <div class="page-tab" onclick="switchPage('digital',this)">💻 Digital</div>
   <div class="page-tab" onclick="switchPage('kythuat',this)">🔧 Kỹ thuật</div>
+  <div class="page-tab" onclick="switchPage('policy',this)">📋 Chính sách</div>
 </div>
 
 <div id="page-dashboard" class="page-pane active">
@@ -2172,6 +2173,18 @@ const SALES = {
   </div>
 </div><!-- /page-digital -->
 
+<!-- ══════ CHÍNH SÁCH & SẢN PHẨM ══════ -->
+<div id="page-policy" class="page-pane">
+<div class="container">
+  <div class="section">
+    <div class="section-head">📋 CHÍNH SÁCH & SẢN PHẨM / POLÍTICAS Y PRODUCTOS</div>
+    <div class="section-body">
+      <div id="policyBody"></div>
+    </div>
+  </div>
+</div>
+</div><!-- /page-policy -->
+
 
 <script src="stations.js"></script>
 <script>
@@ -2195,6 +2208,7 @@ const SALES = {
     }
     if (id === 'sales') { buildSalesTab(); switchSalesMonth(_salesMonth); }
     if (id === 'digital') { var ds=document.getElementById('digitalMonthSelect'); if(ds) ds.value=_salesMonth; buildDigitalPage(_salesMonth); }
+    if (id === 'policy') buildPolicyPage();
   }
 
   // ── Station tab switching (W21/W22/W23) ──
@@ -3972,6 +3986,258 @@ function buildDigitalPage(m) {
 
 
 
+
+
+/* ===== POLICY DATA ===== */
+const POLICY = {
+  srcNote: 'Nguồn: Guía Comercial Octubre 2026 · Resumen políticas de comisiones 2026 (Mobile/Digital/FTTH) · Thay đổi chính sách 10/2026. Dashboard là bản tra cứu nhanh — chi tiết đầy đủ xem PDF gốc.',
+  changes: [
+    {title:'Gói TI5 — ưu đãi giống 5SO', old:'T9: 650MB, double 1.3GB, 5 ngày, miễn phí thoại + 500 SMS (FB/IG/WhatsApp)', neu:'Tương đương 5SO: 6GB (thường 3GB), miễn phí thoại + 500 SMS; LOR 3GB. Dùng 4 ngày. +6GB 5G (chỉ hạ tầng 5G), LOR 3GB 5G.'},
+    {title:'Gói TI7 & TI10 — bổ sung đuôi UNLIMITED', old:'Hết dung lượng tốc độ cao là dừng', neu:'TI7 (S/7): 6GB 5G + 6GB tốc độ cao (thường 3GB) + UNLIMITED DATA 7 ngày, kèm WhatsApp/FB/IG. TI10 (S/10): Data 5G không giới hạn + 8GB tốc độ cao (thường 4GB) + UNLIMITED DATA 10 ngày, kèm gọi KGH/500 SMS/WhatsApp/FB/IG/TV360. Mục tiêu: đẩy KH gói 5 soles lên 7 soles.'},
+    {title:'Free 5G tốc độ cao cho gói add-on TT', old:'—', neu:'Mỗi gói tặng thêm Data 5G (ngoài lưu lượng ban đầu). Xem bảng "5G add-on". Gói 10SO/TI10/TI40/DM10 dùng 5G không giới hạn suốt thời hạn. Ở LOR không được double data.'},
+    {title:'Nạp thẻ qua Bipay', old:'Áp dụng cả nạp hộ và tự nạp; có ưu đãi mức nạp ≥3 <5 soles', neu:'Từ 11/8: bỏ ưu đãi mức nạp ≥3 <5 soles; chỉ áp dụng thuê bao TỰ NẠP (không áp dụng nạp hộ). Mục tiêu: kích thích KH cài Bipay và tự nạp.'},
+  ],
+  channels: [
+    {key:'promotor', name:'Promotor (PR)', group:'Mobile', summary:'Bán prepago/postpago, paquetes, recargas. Bono theo sản phẩm + prepago. Thanh toán trực tiếp qua Bipay.', rows:[
+      {c:'Bifri5 / Papa (Bipay+login+cashin ≥S/5)', cond:'Recarga ≥5 từ lúc kích hoạt', v:'LN/MNP S/1.20 (không cashin S/0.90)'},
+      {c:'Prepago Papa — ADDON 5 ≤ X <10', cond:'Mi Bitel autoactivable + mã promotor', v:'LN S/1.80 (S/1.35)'},
+      {c:'Prepago Papa — ADDON X ≥10', cond:'—', v:'LN S/1.80 · MNP S/2.40'},
+      {c:'Bifri5 prepago (1er/2do bono)', cond:'RC ≥S/5', v:'1er 60% recarga · 2do 20% recarga'},
+      {c:'Prepago Papa — ADDON ≥10', cond:'chip canal S/1', v:'1er 80–100% paquete · 2do 20% recarga'},
+    ], note:'Chip Papa S/1 cho canal. Bifri10/15 & Turista không tính soporte mensual. Yêu cầu KH đăng ký mã promotor lúc kích hoạt.'},
+    {key:'pdv', name:'Punto de Venta (PDV / POS)', group:'Mobile', summary:'Activación NEW ID & MNP qua Bitel Ventas. Bono trả tự động qua Bipay (cần tài khoản Bipay).', rows:[
+      {c:'NEW ID — prepago', cond:'Chưa có línea Bitel >1 năm', v:'S/1.00'},
+      {c:'NEW ID — Control <39.90', cond:'—', v:'S/1.00'},
+      {c:'NEW ID — Control ≥39.90', cond:'—', v:'S/3.00'},
+      {c:'MNP — antigüedad ≥30 ngày', cond:'operador cedente', v:'S/1.00'},
+      {c:'MNP — antigüedad ≥60 ngày', cond:'—', v:'S/2.00'},
+      {c:'MNP — antigüedad ≥90 ngày', cond:'—', v:'S/3.00'},
+    ], note:'Nếu đạt cả hai điều kiện chỉ nhận hoa hồng cao hơn. Có chương trình PDV Prime Tipo 9 và factor theo LN/MNP (PDF).'},
+    {key:'asesor_comercial', name:'Asesor Comercial (AC)', group:'Mobile', summary:'Remuneración = Comisiones + Bonos + Soporte − Penalidad. Có bono lealtad, ventas por volumen, control de visita, penalidades.', rows:[
+      {c:'Pago adelantado 15 ≤ X <19.9', cond:'LN / MNP', v:'S/7.5 / S/7.5'},
+      {c:'Bono por lealtad', cond:'theo antigüedad AC', v:'PDF tr39'},
+      {c:'Ventas por volumen', cond:'theo nivel/rango', v:'PDF tr41'},
+    ], note:'Có bảng penalidades & control de visita (PDF tr42-43).'},
+    {key:'asesor_digital', name:'Asesor Digital (AD)', group:'Digital', summary:'Activaciones prepago/postpago + bono recargas. Trả tiền mặt qua tài khoản ngân hàng AD.', rows:[
+      {c:'Bifri5 (1er/2do bono)', cond:'Recarga ≥S/5', v:'LN/MNP 60% + 60% recarga'},
+      {c:'Prepago Papa ADDON 5≤X<10', cond:'chip S/1', v:'1er 60% + 2do 60% paquete'},
+      {c:'Bono movilidad', cond:'AB vende ≥1 chip trong tháng N', v:'S/20'},
+    ], note:'(1er) recargas cùng ngày kích hoạt; (2do) từ ngày sau đến ngày 7 tháng N+1.'},
+    {key:'agente_bipay', name:'Agente Bipay (AB)', group:'Digital', summary:'Hoa hồng tạo mới, giao dịch, TuSami. Tối đa S/1,999. Trả ngày 1 tháng N+1 qua Bipay.', rows:[
+      {c:'Creación Agente (≥1 trans)', cond:'—', v:'S/10'},
+      {c:'Creación Agente (≥10 trans)', cond:'—', v:'S/50'},
+      {c:'Bono nuevo cliente TuSami 5≤X<10', cond:'—', v:'S/2.85'},
+      {c:'TuSami 10≤X<30', cond:'—', v:'S/8.55'},
+      {c:'TuSami 30≤X<50', cond:'—', v:'S/17.10'},
+      {c:'TuSami ≥50', cond:'—', v:'S/28.50'},
+    ], note:'Giao dịch hợp lệ: Recarga ≥S/10, Pago serv. básicos ≥S/30, Pago Bitel ≥S/29.90, Cash In/Out ≥S/5. Không áp dụng taxi/moto/cứu thương.'},
+    {key:'negocio_bipay', name:'Negocio Bipay (NB)', group:'Digital', summary:'20% mỗi giao dịch TuSami (ticket/recarga) qua Bipay, tự động. Tối đa S/1,999.', rows:[
+      {c:'Creación Negocio (≥1 trans)', cond:'—', v:'S/5'},
+      {c:'Creación Negocio (≥10 trans)', cond:'—', v:'S/20'},
+      {c:'Venta ticket/recarga diaria', cond:'qua Bipay', v:'20%'},
+      {c:'Bono nuevo cliente TuSami', cond:'theo mức 5/10/30/50', v:'S/2.85 – 28.50'},
+    ], note:'Giống AB về bono nuevo cliente. Trả ngay sau mỗi giao dịch qua Bipay.'},
+    {key:'creacion_niveles', name:'Creación AB/NB — Niveles & Movilidad', group:'Digital', summary:'Thưởng theo số giao dịch tích lũy và bono movilidad khi tạo nhiều kênh có giao dịch thật.', rows:[
+      {c:'Nivel 1 — 20 transacciones', cond:'—', v:'S/15'},
+      {c:'Nivel 2 — 30', cond:'—', v:'S/20'},
+      {c:'Nivel 3 — 50', cond:'—', v:'S/30'},
+      {c:'Nivel 4 — 100', cond:'—', v:'S/50'},
+      {c:'Nivel 5 — 200', cond:'—', v:'S/80'},
+      {c:'Bono movilidad', cond:'Tạo ≥3 AB/NB trong tháng N, ≥30 giao dịch ≥S/10', v:'S/200'},
+    ], note:'AB/NB phải có ≥30 giao dịch thật trong tháng N. Trả vào tài khoản ngân hàng AD.'},
+    {key:'dealer', name:'Dealer Tipo 1–5 / CAB / SC', group:'Mobile', summary:'Nhà phân phối. Remuneración = Comisiones + Bonos + Soporte − Penalidad (+ Postventa). Mỗi Tipo có bảng riêng về comisión, pagos adelantados, bonos Bipay, descuentos, penalidades.', rows:[
+      {c:'Dealer Tipo 1 (CAB)', cond:'—', v:'PDF tr52–69'},
+      {c:'Dealer Tipo 2', cond:'—', v:'PDF tr70–82'},
+      {c:'Dealer Tipo 3 (Isla Store)', cond:'—', v:'PDF tr83–88'},
+      {c:'Dealer Tipo 4 (DA)', cond:'—', v:'PDF tr89–105'},
+      {c:'Dealer Tipo 5 (SC)', cond:'—', v:'PDF tr106–119'},
+    ], note:'Chi tiết hoa hồng theo plan/bono/pago adelantado xem PDF các trang nêu trên.'},
+    {key:'store', name:'Agente de Store / Isla / Retail / Mini Store', group:'Mobile', summary:'Activación con/sin Bipay, bonos theo N líneas vendidas, aperturas/cierres, sanciones.', rows:[
+      {c:'Activación con Bipay / Regular', cond:'—', v:'PDF tr121'},
+      {c:'Bono theo N líneas vendidas', cond:'—', v:'PDF tr122–123'},
+      {c:'Comisión máxima', cond:'comisión + factor', v:'S/2,000'},
+    ], note:'Isla/Retail/Mini Store: montos de transacciones en Bipay (PDF tr127–129).'},
+    {key:'promotor_ftth', name:'Promotor FTTH / Team Leader', group:'FTTH', summary:'Remuneración = Soporte Diario + Comisiones + Bonos. Bán gói FTTH (Papa).', rows:[
+      {c:'Comisión/Bono FTTH', cond:'theo plan/tipo', v:'PDF tr130–133'},
+      {c:'Team Leader', cond:'—', v:'PDF tr134–136'},
+    ], note:'—'},
+    {key:'distribuidor_ftth', name:'Distribuidor FTTH / Dealer Online', group:'FTTH', summary:'Rango de ventas, comisión extra FTTH, renta adelantada (bono), categorías act.+port postpago.', rows:[
+      {c:'Distribuidor FTTH — rango ventas', cond:'—', v:'PDF tr137–138'},
+      {c:'Comisión extra FTTH', cond:'theo plan/CF', v:'PDF tr140–144'},
+      {c:'Dealer Online — Categoría 1 (1–29)', cond:'Act.+Port Postpago', v:'S/5'},
+    ], note:'Renta adelantada: distribuidor nhận bono (PDF tr143).'},
+  ],
+  products: [
+    {key:'flash2990', name:'Flash 29.90', fam:'Flash', price:'S/29.90', data:'30 GB + 60GB×6m + 30GB×6m (Spotify) + 30GB×3m (porta) ≈ 90–110GB', voice:'Llamadas y SMS ilimitadas', apps:'Premium x6 meses', canal:'PDV/PR', note:'GB acumulables nếu trả recibo đúng hạn (giới hạn 1000GB).'},
+    {key:'flash3990', name:'Flash 39.90', fam:'Flash', price:'S/39.90', data:'50 GB + 60GB×6m + 45GB×6m', voice:'Ilimitadas', apps:'Premium x6m', canal:'PDV/PR', note:'Tổng ~110GB.'},
+    {key:'ilim4990', name:'Ilimitado 49.90 5G', fam:'Ilimitado', price:'S/49.90', data:'Internet ilimitado (0.512/0.256 Mbps sau giới hạn) + 5G', voice:'Ilimitadas', apps:'—', canal:'Físico/Digital', note:'50% desc líneas adicionales từ Ilimitado 55.90.'},
+    {key:'profe7990', name:'Control Profe 79.90', fam:'Control', price:'S/79.90', data:'125 GB acumulables', voice:'Llamadas y SMS ilimitados TDN', apps:'Premium x6m', canal:'Depto. seleccionados', note:'San Martín, Amazonas, Loreto, Ica, Ucayali, Moquegua, Tacna.'},
+    {key:'mero35', name:'Control Mero 35.00', fam:'Control', price:'S/35.00', data:'25 GB + GB ilimitados nocturnos (23:00–06:00)', voice:'Ilimitadas + 500 SMS TDN', apps:'20GB x6m', canal:'Depto. seleccionados', note:'—'},
+    {key:'vecino10', name:'Control Vecino 10', fam:'Control', price:'S/10', data:'12 GB', voice:'Ilimitadas TDN + 1000 SMS', apps:'—', canal:'Exclusivo Li2BR', note:'—'},
+    {key:'ftth200', name:'Bitel Fibra 200 (GPON)', fam:'FTTH', price:'S/55', data:'200 Mbps', voice:'—', apps:'TV360+Móvil S/19.99 / FULL S/45', canal:'FTTH', note:'Módem S/100, instalación S/120 (AON). Ciclos 6-16-26.'},
+    {key:'ftth400', name:'Bitel Fibra 400 (GPON)', fam:'FTTH', price:'S/109', data:'400 Mbps', voice:'—', apps:'L1Max incluido', canal:'FTTH', note:'Equipos Mesh/TVbox S/150/disp (tối đa 3).'},
+    {key:'ftth1gb', name:'Bitel Fibra 1 GB (GPON)', fam:'FTTH', price:'S/139', data:'1000 Mbps', voice:'—', apps:'L1Max', canal:'FTTH', note:'Bitdefender +S/9. Simétrico.'},
+    {key:'ti3', name:'Paquete TI3', fam:'TI', price:'S/3', data:'200 MB alta velocidad', voice:'Ilimitadas + 500 SMS TDN', apps:'—', canal:'Prepago (al 164)', note:'5G: 400MB. Validez 3 ngày.'},
+    {key:'ti5', name:'Paquete TI5 (MỚI T10)', fam:'TI', price:'S/5', data:'~6GB (như 5SO)', voice:'Miễn phí thoại + 500 SMS', apps:'FB/IG/WhatsApp', canal:'Prepago (al 164)', note:'5G: 6GB (LOR 3GB). Dùng 4 ngày.'},
+    {key:'ti7', name:'Paquete TI7 (MỚI T10)', fam:'TI', price:'S/7', data:'6GB tốc độ cao + UNLIMITED 7 ngày', voice:'—', apps:'WhatsApp/FB/IG', canal:'Prepago (al 164)', note:'5G: 6GB. UNLIMITED đến hết chu kỳ.'},
+    {key:'ti10', name:'Paquete TI10 (MỚI T10)', fam:'TI', price:'S/10', data:'8GB tốc độ cao + UNLIMITED 10 ngày', voice:'Gọi KGH + 500 SMS', apps:'WhatsApp/FB/IG/TV360', canal:'Prepago (al 164)', note:'5G: ILIMITADO.'},
+    {key:'ti15', name:'Paquete TI15', fam:'TI', price:'S/15', data:'7 GB', voice:'Ilimitadas + 500 SMS', apps:'—', canal:'Prepago', note:'5G: 7GB. 15 ngày.'},
+    {key:'ti20', name:'Paquete TI20', fam:'TI', price:'S/20', data:'12 GB + GB nocturnos ilimitados', voice:'—', apps:'—', canal:'Prepago', note:'5G: 24GB. 30 ngày.'},
+    {key:'ti30', name:'Paquete TI30', fam:'TI', price:'S/30', data:'20 GB', voice:'—', apps:'—', canal:'Prepago', note:'5G: 20GB. 30 ngày.'},
+    {key:'ti40', name:'Paquete TI40', fam:'TI', price:'S/40', data:'50 GB', voice:'—', apps:'—', canal:'Prepago', note:'5G: ILIMITADO. 30 ngày.'},
+  ],
+  addon5g: [
+    {fam:'Gói SO', rows:[['3SO','2 GB','1'],['5SO','6 GB','4'],['8SO','10 GB','7'],['10SO','Unlimited','9'],['13SO','20 GB','12']]},
+    {fam:'Gói TI', rows:[['TI3','400 MB','3'],['TI5','6 GB','4'],['TI7','6 GB','7'],['TI10','Unlimited','10'],['TI15','14 GB','15'],['TI20','24 GB','30'],['TI30','40 GB','30'],['TI40','Unlimited','30']]},
+    {fam:'Gói DM', rows:[['DM1','450 MB','1'],['DM3','3 GB','3'],['DM5','15 GB','5'],['DM10','Unlimited','10'],['DM20','30 GB','20'],['DM30','60 GB','30']]},
+  ],
+};
+
+/* ===== POLICY BUILDER ===== */
+// ===== POLICY PAGE BUILDER =====
+var _polTab = 'channels';
+var _polSearch = '';
+var _polGroup = 'all';
+var _polFam = 'all';
+var _polChannel = null;
+
+function esc(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function switchPolTab(t){ _polTab=t; buildPolicyPage(); }
+function setPolGroup(g){ _polGroup=g; _polChannel=null; buildPolicyPage(); }
+function setPolFam(f){ _polFam=f; buildPolicyPage(); }
+function openChannel(k){ _polChannel=k; buildPolicyPage(); }
+function polSearchInput(v){ _polSearch=(v||'').trim().toLowerCase(); buildPolicyPage(); }
+
+function buildPolicyPage(){
+  var root = document.getElementById('policyBody');
+  if(!root || typeof POLICY==='undefined') return;
+  var q = _polSearch;
+  var subtabs = [['channels','🧾 Hoa hồng theo kênh'],['products','📦 Gói sản phẩm'],['changes','🔄 Thay đổi T10'],['addon5g','📶 5G add-on']];
+  var html = '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">';
+  subtabs.forEach(function(s){ html += '<button onclick="switchPolTab(\''+s[0]+'\')" class="sol-btn'+(_polTab===s[0]?' sol-btn-active':'')+'">'+s[1]+'</button>'; });
+  html += '</div>';
+  html += '<input type="text" placeholder="🔍 Tra cứu kênh / gói / chính sách..." value="'+esc(_polSearch)+'" oninput="polSearchInput(this.value)" '+
+    'style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;margin-bottom:14px;box-sizing:border-box">';
+
+  if(_polTab==='channels') html += renderChannels(q);
+  else if(_polTab==='products') html += renderProducts(q);
+  else if(_polTab==='changes') html += renderChanges(q);
+  else if(_polTab==='addon5g') html += renderAddon5g(q);
+
+  html += '<p style="font-size:10.5px;color:var(--muted);margin-top:16px;line-height:1.5;border-top:1px solid var(--border);padding-top:8px">'+esc(POLICY.srcNote)+'</p>';
+  root.innerHTML = html;
+}
+
+function renderChannels(q){
+  var groups=['all','Mobile','Digital','FTTH'];
+  var glabel={all:'Tất cả',Mobile:'📱 Mobile',Digital:'💻 Digital',FTTH:'📶 FTTH'};
+  var gcolor={Mobile:'#1e5fc1',Digital:'#6d28d9',FTTH:'#059669'};
+  var h='<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">';
+  groups.forEach(function(g){ h+='<button onclick="setPolGroup(\''+g+'\')" class="mwbtn'+(_polGroup===g?' active':'')+'">'+glabel[g]+'</button>'; });
+  h+='</div>';
+  var list = POLICY.channels.filter(function(c){
+    if(_polGroup!=='all' && c.group!==_polGroup) return false;
+    if(q){ var blob=(c.name+' '+c.summary+' '+c.group+' '+c.rows.map(function(r){return r.c+' '+r.cond+' '+r.v;}).join(' ')+' '+c.note).toLowerCase(); if(blob.indexOf(q)<0) return false; }
+    return true;
+  });
+  // channel chips
+  h+='<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">';
+  list.forEach(function(c){
+    var col=gcolor[c.group]||'#64748b';
+    var active=(_polChannel===c.key);
+    h+='<button onclick="openChannel(\''+c.key+'\')" style="padding:5px 11px;border-radius:14px;border:1px solid '+col+';font-size:11px;font-weight:600;cursor:pointer;'+
+      (active?('background:'+col+';color:#fff'):('background:#fff;color:'+col))+'">'+esc(c.name)+'</button>';
+  });
+  h+='</div>';
+  if(!list.length) return h+'<div style="padding:16px;color:var(--muted);text-align:center">Không có kênh phù hợp</div>';
+  var sel = _polChannel ? list.filter(function(c){return c.key===_polChannel;})[0] : null;
+  if(!sel) sel = list[0];
+  if(sel) h+=channelCard(sel,gcolor[sel.group]||'#64748b');
+  return h;
+}
+
+function channelCard(c,col){
+  var h='<div class="section" style="margin-bottom:0;border-top:3px solid '+col+'">'+
+    '<div class="section-head" style="background:'+col+'">'+esc(c.name)+' <span style="font-weight:400;opacity:.85">· '+esc(c.group)+'</span></div>'+
+    '<div class="section-body">'+
+    '<p style="font-size:12.5px;margin:0 0 12px;color:var(--text)">'+esc(c.summary)+'</p>'+
+    '<table class="tbl" style="width:100%;font-size:12px"><thead><tr>'+
+      '<th style="text-align:left;padding:7px 8px">Chỉ tiêu / Concepto</th>'+
+      '<th style="text-align:left;padding:7px 8px">Điều kiện</th>'+
+      '<th style="text-align:right;padding:7px 8px">Hoa hồng / Comisión</th></tr></thead><tbody>';
+  c.rows.forEach(function(r,i){
+    var bg=i%2?'background:#f8fafc':'';
+    h+='<tr style="'+bg+'"><td style="padding:7px 8px">'+esc(r.c)+'</td>'+
+       '<td style="padding:7px 8px;color:var(--muted);font-size:11px">'+esc(r.cond)+'</td>'+
+       '<td style="padding:7px 8px;text-align:right;font-weight:700;color:'+col+'">'+esc(r.v)+'</td></tr>';
+  });
+  h+='</tbody></table>';
+  if(c.note && c.note!=='—') h+='<p style="font-size:11px;color:var(--muted);margin-top:10px;line-height:1.5">ℹ️ '+esc(c.note)+'</p>';
+  h+='</div></div>';
+  return h;
+}
+
+function renderProducts(q){
+  var fams=['all'].concat(POLICY.products.reduce(function(a,p){ if(a.indexOf(p.fam)<0)a.push(p.fam); return a; },[]));
+  var h='<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">';
+  fams.forEach(function(f){ h+='<button onclick="setPolFam(\''+f+'\')" class="mwbtn'+(_polFam===f?' active':'')+'">'+(f==='all'?'Tất cả':esc(f))+'</button>'; });
+  h+='</div>';
+  var list=POLICY.products.filter(function(p){
+    if(_polFam!=='all' && p.fam!==_polFam) return false;
+    if(q){ var blob=(p.name+' '+p.fam+' '+p.price+' '+p.data+' '+p.voice+' '+p.apps+' '+p.canal+' '+p.note).toLowerCase(); if(blob.indexOf(q)<0) return false; }
+    return true;
+  });
+  if(!list.length) return h+'<div style="padding:16px;color:var(--muted);text-align:center">Không có gói phù hợp</div>';
+  h+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px">';
+  list.forEach(function(p){
+    var isNew=/MỚI/.test(p.name);
+    h+='<div style="border:1px solid var(--border);border-radius:10px;padding:13px 14px;background:#fff'+(isNew?';box-shadow:0 0 0 2px #fca5a5 inset':'')+'">'+
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px">'+
+        '<div style="font-weight:700;font-size:13px;color:#0f4c81">'+esc(p.name)+'</div>'+
+        '<div style="font-weight:800;font-size:14px;color:#e85d04;white-space:nowrap">'+esc(p.price)+'</div></div>'+
+      '<div style="font-size:11px;color:var(--muted);margin-bottom:8px">'+esc(p.fam)+' · '+esc(p.canal)+'</div>'+
+      row2('📶 Data',p.data)+row2('📞 Thoại',p.voice)+row2('📱 Apps',p.apps)+
+      (p.note?('<p style="font-size:10.5px;color:var(--muted);margin:8px 0 0;line-height:1.45">ℹ️ '+esc(p.note)+'</p>'):'')+
+      '</div>';
+  });
+  h+='</div>';
+  return h;
+}
+function row2(k,v){ if(!v||v==='—') return ''; return '<div style="display:flex;gap:6px;font-size:11.5px;margin-bottom:3px"><span style="color:var(--muted);min-width:52px">'+k+'</span><span style="font-weight:500">'+esc(v)+'</span></div>'; }
+
+function renderChanges(q){
+  var list=POLICY.changes.filter(function(c){ if(!q) return true; return (c.title+' '+c.old+' '+c.neu).toLowerCase().indexOf(q)>=0; });
+  if(!list.length) return '<div style="padding:16px;color:var(--muted);text-align:center">Không có thay đổi phù hợp</div>';
+  var h='<div style="display:grid;gap:12px">';
+  list.forEach(function(c){
+    h+='<div style="border:1px solid var(--border);border-radius:10px;overflow:hidden">'+
+      '<div style="background:#fef3c7;color:#92400e;font-weight:700;font-size:13px;padding:9px 13px">🔄 '+esc(c.title)+'</div>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0">'+
+        '<div style="padding:11px 13px;background:#fef2f2;border-right:1px solid var(--border)"><div style="font-size:10px;font-weight:700;color:#991b1b;text-transform:uppercase;margin-bottom:4px">Chính sách cũ</div><div style="font-size:12px;line-height:1.5">'+esc(c.old)+'</div></div>'+
+        '<div style="padding:11px 13px;background:#f0fdf4"><div style="font-size:10px;font-weight:700;color:#166534;text-transform:uppercase;margin-bottom:4px">Chính sách mới</div><div style="font-size:12px;line-height:1.5">'+esc(c.neu)+'</div></div>'+
+      '</div></div>';
+  });
+  h+='</div>';
+  return h;
+}
+
+function renderAddon5g(q){
+  var h='<p style="font-size:12px;color:var(--muted);margin:0 0 12px">Data 5G tốc độ cao tặng thêm theo từng gói (ngoài lưu lượng ban đầu). Gói Unlimited dùng 5G không giới hạn suốt thời hạn. Ở LOR không double data.</p>';
+  h+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px">';
+  POLICY.addon5g.forEach(function(g){
+    var rows=g.rows.filter(function(r){ if(!q) return true; return (g.fam+' '+r.join(' ')).toLowerCase().indexOf(q)>=0; });
+    if(!rows.length) return;
+    h+='<div style="border:1px solid var(--border);border-radius:10px;overflow:hidden">'+
+      '<div style="background:#ede9fe;color:#6d28d9;font-weight:700;font-size:12px;padding:8px 12px">'+esc(g.fam)+'</div>'+
+      '<table class="tbl" style="width:100%;font-size:12px"><thead><tr>'+
+        '<th style="text-align:left;padding:6px 10px">Gói</th><th style="text-align:right;padding:6px 10px">Data 5G</th><th style="text-align:right;padding:6px 10px">Ngày</th></tr></thead><tbody>';
+    rows.forEach(function(r,i){ h+='<tr style="'+(i%2?'background:#f8fafc':'')+'"><td style="padding:6px 10px;font-weight:600">'+esc(r[0])+'</td><td style="padding:6px 10px;text-align:right">'+esc(r[1])+'</td><td style="padding:6px 10px;text-align:right;color:var(--muted)">'+esc(r[2])+'</td></tr>'; });
+    h+='</tbody></table></div>';
+  });
+  h+='</div>';
+  return h;
+}
 
 </script>
 
