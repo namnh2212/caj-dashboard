@@ -1709,6 +1709,7 @@ const SALES = {
   <div class="page-tab" onclick="switchPage('digital',this)">💻 Digital</div>
   <div class="page-tab" onclick="switchPage('kythuat',this)">🔧 Kỹ thuật</div>
   <div class="page-tab" onclick="switchPage('policy',this)">📋 Chính sách</div>
+  <div class="page-tab" onclick="switchPage('pr',this)">💰 Thu nhập PR</div>
 </div>
 
 <div id="page-dashboard" class="page-pane active">
@@ -2185,9 +2186,21 @@ const SALES = {
 </div>
 </div><!-- /page-policy -->
 
+<div id="page-pr" class="page-pane">
+<div class="container">
+  <div class="section">
+    <div class="section-head">💰 MÁY TÍNH THU NHẬP PROMOTOR 2026 / CALCULADORA</div>
+    <div class="section-body">
+      <div id="prBody"></div>
+    </div>
+  </div>
+</div>
+</div><!-- /page-pr -->
+
 
 <script src="stations.js"></script>
 <script src="mindmaps.js"></script>
+<script src="pr_calc.js"></script>
 <script>
   // ── Page-level tab switching ──
   let leafletMap = null;
@@ -2210,6 +2223,7 @@ const SALES = {
     if (id === 'sales') { buildSalesTab(); switchSalesMonth(_salesMonth); }
     if (id === 'digital') { var ds=document.getElementById('digitalMonthSelect'); if(ds) ds.value=_salesMonth; buildDigitalPage(_salesMonth); }
     if (id === 'policy') buildPolicyPage();
+    if (id === 'pr') buildPrPage();
   }
 
   // ── Station tab switching (W21/W22/W23) ──
