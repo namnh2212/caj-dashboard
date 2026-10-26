@@ -33,7 +33,7 @@ var PR = {
   meta: 2500
 };
 var PR_DEFAULT = JSON.parse(JSON.stringify(PR));
-var PR_UI = { collapsed:{} };
+var PR_UI = { collapsed:{}, view:'calc' };
 
 function prSoporte(pts, tipo){
   if ((tipo==='Nuevo' && pts<15) || (tipo!=='Nuevo' && pts<30)) return 0;
@@ -109,6 +109,8 @@ function prToggleSec(n){ PR_UI.collapsed[n]=!PR_UI.collapsed[n]; buildPrPage(); 
 
 function buildPrPage(){
   var root=document.getElementById('prBody'); if(!root) return;
+  var tabBar='<div style="display:flex;gap:4px;margin-bottom:14px;border-bottom:2px solid var(--border)">'+prViewTab('calc','\ud83d\udcb0 T\u00ednh thu nh\u1eadp')+prViewTab('policy','\ud83d\udccb Ch\u00ednh s\u00e1ch')+'</div>';
+  if(PR_UI.view==='policy'){ root.innerHTML=tabBar+prPolicyHtml(); return; }
   var h='';
   h+='<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:14px">';
   h+='<p style="font-size:12.5px;color:var(--muted);margin:0;max-width:640px;line-height:1.55">'+
@@ -217,7 +219,7 @@ function buildPrPage(){
      'Nguồn: <b>TRG Resumen políticas de comisiones 2026 – Mobile, Digital y FTTH</b>, sả 1. Promotor. '+
      'Đây là số mô phỏng — số tiền thực nhận do Phòng Kinh doanh tính. '+
      'Chưa tính: PR Exclusivo nông thôn, phạt giới thiệu TV360 lặp cùng máy (−15%), phạt giao dịch giả (−100%).</p>';
-  root.innerHTML=h;
+  root.innerHTML=tabBar+h;
   prRefresh();
 }
 
@@ -351,4 +353,167 @@ function prRefreshGoal(c){
   }
   h+='</div></div>';
   var gb=document.getElementById('prGoalBox'); if(gb) gb.innerHTML=h;
+}
+
+// ===================== POLICY (Chính sách PR) =====================
+function prSetView(v){ PR_UI.view=v; buildPrPage(); }
+function prViewTab(v,label){
+  var on=PR_UI.view===v;
+  return '<button onclick="prSetView(\''+v+'\')" style="padding:8px 16px;font-size:13px;font-weight:700;border:0;background:none;cursor:pointer;'+
+    (on?'color:#1e3a8a;border-bottom:3px solid #1e3a8a':'color:var(--muted);border-bottom:3px solid transparent')+'">'+label+'</button>';
+}
+function prPolSec(num,title,body,isNew){
+  return '<div class="section" style="margin-bottom:16px"><div class="section-head">'+
+    (isNew?'<span style="background:#fde047;color:#713f12;font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;margin-right:8px;vertical-align:middle">NEW</span>':'')+
+    '<span style="display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;background:rgba(255,255,255,.25);border-radius:5px;margin-right:8px;font-weight:800">'+num+'</span>'+title+
+    '</div><div class="section-body">'+body+'</div></div>';
+}
+function prPolTbl(head, rows){
+  var h='<div style="overflow-x:auto"><table class="tbl" style="min-width:420px"><thead><tr>';
+  head.forEach(function(x,i){ h+='<th style="'+(i===0?'text-align:left':'text-align:left')+'">'+x+'</th>'; });
+  h+='</tr></thead><tbody>';
+  rows.forEach(function(r){ h+='<tr>'+r.map(function(c,i){ return '<td style="'+(i===0?'font-weight:600':'font-weight:700;color:#0f4c81')+';font-size:11.5px">'+c+'</td>'; }).join('')+'</tr>'; });
+  return h+'</tbody></table></div>';
+}
+function prPolBul(items){ return '<ul style="margin:10px 0 0;padding-left:18px;font-size:12px;line-height:1.6;color:var(--text)">'+items.map(function(i){return '<li style="margin-bottom:4px">'+i+'</li>';}).join('')+'</ul>'; }
+
+function prPolicyHtml(){
+  var h='';
+  h+='<p style="font-size:12.5px;color:var(--muted);margin:0 0 12px;line-height:1.55">Đây là cách tính thu nhập hằng tháng của Promotor (PR) theo chính sách hoa hồng 2026. Dùng hướng dẫn này cùng với tab Tính thu nhập.</p>';
+  h+='<div style="background:#fde047;color:#713f12;font-weight:800;font-size:14px;padding:12px 16px;border-radius:10px;margin-bottom:16px;text-align:center">Thu nhập = Soporte tháng + Hoa hồng + Thưởng − Khoản trừ</div>';
+
+  // 1
+  h+=prPolSec(1,'Kích hoạt nào được tính', prPolBul([
+    'Chỉ tính khách có DNI. Mỗi DNI tối đa 1 line Bifri mỗi tháng.',
+    'Mỗi khách chỉ tính lần kích hoạt đầu tiên trong ngày.',
+    'Trả trước: nạp tiền hoặc gói ≥ S/5 đến ngày 3 của N+1 và đạt 15C3D (tiêu dùng tối thiểu 15 cent USD và có lưu lượng 3 ngày trong tháng).',
+    'Trả sau (gói ≥ S/19.90): line hoạt động có Register ít nhất 3 ngày, đến ngày 4 của N+1.',
+    'IMEI: máy phải có mã TAC hợp lệ và được ghi nhận trong 24 giờ. Không tính nếu 1 IMEI có từ 3 line, 1 line chạy trên từ 3 máy, hoặc 1 máy ghi nhận từ 5 IMEI.',
+    'Tính liên tục: đến ngày 3 của N+1 line phải có lưu lượng/Register, đến ngày 10 của N+1 phải giữ ít nhất 25%. Nếu không, không được trả soporte.',
+    'Chip Mi Bitel tự kích hoạt được tính nếu khách nhập mã PR khi kích hoạt.',
+    'Mỗi line của khách nước ngoài bị trừ thêm S/1.'
+  ]));
+
+  // 2
+  var s2='<p style="font-size:11.5px;color:var(--muted);margin:0 0 10px;line-height:1.5">Mỗi kích hoạt được cộng điểm. "Có cash-in" = khách có Bipay + login + cash-in ≥ S/5 và có tiêu dùng (thanh toán dịch vụ, nạp tiền hoặc gói) đến ngày 4 của N+1.</p>';
+  s2+=prPolTbl(['Sản phẩm','Có cash-in (LN/MNP)','Không cash-in (LN/MNP)'],[
+    ['Bifri 5 + nạp ≥ S/5, hoặc Papa + addon S/5–9.99','1.5 / 2.25','0.9 / 0.9'],
+    ['Papa + addon ≥ S/10','3 / 4.5','1.8 / 2.7'],
+    ['Trả sau < S/29.90','1.5','0.9'],
+    ['Trả sau S/29.90–39.89','3','1.8'],
+    ['Trả sau ≥ S/39.90','6','3.6'],
+    ['Gói Fútbol ≥ S/39.90','7.5','4.5']
+  ]);
+  s2+='<div style="height:10px"></div>';
+  s2+=prPolTbl(['Mức','Điểm','S/ mỗi điểm','Tối đa mức','Cộng dồn'],[
+    ['1','15–29','S/3 (chỉ PR mới)','S/87','S/87'],
+    ['2','30–59','S/4','S/120','S/207'],
+    ['3','60–89','S/5','S/150','S/357'],
+    ['4','90+','S/6','Không giới hạn','Không giới hạn']
+  ]);
+  s2+='<p style="font-size:10.5px;color:var(--muted);margin:8px 0 0">Trả theo bậc. Mức 1 chỉ dành cho PR tạo trong tháng; PR cũ phải đạt ít nhất 30 điểm (mức 2).</p>';
+  s2+='<div style="background:#f8fafc;border-left:3px solid #1e3a8a;padding:8px 12px;margin-top:8px;font-size:11.5px">Ví dụ: 100 điểm = 29 × S/3 + 30 × S/4 + 30 × S/5 + 11 × S/6 = <b>S/423</b>.</div>';
+  h+=prPolSec(2,'Soporte tháng theo điểm', s2);
+
+  // 3
+  var s3='<p style="font-size:12px;margin:0 0 10px;line-height:1.5"><b>Autoliquidable</b> (trả tiền mặt khi kích hoạt): Bifri 5 S/4 · Bifri 10 S/4 · Turista S/9. Bifri 10, Bifri 15 và Turista không tính điểm.</p>';
+  s3+=prPolTbl(['Sản phẩm','Thưởng lần 1 (cùng ngày)','Thưởng lần 2 (đến ngày 7 của N+1)'],[
+    ['Bifri 5 (LN hoặc MNP)','60% số tiền nạp','20% số tiền nạp'],
+    ['Papa LN + addon S/5–9.99','60% giá gói','20% số tiền nạp'],
+    ['Papa LN + addon ≥ S/10','80% giá gói','20% số tiền nạp'],
+    ['Papa MNP + addon ≥ S/10','100% giá gói','20% số tiền nạp']
+  ]);
+  s3+=prPolBul([
+    'Thưởng nạp tiền và gói được trả qua Bipay.',
+    'Chip Papa giá S/1 cho kênh, được hoàn lại nếu line có lưu lượng từ ngày hôm sau.',
+    'Gói bán qua SMS 9123 (IN + mã gói + số khách) hoặc Bitel Ventas: 20% giá gói, mỗi lần khách mua.'
+  ]);
+  h+=prPolSec(3,'Hoa hồng trả trước', s3);
+
+  // 4
+  var s4=prPolTbl(['Cước cố định của gói','Hoa hồng LN/MNP'],[
+    ['S/15 – 19.89','S/7.5'],['S/19.90 – 29.89','S/11'],['S/29.90 – 39.89','S/25'],['S/39.90 – 40.89','S/30'],
+    ['S/40.90 – 49.89','S/32'],['Ilimitado 49.90 5G','S/40'],['S/49.90 – 55.89','S/35'],['S/55.90 – 59.89','S/40'],
+    ['S/59.90 – 65.89','S/45'],['S/65.90 – 79.89','S/55'],['S/79.90 – 105.89','S/65'],['S/105.90 +','S/80'],
+    ['Fútbol Tricampeón / Cajacho 45.90','S/32'],['Fútbol Hincha 55.90','S/40'],['Fútbol MAX 85.90 / Hincha MAX 89.90','S/65']
+  ]);
+  s4+=prPolBul([
+    'Trả trực tiếp (autoliquidable). Kích hoạt qua Mi Bitel tự kích hoạt được trả qua Bipay nếu khách nhập mã PR.',
+    'Trả trước tiền cước: nếu khách trả trước 3 tháng qua Bipay, bạn nhận 10%. Ví dụ: 3 × S/39.90 = S/119.70 → S/11.97.'
+  ]);
+  h+=prPolSec(4,'Hoa hồng trả sau', s4);
+
+  // 5
+  var s5=prPolTbl(['Hạng mục','Mức trả'],[
+    ['Giới thiệu Bipay (cài app + tạo tài khoản + login)','Thành thị S/1.00 · Nông thôn S/1.50'],
+    ['Đăng ký TV360 (xem 60 giây)','Thành thị S/0.50 · Nông thôn S/1.00'],
+    ['Giao dịch Bipay (nạp tiền, thanh toán Bitel, gói)','5.5%'],
+    ['Thanh toán hóa đơn (nước, điện, khác)','S/0.20 mỗi giao dịch'],
+    ['Cash-in cho khách','S/5–9.99: S/0.10 · S/10–29.99: S/0.15 · S/30–49.99: S/0.20 · ≥ S/50: S/0.30'],
+    ['Khách TuSami mới (tiêu dùng trong tháng)','≥ S/5: S/2.85 · ≥ S/15: S/8.55 · ≥ S/30: S/17.10 · ≥ S/50: S/28.50'],
+    ['Bán TuSami qua Bipay','20% mỗi giao dịch, +10% nếu tháng vượt S/500']
+  ]);
+  s5+='<p style="font-size:10.5px;color:var(--muted);margin:8px 0 0">Mỗi thiết bị và mỗi giấy tờ chỉ một lượt giới thiệu. Ghi "Mã kênh-Số điện thoại", ví dụ LI4PR12145-987123123.</p>';
+  h+=prPolSec(5,'Dịch vụ số', s5);
+
+  // 6
+  var s6=prPolTbl(['Gói','Cước cố định','Tổng','N','N+1','N+2'],[
+    ['Bitel Fibra 200','S/55','150%','60%','70%','20%'],
+    ['Bitel Fibra 400','S/109','180%','60%','70%','50%'],
+    ['Bitel Fibra 1GB','S/139','200%','60%','70%','70%']
+  ]);
+  s6+='<p style="font-size:10.5px;color:var(--muted);margin:8px 0 0;line-height:1.5">Trả tự động qua Bipay: phần N cuối tháng, N+1 vào ngày 1 của N+2, N+2 vào ngày 1 của N+3. Chỉ tính dịch vụ đang hoạt động, đã thanh toán và đã lắp đặt (kèm OTT: Mi Bitel + TV360 + Cable Go + Paramount+). Với khuyến mãi PACK, tính trên giá khách trả.</p>';
+  h+=prPolSec(6,'FTTH', s6);
+
+  // 7
+  var s7=prPolTbl(['Thưởng','Mức trả','Điều kiện'],[
+    ['Chuyển mạng trả trước','Theo số line trong tháng: 1–5 S/5 · 6–10 S/8 · 11–15 S/12 · 16+ S/15 (theo bậc)','Line dùng trên 90 ngày ở nhà mạng cũ, nạp hoặc gói ≥ S/5, có lưu lượng ngày hôm sau'],
+    ['Chuyển mạng trả sau','S/12 mỗi line','Line MNP hoạt động, không bị khóa đến ngày 4 của N+2'],
+    ['Chuyên cần','15–19 ngày S/50 · 20–24 ngày S/75 · 25+ ngày S/100','Tối thiểu 50 line có nạp (RC ≥ S/5 hoặc Papa + addon ≥ S/10). Ngày làm việc = 3 kích hoạt'],
+    ['Chủ nhật nông thôn','S/10 mỗi chủ nhật','Từ 5 kích hoạt, ít nhất 1 trả trước và 1 trả sau ≥ S/29.90'],
+    ['Free chip (thị phần)','S/3 mỗi chip, tối đa S/100','Papa và Flash 29.90 tại BTS được giao, chỉ khi khách không muốn mua'],
+    ['New ID (Bitel Ventas)','S/1 trả trước và control < S/39.90 · S/3 control ≥ S/39.90','Khách không có line Bitel trên 1 năm'],
+    ['MNP theo thời gian dùng (Bitel Ventas)','S/1 (≥ 30 ngày) · S/2 (≥ 60) · S/3 (≥ 90)','Thời gian dùng ở nhà mạng cũ']
+  ]);
+  h+=prPolSec(7,'Thưởng', s7);
+
+  // 8
+  var s8='<p style="font-size:12px;margin:0 0 8px;line-height:1.5">Áp dụng cho mọi PR có hoa hồng trong tháng. Nếu không đạt cả dịch vụ số LẪN New ID, bị trừ 15% tổng hoa hồng.</p>';
+  s8+=prPolBul([
+    '<b>Dịch vụ số</b> = (đăng ký TV360 + đăng ký Bipay có cash-in + vé TuSami) ÷ số kích hoạt trả trước và control. Cash-in phải đạt ít nhất 10%.',
+    '<b>New ID</b> = số kích hoạt của khách không có line Bitel từ 6 tháng trở lên ÷ số kích hoạt trả trước và control.'
+  ]);
+  s8+='<div style="height:8px"></div>';
+  s8+='<div style="overflow-x:auto"><table class="tbl" style="min-width:380px"><thead><tr><th style="text-align:left">Dịch vụ số</th><th style="text-align:left">New ID</th><th style="text-align:left">Kết quả</th></tr></thead><tbody>'+
+    '<tr style="background:#f0fdf4"><td>≥ 30%</td><td>≥ 55%</td><td style="color:#16a34a;font-weight:700">✓ Không bị trừ</td></tr>'+
+    '<tr style="background:#f0fdf4"><td>≥ 30%</td><td>&lt; 55%</td><td style="color:#16a34a;font-weight:700">✓ Không bị trừ</td></tr>'+
+    '<tr style="background:#f0fdf4"><td>&lt; 30%</td><td>≥ 55%</td><td style="color:#16a34a;font-weight:700">✓ Không bị trừ</td></tr>'+
+    '<tr style="background:#fef2f2"><td>&lt; 30%</td><td>&lt; 55%</td><td style="color:#dc2626;font-weight:700">−15% tổng hoa hồng</td></tr>'+
+    '</tbody></table></div>';
+  s8+=prPolBul([
+    'TuSami: bán ít nhất S/10 vé trong tháng cho các khách khác nhau; nếu không, −10%.',
+    'TV360: hơn 5 lượt giới thiệu trên cùng một máy → −15% và thu hồi các khoản thưởng đó.',
+    'Giao dịch giả (chuyển và hoàn tiền cùng một số) → −100% hoa hồng của tháng.',
+    'Bán line khách nước ngoài giả: trừ lại các khoản đã trả (thưởng nạp tiền và autoliquidable).'
+  ]);
+  h+=prPolSec(8,'Khoản bị trừ', s8);
+
+  // 9 NEW
+  var s9='<p style="font-size:12px;margin:0 0 10px;line-height:1.5">Thưởng một lần cho mã PR mới tạo từ 01 đến 15/10/2026 (áp dụng từ tháng 10/2026). Mã tạo sau ngày 15 được tính vào tháng sau.</p>';
+  s9+=prPolTbl(['Hạng','Thưởng','Ngày làm việc','Kích hoạt'],[
+    ['A','S/600','20','60'],
+    ['B','S/300','10','45']
+  ]);
+  s9+=prPolBul([
+    'Ngày làm việc = tối thiểu 2 chip kích hoạt trong ngày.',
+    'Kích hoạt hợp lệ: trả trước có nạp tiền hoặc gói ≥ S/5 và trả sau ≥ S/29.90.',
+    'Trả qua BiPay cuối tháng khi đạt mục tiêu. Phải có tài khoản BiPay đang hoạt động.',
+    'Chỉ trả một hạng (hạng cao nhất) và không bị trừ KPI hay TuSami trên khoản thưởng này.',
+    'Mã kích hoạt lại: do phòng Kinh doanh xem xét.',
+    'Chi nhánh: ANC, CAJ, ICA, LAM, LI3, LI5, LI7, LI8, LOR, PIU, SAN, TAC, TUM, UCA.'
+  ]);
+  h+=prPolSec(9,'Chương trình Crece Promotor (mới)', s9, true);
+
+  h+='<p style="font-size:10.5px;color:var(--muted);margin-top:4px;line-height:1.55;border-top:1px solid var(--border);padding-top:9px">Nguồn: <b>TRG Resumen políticas de comisiones 2026 – Mobile, Digital y FTTH</b> (mục 1. Promotor) và thông báo Chương trình Crece Promotor (tháng 10/2026). Số tiền thực nhận do phòng Kinh doanh tính.</p>';
+  return h;
 }
