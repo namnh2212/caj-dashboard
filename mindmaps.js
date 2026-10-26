@@ -1407,8 +1407,8 @@ const MINDMAPS = [
 "detail": "Instagram, Facebook FULL tốc độ cao; WhatsApp FULL 30 ngày."
 },
 {
-"label": "5G: 6 GB",
-"detail": "Ưu đãi 5G: 6 GB (cần máy 5G và vùng phủ)."
+"label": "5G: ∞ không giới hạn",
+"detail": "Ưu đãi 5G: KHÔNG GIỚI HẠN tốc độ cao suốt thời hạn gói (gói SO/TI từ S/7; cần máy 5G và vùng phủ)."
 },
 {
 "label": "Data ∞ x7 ngày",
@@ -1477,8 +1477,8 @@ const MINDMAPS = [
 "detail": "Data TV360 không giới hạn tốc độ cao + TV360 Premium."
 },
 {
-"label": "5G: 7 GB",
-"detail": "Ưu đãi 5G: 7 GB (cần máy 5G và vùng phủ)."
+"label": "5G: ∞ không giới hạn",
+"detail": "Ưu đãi 5G: KHÔNG GIỚI HẠN tốc độ cao suốt thời hạn gói (gói SO/TI từ S/7; cần máy 5G và vùng phủ)."
 }
 ]
 },
@@ -1508,8 +1508,8 @@ const MINDMAPS = [
 "detail": "Data TV360 không giới hạn tốc độ cao + TV360 Premium."
 },
 {
-"label": "5G: 24 GB",
-"detail": "Ưu đãi 5G: 24 GB (cần máy 5G và vùng phủ)."
+"label": "5G: ∞ không giới hạn",
+"detail": "Ưu đãi 5G: KHÔNG GIỚI HẠN tốc độ cao suốt thời hạn gói (gói SO/TI từ S/7; cần máy 5G và vùng phủ)."
 },
 {
 "label": "GB đêm ∞ (23h–6h)",
@@ -1543,8 +1543,8 @@ const MINDMAPS = [
 "detail": "Data TV360 không giới hạn tốc độ cao + TV360 Premium."
 },
 {
-"label": "5G: 20 GB",
-"detail": "Ưu đãi 5G: 20 GB (cần máy 5G và vùng phủ)."
+"label": "5G: ∞ không giới hạn",
+"detail": "Ưu đãi 5G: KHÔNG GIỚI HẠN tốc độ cao suốt thời hạn gói (gói SO/TI từ S/7; cần máy 5G và vùng phủ)."
 },
 {
 "label": "GB đêm ∞ (23h–6h)",
@@ -1674,8 +1674,8 @@ const MINDMAPS = [
 "detail": "Data TV360 không giới hạn tốc độ cao + TV360 Premium."
 },
 {
-"label": "5G: 10 GB",
-"detail": "Ưu đãi 5G: 10 GB."
+"label": "5G: ∞ không giới hạn",
+"detail": "Ưu đãi 5G: KHÔNG GIỚI HẠN tốc độ cao suốt thời hạn gói (gói SO/TI từ S/7; cần máy 5G và vùng phủ)."
 },
 {
 "label": "Mã 8SO",
@@ -1736,8 +1736,8 @@ const MINDMAPS = [
 "detail": "Data TV360 không giới hạn tốc độ cao + TV360 Premium."
 },
 {
-"label": "5G: 20 GB",
-"detail": "Ưu đãi 5G: 20 GB."
+"label": "5G: ∞ không giới hạn",
+"detail": "Ưu đãi 5G: KHÔNG GIỚI HẠN tốc độ cao suốt thời hạn gói (gói SO/TI từ S/7; cần máy 5G và vùng phủ)."
 },
 {
 "label": "Mã 13SO",
