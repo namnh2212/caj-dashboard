@@ -138,8 +138,8 @@ const MINDMAPS = [
 "detail": "Gói ≥S/5 được gấp đôi GB (TI20/30/40 gia hạn tới 04/2027). Không áp dụng ở Loreto. Gói TI ≥S/8 có data TV360 không giới hạn."
 },
 {
-"label": "Gói 5G từ S/10",
-"detail": "TI10, TI40, 10SO, DM10: 5G không giới hạn trong thời hạn gói; cần máy hỗ trợ & vùng phủ 5G. DM10/10SO bán cả cho postpago."
+"label": "Gói 5G từ S/7",
+"detail": "Các gói SO & TI từ S/7 (8SO, 10SO, 13SO; TI7, TI10, TI15, TI20, TI30, TI40) + DM10: 5G không giới hạn tốc độ cao trong thời hạn gói; cần máy hỗ trợ & vùng phủ 5G. DM10/10SO bán cả cho postpago."
 },
 {
 "label": "Super Recarga",
