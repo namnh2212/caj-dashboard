@@ -1408,11 +1408,11 @@ const MINDMAPS = [
 },
 {
 "label": "5G: ∞ không giới hạn",
-"detail": "Ưu đãi 5G: KHÔNG GIỚI HẠN tốc độ cao suốt thời hạn gói (gói SO/TI từ S/7; cần máy 5G và vùng phủ)."
+"detail": "5G internet không giới hạn tốc độ cao (không giới hạn data tốc độ cao) trên hạ tầng 5G; cần máy 5G và vùng phủ. Gói SO/TI từ S/7."
 },
 {
-"label": "Data ∞ x7 ngày",
-"detail": "Mới: data không giới hạn 7 ngày."
+"label": "Internet ∞ (256 kbps sau)",
+"detail": "Không giới hạn internet: sau khi dùng hết data tốc độ cao của gói, tiếp tục dùng internet ở tốc độ thấp 256 kbps. Hiệu lực 7 ngày."
 }
 ]
 },
@@ -1442,12 +1442,12 @@ const MINDMAPS = [
 "detail": "Data TV360 không giới hạn tốc độ cao + TV360 Premium."
 },
 {
-"label": "5G: không giới hạn",
-"detail": "Ưu đãi 5G: không giới hạn (cần máy 5G và vùng phủ)."
+"label": "5G: ∞ không giới hạn",
+"detail": "5G internet không giới hạn tốc độ cao (không giới hạn data tốc độ cao) trên hạ tầng 5G; cần máy 5G và vùng phủ."
 },
 {
-"label": "Data ∞ x10 ngày",
-"detail": "Mới: data không giới hạn 10 ngày."
+"label": "Internet ∞ (256 kbps sau)",
+"detail": "Không giới hạn internet: sau khi dùng hết data tốc độ cao của gói, tiếp tục dùng internet ở tốc độ thấp 256 kbps. Hiệu lực 10 ngày."
 }
 ]
 },
