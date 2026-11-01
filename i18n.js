@@ -370,7 +370,7 @@
       return '<button onclick="setDashLang(\''+l[0]+'\')" style="padding:4px 10px;font-size:11px;font-weight:700;border:1px solid '+(on?'#1e3a8a':'#cbd5e1')+';background:'+(on?'#1e3a8a':'#fff')+';color:'+(on?'#fff':'#475569')+';cursor:pointer;'+(l[0]==='vi'?'border-radius:6px 0 0 6px':l[0]==='es'?'border-radius:0 6px 6px 0':'')+';border-left:'+(l[0]==='vi'?'1px':'0')+' solid '+(on?'#1e3a8a':'#cbd5e1')+'">'+l[1]+'</button>';
     }).join('');
   }
-  window.setDashLang=function(l){ window.DASH_LANG=l; try{localStorage.setItem('dashLang',l);}catch(e){} renderSel(); apply(); };
+  window.setDashLang=function(l){ window.DASH_LANG=l; try{localStorage.setItem('dashLang',l);}catch(e){} renderSel(); apply(); if(typeof window.updateTechDoc==='function') window.updateTechDoc(); };
 
   function wrap(name){ var f=window[name]; if(typeof f==='function' && !f.__wrapped){ var g=function(){ var r=f.apply(this,arguments); if(window.DASH_LANG!=='vi') apply(); return r; }; g.__wrapped=true; window[name]=g; } }
   function init(){ renderSel(); startObs(); ['switchPage','prSetView','prToggleSec','prSetStr','prLoadExample','prClear','switchTab','switchSalesMonth','buildDigitalPage'].forEach(wrap); if(window.DASH_LANG!=='vi') apply(); }

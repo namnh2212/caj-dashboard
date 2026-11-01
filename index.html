@@ -2244,9 +2244,8 @@ const SALES = {
   <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;flex-wrap:wrap;background:#fff;border-bottom:1px solid var(--border)">
     <div style="font-weight:800;font-size:14px;color:#0f4c81">🗼 BTS Physical Model — Alarm Map</div>
     <div style="font-size:11px;color:var(--muted)">Mô hình trạm BTS &amp; bản đồ cảnh báo / Modelo físico de estación BTS y mapa de alarmas</div>
-    <div style="margin-left:auto;display:inline-flex;gap:6px">
-      <button id="techViBtn" class="sol-btn" onclick="setTechLang('vi')">Tiếng Việt</button>
-      <button id="techEsBtn" class="sol-btn" onclick="setTechLang('es')">Español</button>
+    <div style="margin-left:auto;display:inline-flex;gap:8px;align-items:center">
+      <span style="font-size:10.5px;color:var(--muted)">Ngôn ngữ theo dashboard / Idioma según el panel</span>
       <a id="techOpenNew" class="sol-btn" href="bts_alarm_map_vi.html" target="_blank" rel="noopener" style="text-decoration:none">↗ Mở tab mới / Abrir</a>
     </div>
   </div>
@@ -2259,12 +2258,16 @@ const SALES = {
 <script src="mindmaps.js"></script>
 <script>
   var _techLoaded=false,_techLang=null;
-  function buildTechDoc(){ var l=(window.DASH_LANG==='es')?'es':'vi'; if(!_techLoaded||_techLang!==l) setTechLang(l); }
-  function setTechLang(l){ _techLang=l; _techLoaded=true; var src='bts_alarm_map_'+l+'.html';
+  function _techFile(){ return (window.DASH_LANG==='es') ? 'es' : 'vi'; }  // VI/EN -> vi, ES -> es
+  function _techApply(l){ _techLang=l; var src='bts_alarm_map_'+l+'.html';
     var fr=document.getElementById('techFrame'); if(fr && fr.getAttribute('src')!==src) fr.setAttribute('src',src);
-    var a=document.getElementById('techOpenNew'); if(a) a.setAttribute('href',src);
-    var vb=document.getElementById('techViBtn'),eb=document.getElementById('techEsBtn');
-    if(vb) vb.classList.toggle('sol-btn-active',l==='vi'); if(eb) eb.classList.toggle('sol-btn-active',l==='es'); }
+    var a=document.getElementById('techOpenNew'); if(a) a.setAttribute('href',src); }
+  function buildTechDoc(){ _techLoaded=true; _techApply(_techFile()); }
+  // called by the global language selector (i18n.js) when language changes
+  function updateTechDoc(){ var l=_techFile();
+    var a=document.getElementById('techOpenNew'); if(a) a.setAttribute('href','bts_alarm_map_'+l+'.html');
+    if(_techLoaded && l!==_techLang) _techApply(l); }
+  window.updateTechDoc=updateTechDoc; window.buildTechDoc=buildTechDoc;
 </script>
 <script src="pr_calc.js"></script>
 <script>
