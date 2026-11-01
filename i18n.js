@@ -12,6 +12,8 @@
     'Báo cáo kinh doanh hàng tuần / Informe semanal de negocio · Nguồn / Fuente: Báo cáo tuần & Cảnh báo thuê bao giảm / Alertas de bajas':'Weekly business report · Source: Weekly report & Subscriber-drop alerts',
     '📊 Dashboard KPI':'📊 KPI Dashboard','🗺️ Bản đồ / Mapa':'🗺️ Map','📱 Mobile':'📱 Mobile','💻 Digital':'💻 Digital',
     '🔧 Kỹ thuật':'🔧 Technical','📋 Chính sách':'📋 Policy','💰 Thu nhập PR':'💰 PR Income',
+    '🗼 Tài liệu kỹ thuật':'🗼 Technical docs','Tiếng Việt':'Vietnamese','↗ Mở tab mới / Abrir':'↗ Open in new tab',
+    'Mô hình trạm BTS & bản đồ cảnh báo / Modelo físico de estación BTS y mapa de alarmas':'BTS station physical model & alarm map',
     // dashboard section heads
     '📈 1. THUÊ BAO 15C3D HÀNG THÁNG / SUSCRIPTORES 15C3D MENSUAL — vs KẾ HOẠCH / PLAN & LŨY KẾ / ACUMULADO NĂM':'📈 1. MONTHLY 15C3D SUBSCRIBERS — vs PLAN & YEAR-TO-DATE',
     '📋 2. THUÊ BAO REG TUYỆT ĐỐI / SUSCRIPTORES REG TOTAL — vs KẾ HOẠCH / PLAN (base 297.941 + N×3.500 TB/mes)':'📋 2. TOTAL REG SUBSCRIBERS — vs PLAN (base 297,941 + N×3,500/mo)',
@@ -159,6 +161,8 @@
     'Báo cáo kinh doanh hàng tuần / Informe semanal de negocio · Nguồn / Fuente: Báo cáo tuần & Cảnh báo thuê bao giảm / Alertas de bajas':'Informe semanal de negocio · Fuente: Informe semanal y Alertas de bajas',
     '📊 Dashboard KPI':'📊 Panel KPI','🗺️ Bản đồ / Mapa':'🗺️ Mapa','📱 Mobile':'📱 Mobile','💻 Digital':'💻 Digital',
     '🔧 Kỹ thuật':'🔧 Técnico','📋 Chính sách':'📋 Política','💰 Thu nhập PR':'💰 Ingreso PR',
+    '🗼 Tài liệu kỹ thuật':'🗼 Documentación técnica','Tiếng Việt':'Vietnamita','↗ Mở tab mới / Abrir':'↗ Abrir en pestaña nueva',
+    'Mô hình trạm BTS & bản đồ cảnh báo / Modelo físico de estación BTS y mapa de alarmas':'Modelo físico de estación BTS y mapa de alarmas',
     '📈 1. THUÊ BAO 15C3D HÀNG THÁNG / SUSCRIPTORES 15C3D MENSUAL — vs KẾ HOẠCH / PLAN & LŨY KẾ / ACUMULADO NĂM':'📈 1. SUSCRIPTORES 15C3D MENSUAL — vs PLAN & ACUMULADO AÑO',
     '📋 2. THUÊ BAO REG TUYỆT ĐỐI / SUSCRIPTORES REG TOTAL — vs KẾ HOẠCH / PLAN (base 297.941 + N×3.500 TB/mes)':'📋 2. SUSCRIPTORES REG TOTAL — vs PLAN (base 297.941 + N×3.500/mes)',
     '💰 3. DOANH THU HÀNG THÁNG / INGRESOS MENSUAL — vs KẾ HOẠCH / PLAN':'💰 3. INGRESOS MENSUAL — vs PLAN',

@@ -1750,6 +1750,7 @@ const SALES = {
   <div class="page-tab" onclick="switchPage('kythuat',this)">🔧 Kỹ thuật</div>
   <div class="page-tab" onclick="switchPage('policy',this)">📋 Chính sách</div>
   <div class="page-tab" onclick="switchPage('pr',this)">💰 Thu nhập PR</div>
+  <div class="page-tab" onclick="switchPage('techdoc',this)">🗼 Tài liệu kỹ thuật</div>
   <div id="dashLangSel" style="margin-left:auto;display:inline-flex;align-items:center;padding:0 10px"></div>
 </div>
 
@@ -2238,9 +2239,33 @@ const SALES = {
 </div>
 </div><!-- /page-pr -->
 
+<div id="page-techdoc" class="page-pane">
+<div class="container" style="max-width:none;padding:0">
+  <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;flex-wrap:wrap;background:#fff;border-bottom:1px solid var(--border)">
+    <div style="font-weight:800;font-size:14px;color:#0f4c81">🗼 BTS Physical Model — Alarm Map</div>
+    <div style="font-size:11px;color:var(--muted)">Mô hình trạm BTS &amp; bản đồ cảnh báo / Modelo físico de estación BTS y mapa de alarmas</div>
+    <div style="margin-left:auto;display:inline-flex;gap:6px">
+      <button id="techViBtn" class="sol-btn" onclick="setTechLang('vi')">Tiếng Việt</button>
+      <button id="techEsBtn" class="sol-btn" onclick="setTechLang('es')">Español</button>
+      <a id="techOpenNew" class="sol-btn" href="bts_alarm_map_vi.html" target="_blank" rel="noopener" style="text-decoration:none">↗ Mở tab mới / Abrir</a>
+    </div>
+  </div>
+  <iframe id="techFrame" title="BTS Alarm Map" style="width:100%;height:calc(100vh - 165px);min-height:520px;border:0;background:#1a1a2e;display:block"></iframe>
+</div>
+</div><!-- /page-techdoc -->
+
 
 <script src="stations.js"></script>
 <script src="mindmaps.js"></script>
+<script>
+  var _techLoaded=false,_techLang=null;
+  function buildTechDoc(){ var l=(window.DASH_LANG==='es')?'es':'vi'; if(!_techLoaded||_techLang!==l) setTechLang(l); }
+  function setTechLang(l){ _techLang=l; _techLoaded=true; var src='bts_alarm_map_'+l+'.html';
+    var fr=document.getElementById('techFrame'); if(fr && fr.getAttribute('src')!==src) fr.setAttribute('src',src);
+    var a=document.getElementById('techOpenNew'); if(a) a.setAttribute('href',src);
+    var vb=document.getElementById('techViBtn'),eb=document.getElementById('techEsBtn');
+    if(vb) vb.classList.toggle('sol-btn-active',l==='vi'); if(eb) eb.classList.toggle('sol-btn-active',l==='es'); }
+</script>
 <script src="pr_calc.js"></script>
 <script>
   // ── Page-level tab switching ──
@@ -2265,6 +2290,7 @@ const SALES = {
     if (id === 'digital') { var ds=document.getElementById('digitalMonthSelect'); if(ds) ds.value=_salesMonth; buildDigitalPage(_salesMonth); }
     if (id === 'policy') buildPolicyPage();
     if (id === 'pr') buildPrPage();
+    if (id === 'techdoc') buildTechDoc();
   }
 
   // ── Station tab switching (W21/W22/W23) ──
