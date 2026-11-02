@@ -62,7 +62,7 @@ const CFG = {
   reg: {
     base      : 297941,         // base T0 = 31/12/2025 — CỐ ĐỊNH
     planMonth : 3500,           // KH tăng ròng/tháng — CỐ ĐỊNH
-    absActual : [302501, 309449, 312744, 316358, 317463, 320737, 326712, 329041, 329075, 323616], // ← T10 chốt 323.616 (Reg 3110, 31/10); T9 329.075
+    absActual : [302501, 309449, 312744, 316358, 317463, 320737, 326712, 329041, 329075, 328281], // ← T10 chốt 328.281 (Reg 3110 cột 31/10); T9 329.075
     absPlan   : [301441, 304941, 308441, 311941, 315441, 318941, 322441, 325941, 329441, 332941], // CỐ ĐỊNH cả năm
     t6Note    : 'T10 chốt 31/10/2026', // ← cập nhật ngày REG
   },
@@ -2755,10 +2755,10 @@ function buildKPICards() {
       var bcLabels = ['BC01','BC07','BC08','BC05','BC10','BC14'];
       var bcColors = ['#1d4ed8','#0891b2','#7c3aed','#dc2626','#d97706','#059669'];
       // [T4, T5, T6] per BC — order matches bcLabels
-      var T4 = [9316,6423,4281,4058,2513,2177]; // T6
-      var T5 = [8312,6060,4013,4324,2830,1744]; // T7
-      var T6 = [7418,5777,3730,4221,2668,1330]; // T8
-      var T7 = [7204,4438,3501,3445,2653,1171]; // T9
+      var T4 = [8312,6060,4013,4324,2830,1744]; // T7
+      var T5 = [7418,5777,3730,4221,2668,1330]; // T8
+      var T6 = [7204,4438,3501,3445,2653,1171]; // T9
+      var T7 = [7170,4400,3476,3795,2406,1509]; // T10
 
       var trendPlugin = {
         id: 'bcTrendLines',
@@ -2808,16 +2808,16 @@ function buildKPICards() {
         data: {
           labels: bcLabels,
           datasets: [
-            { label:'T6/2026', data:T4,
+            { label:'T7/2026', data:T4,
               backgroundColor:'#cbd5e1', borderColor:'#94a3b8',
               borderWidth:1, borderRadius:3 },
-            { label:'T7/2026', data:T5,
+            { label:'T8/2026', data:T5,
               backgroundColor:'#93c5fd', borderColor:'#60a5fa',
               borderWidth:1, borderRadius:3 },
-            { label:'T8/2026', data:T6,
+            { label:'T9/2026', data:T6,
               backgroundColor:'#2563eb', borderColor:'#1d4ed8',
               borderWidth:1, borderRadius:3 },
-            { label:'T9/2026', data:T7,
+            { label:'T10/2026', data:T7,
               backgroundColor:'#1e3a8a', borderColor:'#1e3a8a',
               borderWidth:1, borderRadius:3 },
           ]
@@ -2839,7 +2839,7 @@ function buildKPICards() {
                 afterTitle:function(items){
                   var i=items[0].dataIndex;
                   var delta=T7[i]-T6[i];
-                  return ['Xu thế T8→T9: '+(delta>=0?'▲ +':'▼ ')+fmt(delta)];
+                  return ['Xu thế T9→T10: '+(delta>=0?'▲ +':'▼ ')+fmt(delta)];
                 }
               }
             }
