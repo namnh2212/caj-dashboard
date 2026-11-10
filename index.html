@@ -3403,6 +3403,27 @@ function buildKPICards() {
   // ── Solution table state & render ────────────────────────
   let _solState = { week: 'w44', estado: 'all' };
 
+  // Suy ra nguyên nhân + giải pháp kỹ thuật từ Cell*h (khi ME chưa nhập giải pháp thật)
+  function _techSol(s) {
+    const genericCause = !s.cause || /Sin reporte previo|Chưa có báo cáo/.test(s.cause);
+    const genericSol   = !s.solution || /^Khảo sát nguyên nhân \+ campañas/.test(s.solution);
+    if (!genericCause && !genericSol) return { cause:s.cause, solution:s.solution };
+    const ch = +s.cellh || 0;
+    const hh = ch.toLocaleString('vi-VN',{maximumFractionDigits:0});
+    let cause, sol;
+    if (ch >= 500) {
+      cause = `Mất dịch vụ cell kéo dài — Cell*h ${hh}h (nghi mất nguồn/baja tensión hoặc truyền dẫn)`;
+      sol   = 'Kiểm tra nguồn điện & truyền dẫn, khôi phục cell — phối hợp ME';
+    } else if (ch >= 50) {
+      cause = `Gián đoạn dịch vụ cell — Cell*h ${hh}h`;
+      sol   = 'Kiểm tra cell & truyền dẫn, tối ưu RF — phối hợp ME';
+    } else {
+      cause = `Cell*h thấp (${hh}h) — nghi giảm theo nhu cầu/thị trường hoặc cạnh tranh`;
+      sol   = `Khảo sát hiện trường + đẩy campañas bán hàng${s.bc?(' ('+s.bc+')'):''}`;
+    }
+    return { cause: genericCause ? cause : s.cause, solution: genericSol ? sol : s.solution };
+  }
+
   function renderSolutionTable() {
     const { week, estado } = _solState;
     const w = CFG.stations && CFG.stations[week];
@@ -3420,19 +3441,19 @@ function buildKPICards() {
       if (footer) footer.innerHTML = '0 trạm hiển thị';
       return;
     }
-    tbody.innerHTML = rows.map(s => `<tr>
+    tbody.innerHTML = rows.map(s => { const _ts=_techSol(s); return `<tr>
       <td class="site">${s.id}</td>
       <td>${s.bc||'—'}</td>
       <td style="font-size:11px">${s.zona||'—'}</td>
       <td><span style="font-size:10px;font-weight:600;color:#475569">${s.grp}</span></td>
       ${_numCell(s.d15)}
       ${_cellhCell(s.cellh)}
-      <td style="font-size:11px;max-width:170px">${s.cause||'—'}</td>
-      <td style="font-size:11px;max-width:200px">${s.solution||'—'}</td>
+      <td style="font-size:11px;max-width:170px">${_ts.cause||'—'}</td>
+      <td style="font-size:11px;max-width:200px">${_ts.solution||'—'}</td>
       <td style="font-size:11px">${s.responsible||'—'}</td>
       <td style="font-size:11px">${s.deadline||'—'}</td>
       <td>${ESTADO_HTML[s.estado]||s.estado||'—'}</td>
-    </tr>`).join('');
+    </tr>`; }).join('');
     if (footer) {
       const res  = rows.filter(s => s.estado === 'resolved').length;
       const inp  = rows.filter(s => s.estado === 'inprogress').length;
