@@ -1843,6 +1843,7 @@ const SALES = {
   <div class="page-tab" onclick="switchPage('policy',this)">📋 Chính sách</div>
   <div class="page-tab" onclick="switchPage('pr',this)">💰 Thu nhập PR</div>
   <div class="page-tab" onclick="switchPage('techdoc',this)">🗼 Tài liệu kỹ thuật</div>
+  <div class="page-tab" onclick="switchPage('guia',this)">📘 Hướng dẫn FT / Guía</div>
   <div id="dashLangSel" style="margin-left:auto;display:inline-flex;align-items:center;padding:0 10px"></div>
 </div>
 
@@ -2345,6 +2346,19 @@ const SALES = {
 </div>
 </div><!-- /page-techdoc -->
 
+<div id="page-guia" class="page-pane">
+<div class="container" style="max-width:none;padding:0">
+  <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;flex-wrap:wrap;background:#fff;border-bottom:1px solid var(--border)">
+    <div style="font-weight:800;font-size:14px;color:#0f4c81">📘 Hướng dẫn FT — Giám sát DC / Ắc quy Lithium / Máy phát (GEN)</div>
+    <div style="font-size:11px;color:var(--muted)">Guía FT — Monitoreo DC / Baterías de litio / GEN</div>
+    <div style="margin-left:auto;display:inline-flex;gap:8px;align-items:center">
+      <a class="sol-btn" href="guia_ft_dc.html" target="_blank" rel="noopener" style="text-decoration:none">↗ Mở tab mới / Abrir</a>
+    </div>
+  </div>
+  <iframe id="guiaFrame" title="Guia FT" style="width:100%;height:calc(100vh - 165px);min-height:520px;border:0;background:#f4f7f9;display:block"></iframe>
+</div>
+</div><!-- /page-guia -->
+
 
 <script src="stations.js"></script>
 <script src="mindmaps.js"></script>
@@ -2360,6 +2374,9 @@ const SALES = {
     var a=document.getElementById('techOpenNew'); if(a) a.setAttribute('href','bts_alarm_map_'+l+'.html');
     if(_techLoaded && l!==_techLang) _techApply(l); }
   window.updateTechDoc=updateTechDoc; window.buildTechDoc=buildTechDoc;
+  var _guiaLoaded=false;
+  function buildGuia(){ if(_guiaLoaded) return; _guiaLoaded=true; var fr=document.getElementById('guiaFrame'); if(fr && !fr.getAttribute('src')) fr.setAttribute('src','guia_ft_dc.html'); }
+  window.buildGuia=buildGuia;
 </script>
 <script src="pr_calc.js"></script>
 <script>
@@ -2386,6 +2403,7 @@ const SALES = {
     if (id === 'policy') buildPolicyPage();
     if (id === 'pr') buildPrPage();
     if (id === 'techdoc') buildTechDoc();
+    if (id === 'guia') buildGuia();
   }
 
   // ── Station tab switching (W21/W22/W23) ──
